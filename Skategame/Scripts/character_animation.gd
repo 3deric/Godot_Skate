@@ -22,7 +22,11 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	_animation_handler(delta)
+	_set_vis_balance()
 	_lerp_vis_transform(delta, INTERP_SPEED)
+
+
+func _set_vis_balance():
 	if character_controller.player_state == character_controller.PlayerState.GRIND:
 		Char.rotation.z = -character_controller.balance_angle * 0.5
 	if character_controller.player_state == character_controller.PlayerState.LIP:
@@ -31,9 +35,7 @@ func _process(delta: float) -> void:
 
 func _lerp_vis_transform(_delta, _speed):
 	Char.global_transform = Char.global_transform.interpolate_with(character_controller.global_transform, _delta * _speed)
-	if character_controller.player_state != character_controller.PlayerState.GRIND:
-		#interpolate player location only while grinding to achieve a smooth motion
-		Char.global_position = character_controller.global_position
+	Char.global_position = character_controller.global_position
 
 
 func _animation_handler(delta):
