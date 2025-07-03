@@ -22,11 +22,39 @@ extends Control
 @onready var option_button_bottom_style: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer/OptionButton_Bottom_Style"
 @onready var option_button_shoes_style: OptionButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer/OptionButton_Shoes_Style"
 @onready var h_slider_size: HSlider = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer/HSlider_Size"
+@onready var check_button_gender: CheckButton = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer/CheckButton_Gender"
 
 
 func _ready() -> void:
+	_setup_buttons()
 	_setup_options()
 	CustomizationManager.customization_updated.connect(_update_ui_from_data)
+
+
+func _setup_buttons() -> void:
+	h_slider_size.value_changed.connect(_on_h_slider_size_value_changed)
+	h_slider_skin_color.value_changed.connect(_on_h_slider_skin_color_value_changed)
+	color_picker_button_eye_color.button_down.connect(_on_color_picker_button_eye_color_color_changed)
+	option_button_hair.item_selected.connect(_on_option_button_hair_item_selected)
+	color_picker_button_hair_color.button_down.connect(_on_color_picker_button_hair_color_color_changed)
+	option_button_top_style.item_selected.connect(_on_option_button_top_style_item_selected)
+	option_button_top_decal.item_selected.connect(_on_option_button_top_decal_item_selected)
+	color_picker_button_top_base.color_changed.connect(_on_color_picker_button_top_base_color_changed)
+	color_picker_button_top_accent.color_changed.connect(_on_color_picker_button_top_accent_color_changed)
+	color_picker_button_top_detail.color_changed.connect(_on_color_picker_button_top_detail_color_changed)
+	option_button_bottom_style.item_selected.connect(_on_option_button_bottom_style_item_selected)
+	color_picker_button_bottom_base.color_changed.connect(_on_color_picker_button_bottom_base_color_changed)
+	color_picker_button_bottom_accent.color_changed.connect(_on_color_picker_button_bottom_accent_color_changed)
+	color_picker_button_bottom_detail.color_changed.connect(_on_color_picker_button_bottom_detail_color_changed)
+	option_button_shoes_style.item_selected.connect(_on_option_button_shoes_style_item_selected)
+	color_picker_button_shoes_base.color_changed.connect(_on_color_picker_button_shoes_base_color_changed)
+	color_picker_button_shoes_accent.color_changed.connect(_on_color_picker_button_shoes_base_color_changed)
+	color_picker_button_shoes_detail.color_changed.connect(_on_color_picker_button_shoes_detail_color_changed)
+	option_button_deck.item_selected.connect(_on_option_button_deck_item_selected)
+	color_picker_button_wheels.color_changed.connect(_on_color_picker_button_wheels_color_changed)
+	color_picker_button_metal.color_changed.connect(_on_color_picker_button_metal_color_changed)
+	color_picker_button_details.color_changed.connect(_on_color_picker_button_details_color_changed)
+	check_button_gender.toggled.connect(_on_check_button_gender_toggled)
 
 
 func _setup_options() -> void:
@@ -201,3 +229,7 @@ func _on_option_button_shoes_style_item_selected(index: int) -> void:
 
 func _on_h_slider_size_value_changed(value: float) -> void:
 	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'size', value)
+
+
+func _on_check_button_gender_toggled(toggled_on: bool) -> void:
+	print(toggled_on)
