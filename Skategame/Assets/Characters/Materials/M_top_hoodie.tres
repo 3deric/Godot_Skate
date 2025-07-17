@@ -8,6 +8,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_ww255")
+shader_parameter/normalOffset = 0.01
 shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
 shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
 shader_parameter/detail_color = Color(0.806717, 0.774369, 0.782551, 1)

@@ -8,6 +8,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_c7ct3")
+shader_parameter/normalOffset = 0.01
 shader_parameter/base_color = Color(0.180005, 0.180005, 0.180005, 1)
 shader_parameter/accent_color = Color(0.556863, 0.447059, 0.278431, 1)
 shader_parameter/detail_color = Color(1, 1, 1, 1)

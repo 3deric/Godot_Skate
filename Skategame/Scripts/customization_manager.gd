@@ -127,6 +127,8 @@ func update_float(part: CharacterData.CharacterPart, sub : String ,value: float)
 					character_data.size = value
 				'skin_color':
 					character_data.skin_color = value
+				'gender':
+					character_data.gender = value
 	float_updated.emit(part, sub, value)
 	#customization_updated.emit()
 		

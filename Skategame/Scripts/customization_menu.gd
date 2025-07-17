@@ -232,4 +232,4 @@ func _on_h_slider_size_value_changed(value: float) -> void:
 
 
 func _on_check_button_gender_toggled(toggled_on: bool) -> void:
-	print(toggled_on)
+	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'gender', float(toggled_on))

@@ -1,10 +1,10 @@
 extends Node3D
 
 #controls the animtree of the character_controller
-@onready var anim_tree: AnimationTree = $"../AnimationTree"
+@onready var anim_tree: AnimationTree = %AnimationTree
 @onready var character_controller: CharacterBody3D = $".."
-@onready var Char : Node3D = $"../Char"
-@onready var skeleton_3d: Skeleton3D = $"../Char/Char_Skeleton/Skeleton3D"
+@onready var Char : Node3D = %Char
+@onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
 
 
 var anim_blend : Vector3 = Vector3.ZERO #blendvector for animations

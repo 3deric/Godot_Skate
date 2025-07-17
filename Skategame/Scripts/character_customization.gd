@@ -1,11 +1,11 @@
 extends Node3D
 
-@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_body"
-@onready var top_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_top"
-@onready var bottom_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_bottom"
-@onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_shoes"
+@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
+@onready var top_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_top"
+@onready var bottom_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_bottom"
+@onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_shoes"
 @onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_skateboard"
-@onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_male_hair"
+@onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
 @onready var char: Node3D = $"../Char/Char_Skeleton"
 
 
@@ -104,6 +104,8 @@ func _on_float_updated(part: CharacterData.CharacterPart, sub: String, value: fl
 					_update_body_skin_color(value)
 				'size':
 					char.scale = Vector3(value, value, value)
+				'gender':
+					_update_gender(value)
 
 
 func _on_customization_updated() ->void:
@@ -237,3 +239,7 @@ func _update_shoes_mesh(index :int) -> void:
 	else:
 		shoes_mesh.show()
 		shoes_mesh.mesh = CustomizationManager.shoe_meshes_male[index -1]
+		
+func _update_gender(value : float) -> void:
+	body_mesh.set_blend_shape_value(0, value)
+	

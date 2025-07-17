@@ -30,3 +30,4 @@ enum ShoesMesh {Nothing = 0, Sneakers = 1, FlatShoes = 2}
 @export var top_mesh : int = 1
 @export var bottom_mesh : int = 1
 @export var shoes_mesh : int = 1
+@export var gender : float = 0
