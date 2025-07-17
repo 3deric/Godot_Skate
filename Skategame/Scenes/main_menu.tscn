@@ -29,6 +29,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 
 [node name="PanelMain" type="Panel" parent="MarginContainer/Container"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -54,18 +55,22 @@ layout_mode = 2
 theme_override_constants/separation = 15
 
 [node name="ButtonStart" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Start"
 
 [node name="ButtonOptions" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Options"
 
 [node name="ButtonCustomization" type="Button" parent="MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Customization"
 
 [node name="PanelCustomization" type="Panel" parent="MarginContainer/Container"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 offset_right = 500.0
@@ -81,6 +86,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ButtonBackCustomization" type="Button" parent="MarginContainer/Container/PanelCustomization/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Back"
@@ -127,6 +133,7 @@ size_flags_horizontal = 2
 text = "Gender"
 
 [node name="CheckButton_Gender" type="CheckButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MarginContainer4" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
@@ -143,6 +150,7 @@ size_flags_horizontal = 2
 text = "Size"
 
 [node name="HSlider_Size" type="HSlider" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 min_value = 0.95
@@ -164,6 +172,7 @@ size_flags_horizontal = 2
 text = "Skin Colour"
 
 [node name="HSlider_Skin_Color" type="HSlider" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 max_value = 1.0
@@ -183,6 +192,7 @@ size_flags_horizontal = 2
 text = "Eye Colour"
 
 [node name="ColorPickerButton_Eye_Color" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -209,6 +219,7 @@ size_flags_horizontal = 2
 text = "Hair Style"
 
 [node name="OptionButton_Hair" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MarginContainer3" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer"]
@@ -225,6 +236,7 @@ size_flags_horizontal = 2
 text = "Hair Colour"
 
 [node name="ColorPickerButton_Hair_Color" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Body/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -267,6 +279,7 @@ size_flags_horizontal = 2
 text = "Top "
 
 [node name="OptionButton_Top_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerTopStyle/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -289,6 +302,7 @@ size_flags_horizontal = 2
 text = "Top Decal"
 
 [node name="OptionButton_Top_Decal" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer10/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -311,6 +325,7 @@ size_flags_horizontal = 2
 text = "Base Colour"
 
 [node name="ColorPickerButton_Top_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -329,6 +344,7 @@ size_flags_horizontal = 2
 text = "Accent Colour"
 
 [node name="ColorPickerButton_Top_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -347,6 +363,7 @@ size_flags_horizontal = 2
 text = "Detail Colour"
 
 [node name="ColorPickerButton_Top_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -369,6 +386,7 @@ size_flags_horizontal = 2
 text = "Pants"
 
 [node name="OptionButton_Bottom_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerPantsStyle/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -391,6 +409,7 @@ size_flags_horizontal = 2
 text = "Base Colour"
 
 [node name="ColorPickerButton_Bottom_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -409,6 +428,7 @@ size_flags_horizontal = 2
 text = "Accent Colour"
 
 [node name="ColorPickerButton_Bottom_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer5/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -427,6 +447,7 @@ size_flags_horizontal = 2
 text = "Detail Colour"
 
 [node name="ColorPickerButton_Bottom_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer6/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -449,6 +470,7 @@ size_flags_horizontal = 2
 text = "Shoes"
 
 [node name="OptionButton_Shoes_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerShoesStyle/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -471,6 +493,7 @@ size_flags_horizontal = 2
 text = "Base Colour"
 
 [node name="ColorPickerButton_Shoes_Base" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer7/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -489,6 +512,7 @@ size_flags_horizontal = 2
 text = "Accent Colour"
 
 [node name="ColorPickerButton_Shoes_Accent" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer8/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -507,6 +531,7 @@ size_flags_horizontal = 2
 text = "Detail Colour"
 
 [node name="ColorPickerButton_Shoes_Detail" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainer9/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -549,6 +574,7 @@ size_flags_horizontal = 2
 text = "Deck Style"
 
 [node name="OptionButton_Deck" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer4/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
@@ -575,6 +601,7 @@ size_flags_horizontal = 2
 text = "Wheel Colour"
 
 [node name="ColorPickerButton_Wheels" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -593,6 +620,7 @@ size_flags_horizontal = 2
 text = "Details Colour"
 
 [node name="ColorPickerButton_Details" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer2/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
@@ -611,11 +639,13 @@ size_flags_horizontal = 2
 text = "Metal Colour"
 
 [node name="ColorPickerButton_Metal" type="ColorPickerButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Board/MarginContainer/VBoxContainer/MarginContainer3/HBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Colour"
 
 [node name="PanelOptions" type="Panel" parent="MarginContainer/Container"]
+unique_name_in_owner = true
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -634,6 +664,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ButtonBackOptions" type="Button" parent="MarginContainer/Container/PanelOptions/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Back"

@@ -1,14 +1,14 @@
 extends Control
 
 
-@onready var panel_main: Panel = $"../MarginContainer/Container/PanelMain"
-@onready var panel_customization: Panel = $"../MarginContainer/Container/PanelCustomization"
-@onready var panel_options: Panel = $"../MarginContainer/Container/PanelOptions"
-@onready var button_start: Button = $"../MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonStart"
-@onready var button_options: Button = $"../MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonOptions"
-@onready var button_customization: Button = $"../MarginContainer/Container/PanelMain/MarginContainer/VBoxContainer/ButtonCustomization"
-@onready var button_back_options: Button = $"../MarginContainer/Container/PanelOptions/VBoxContainer/ButtonBackOptions"
-@onready var button_back_customization: Button = $"../MarginContainer/Container/PanelCustomization/VBoxContainer/ButtonBackCustomization"
+@onready var panel_main: Panel = %PanelMain
+@onready var panel_customization: Panel = %PanelCustomization
+@onready var panel_options: Panel = %PanelOptions
+@onready var button_start: Button = %ButtonStart
+@onready var button_options: Button = %ButtonOptions
+@onready var button_customization: Button = %ButtonCustomization
+@onready var button_back_options: Button = %ButtonBackOptions
+@onready var button_back_customization: Button = %ButtonBackCustomization
 
 func _ready() -> void:
 	_setup_buttons()
