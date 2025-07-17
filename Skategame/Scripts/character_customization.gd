@@ -137,6 +137,7 @@ func _update_from_data() -> void:
 	_update_top_mesh(data.top_mesh)
 	_update_bottom_mesh(data.bottom_mesh)
 	_update_shoes_mesh(data.shoes_mesh)
+	_update_gender(data.gender)
 	
 #Top
 
