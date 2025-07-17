@@ -7,6 +7,8 @@ extends Node3D
 @onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_skateboard"
 @onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
 @onready var char: Node3D = $"../Char/Char_Skeleton"
+const BODY_MALE = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")
+const BODY_FEMALE = preload("res://Assets/Characters/Materials/M_char_female_body_colorable.tres")
 
 
 func _ready() -> void:
@@ -242,4 +244,8 @@ func _update_shoes_mesh(index :int) -> void:
 		
 func _update_gender(value : float) -> void:
 	body_mesh.set_blend_shape_value(0, value)
+	if value > 0.5:
+		body_mesh.set_surface_override_material(0, BODY_FEMALE)
+	else:
+		body_mesh.set_surface_override_material(0, BODY_MALE)
 	
