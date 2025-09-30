@@ -5,6 +5,7 @@ extends Node3D
 @onready var character_controller: CharacterBody3D = $".."
 @onready var Char : Node3D = %Char
 @onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
+@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
 
 
 var anim_blend : Vector3 = Vector3.ZERO #blendvector for animations
@@ -14,6 +15,8 @@ var INTERP_SPEED : float = 10.0 #interpolation speed of the visual character
 
 func _ready() -> void:
 	skeleton_3d.show_rest_only = false
+	body_mesh.set_blend_shape_value(1,0.3)
+	body_mesh.set_blend_shape_value(2,0)
 	if !character_controller.is_playing:
 		anim_tree.set('parameters/conditions/is_setup', true)
 	else:

@@ -25,7 +25,6 @@ var last_vel : Vector3 = Vector3.ZERO
 var hor_vel : float = 0.0
 var fall_check : float = 0.0
 var revert_path : bool = false
-var bounce_check : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
 var ray_forward = {}
 var ray_ground = {}
@@ -104,17 +103,14 @@ func _physics_process(delta):
 		PlayerState.FALL:
 			return
 		PlayerState.GROUND, PlayerState.PIPE:
-			_check_bounce()
 			_check_reverse_motion()
 			_ground_movement(delta)
 		PlayerState.AIR:
-			_check_bounce()
 			_air_movement(delta)
 		PlayerState.PIPESNAP:
 			_check_bounce_path(true)
 			_pipe_snap_movement(delta)
 		PlayerState.PIPESNAPAIR:
-			_check_bounce()
 			_pipe_snap_air_movement(delta)
 		PlayerState.GRIND:
 			_check_bounce_path(false)
@@ -159,7 +155,7 @@ func _player_state():
 			if pipe_snap_flip:
 				newUpDir*=-1
 			if(newUpDir != Vector3.ZERO):
-				up_direction = newUpDir
+				up_direction = (newUpDir + last_up_dir)/2
 			else:
 				up_direction = last_up_dir
 			return
@@ -300,9 +296,7 @@ func _get_stick_curve(_path: Path3D,_offset: float):
 
 func _set_up_direction():
 	if ray_ground != {}:	
-		up_direction = (ray_ground["normal"] + last_up_dir) / 2
-	#if is_on_floor():
-		#up_direction = (get_floor_normal() + last_up_dir) / 2
+		up_direction = ray_ground["normal"]
 	else:
 		up_direction = last_up_dir	
 
@@ -508,15 +502,6 @@ func _check_bounce_path(air : bool) -> void:
 		revert_path = false
 
 
-func _check_bounce() -> void:
-	if is_on_wall() and !bounce_check:
-		bounce_check = true
-		print(get_wall_normal())
-		#velocity = last_vel.slide(xform.basis.y).reflect(get_wall_normal())
-	if !is_on_wall():
-		bounce_check = false
-
-
 func _debug_player_state() -> void:
 	#debug logic to print the player state only on change
 	if(player_state != last_player_state):
@@ -552,10 +537,10 @@ func _fall_check():
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
-	if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != PlayerState.PIPESNAP:	
-		_fall("Wall", up_direction.dot(Vector3.UP))		
-		return
-	hor_vel = abs(last_vel.slide(xform.basis.y).length())
-	fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
-	if (player_state == PlayerState.GROUND or player_state == PlayerState.PIPE) and fall_check < 0.5 and hor_vel > 0.5:
-		_fall("Floor", fall_check)
+	#if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != PlayerState.PIPESNAP:	
+	#	_fall("Wall", up_direction.dot(Vector3.UP))		
+	#	return
+	#hor_vel = abs(last_vel.slide(xform.basis.y).length())
+	#fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
+	#if (player_state == PlayerState.GROUND or player_state == PlayerState.PIPE) and fall_check < 0.5 and hor_vel > 0.5:
+	#	_fall("Floor", fall_check)

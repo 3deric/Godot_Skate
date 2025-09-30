@@ -9,34 +9,41 @@ signal customization_updated()
 var character_data : CharacterData
 
 var board_decals = [
-	preload ("res://Assets/Characters/Textures/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/T_skateboard_deck.png"),
-	preload ("res://Assets/Characters/Textures/T_skateboard_deck_cat.png")
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck_cat.png")
 ]
 
 var top_decals = [
-	preload ("res://Assets/Characters/Textures/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/T_decal_captain_bavaria.png"),
-	preload ("res://Assets/Characters/Textures/T_decal_test.png")
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_captain_bavaria.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_test.png")
 ]
 
-var hair_meshes_male = [
-	preload ("res://Assets/Characters/Meshes/SK_male_hair_short.res")
+var hair_meshes = [
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_m_messy.res"),
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
 ]
 
-var top_meshes_male = [
-	preload ("res://Assets/Characters/Meshes/SK_male_hoodie.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shirt.res")
+var hair_meshes_femmale = [
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
 ]
 
-var bottom_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_jeans.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shorts.res")
+var top_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_hoodie.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_shirt.res")
 ]
 
-var shoe_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_sneakers.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shoes_flat.res")
+var bottom_meshes = [
+	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res")
+]
+
+var shoe_meshes = [
+	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_boots.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
 ]
 
 func _ready() -> void:
@@ -57,6 +64,7 @@ func update_color(part: CharacterData.CharacterPart,sub: String, color: Color ) 
 		CharacterData.CharacterPart.Hair:
 			match sub:
 				'color':
+					print("updating color")
 					character_data.hair_color = color
 		CharacterData.CharacterPart.Top:
 			match sub:

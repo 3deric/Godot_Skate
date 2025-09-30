@@ -12,6 +12,7 @@ func _run():
 		var name = node.name
 		var parent : Node = node.get_parent()
 		if name.split('_')[1] == 'Rail':		
+			node.visible = false
 			print(name)
 			var _csg: CSGPolygon3D = CSGPolygon3D.new()
 			var _mesh = node.get_mesh()
@@ -63,6 +64,7 @@ func _run():
 			_csg.set_script(load('res://Scripts/Editor/rail_init.gd'))
 		##generate colliders
 		if name.split('_')[1] == 'Col':
+			node.visible = false
 			print(name)
 			var _mesh_instance : MeshInstance3D = MeshInstance3D.new()
 			_mesh_instance.name = name + '_col_mesh'

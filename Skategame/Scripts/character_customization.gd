@@ -108,7 +108,9 @@ func _on_float_updated(part: CharacterData.CharacterPart, sub: String, value: fl
 					char.scale = Vector3(value, value, value)
 				'gender':
 					_update_gender(value)
-
+					_update_top_gender(value)
+					_update_bottom_gender(value)
+					
 
 func _on_customization_updated() ->void:
 	_update_from_data()
@@ -138,6 +140,8 @@ func _update_from_data() -> void:
 	_update_bottom_mesh(data.bottom_mesh)
 	_update_shoes_mesh(data.shoes_mesh)
 	_update_gender(data.gender)
+	_update_top_gender(data.gender)
+	_update_bottom_gender(data.gender)
 	
 #Top
 
@@ -217,7 +221,7 @@ func _update_hair_mesh(index :int) -> void:
 		hair_mesh.hide()
 	else:
 		hair_mesh.show()
-		hair_mesh.mesh = CustomizationManager.hair_meshes_male[index -1]
+		hair_mesh.mesh = CustomizationManager.hair_meshes[index -1]
 		
 		
 func _update_top_mesh(index :int) -> void:
@@ -225,7 +229,7 @@ func _update_top_mesh(index :int) -> void:
 		top_mesh.hide()
 	else:
 		top_mesh.show()
-		top_mesh.mesh = CustomizationManager.top_meshes_male[index -1]
+		top_mesh.mesh = CustomizationManager.top_meshes[index -1]
 	
 		
 func _update_bottom_mesh(index :int) -> void:
@@ -233,15 +237,18 @@ func _update_bottom_mesh(index :int) -> void:
 		bottom_mesh.hide()
 	else:
 		bottom_mesh.show()
-		bottom_mesh.mesh = CustomizationManager.bottom_meshes_male[index -1]
+		bottom_mesh.mesh = CustomizationManager.bottom_meshes[index -1]
 	
 		
 func _update_shoes_mesh(index :int) -> void:
 	if index == 0:
 		shoes_mesh.hide()
+		body_mesh.set_blend_shape_value(3,0.0)
 	else:
 		shoes_mesh.show()
-		shoes_mesh.mesh = CustomizationManager.shoe_meshes_male[index -1]
+		shoes_mesh.mesh = CustomizationManager.shoe_meshes[index -1]
+		body_mesh.set_blend_shape_value(3,1.0)
+		
 		
 func _update_gender(value : float) -> void:
 	body_mesh.set_blend_shape_value(0, value)
@@ -249,4 +256,12 @@ func _update_gender(value : float) -> void:
 		body_mesh.set_surface_override_material(0, BODY_FEMALE)
 	else:
 		body_mesh.set_surface_override_material(0, BODY_MALE)
+	
+
+func _update_top_gender(value : float) -> void:
+	top_mesh.set_blend_shape_value(0, value)
+	
+
+func _update_bottom_gender(value : float) -> void:
+	bottom_mesh.set_blend_shape_value(0, value)
 	

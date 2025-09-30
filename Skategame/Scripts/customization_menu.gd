@@ -34,9 +34,9 @@ func _ready() -> void:
 func _setup_buttons() -> void:
 	h_slider_size.value_changed.connect(_on_h_slider_size_value_changed)
 	h_slider_skin_color.value_changed.connect(_on_h_slider_skin_color_value_changed)
-	color_picker_button_eye_color.button_down.connect(_on_color_picker_button_eye_color_color_changed)
+	color_picker_button_eye_color.color_changed.connect(_on_color_picker_button_eye_color_color_changed)
 	option_button_hair.item_selected.connect(_on_option_button_hair_item_selected)
-	color_picker_button_hair_color.button_down.connect(_on_color_picker_button_hair_color_color_changed)
+	color_picker_button_hair_color.color_changed.connect(_on_color_picker_button_hair_color_color_changed)
 	option_button_top_style.item_selected.connect(_on_option_button_top_style_item_selected)
 	option_button_top_decal.item_selected.connect(_on_option_button_top_decal_item_selected)
 	color_picker_button_top_base.color_changed.connect(_on_color_picker_button_top_base_color_changed)
@@ -48,7 +48,7 @@ func _setup_buttons() -> void:
 	color_picker_button_bottom_detail.color_changed.connect(_on_color_picker_button_bottom_detail_color_changed)
 	option_button_shoes_style.item_selected.connect(_on_option_button_shoes_style_item_selected)
 	color_picker_button_shoes_base.color_changed.connect(_on_color_picker_button_shoes_base_color_changed)
-	color_picker_button_shoes_accent.color_changed.connect(_on_color_picker_button_shoes_base_color_changed)
+	color_picker_button_shoes_accent.color_changed.connect(_on_color_picker_button_shoes_accent_color_changed)
 	color_picker_button_shoes_detail.color_changed.connect(_on_color_picker_button_shoes_detail_color_changed)
 	option_button_deck.item_selected.connect(_on_option_button_deck_item_selected)
 	color_picker_button_wheels.color_changed.connect(_on_color_picker_button_wheels_color_changed)
@@ -70,6 +70,7 @@ func _setup_options() -> void:
 	option_button_hair.clear()
 	option_button_hair.add_item("Bald", CharacterData.HairMesh.Bald)
 	option_button_hair.add_item("Style1", CharacterData.HairMesh.Style1)
+	option_button_hair.add_item("Style2", CharacterData.HairMesh.Style2)
 	option_button_top_style.clear()
 	option_button_top_style.add_item("Bare", CharacterData.TopMesh.Nothing)
 	option_button_top_style.add_item("Hoodie", CharacterData.TopMesh.Hoodie)
@@ -82,6 +83,8 @@ func _setup_options() -> void:
 	option_button_shoes_style.add_item("Bare", CharacterData.ShoesMesh.Nothing)
 	option_button_shoes_style.add_item("Sneakers", CharacterData.ShoesMesh.Sneakers)
 	option_button_shoes_style.add_item("Shoes Flat", CharacterData.ShoesMesh.FlatShoes)
+	option_button_shoes_style.add_item("Boots", CharacterData.ShoesMesh.Boots)
+	option_button_shoes_style.add_item("Flipflops", CharacterData.ShoesMesh.Flipflops)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -104,6 +107,7 @@ func _setup_options() -> void:
 	option_button_bottom_style.selected = data.bottom_mesh
 	option_button_shoes_style.selected = data.shoes_mesh
 	h_slider_size.value = data.size
+	check_button_gender.button_pressed = bool(data.gender)
 	
 	
 func _update_ui_from_data() -> void:
@@ -130,6 +134,7 @@ func _update_ui_from_data() -> void:
 	option_button_bottom_style.selected = data.bottom_mesh
 	option_button_shoes_style.selected = data.shoes_mesh
 	h_slider_size.value = data.size
+	check_button_gender.button_pressed = bool(data.gender)
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
@@ -211,6 +216,7 @@ func _on_option_button_top_style_item_selected(index: int) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'accent', color_picker_button_top_accent.color)
 	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'detail', color_picker_button_top_detail.color)
 	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, option_button_top_decal.selected)
+	CustomizationManager.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
 
 
 func _on_option_button_bottom_style_item_selected(index: int) -> void:
@@ -218,6 +224,7 @@ func _on_option_button_bottom_style_item_selected(index: int) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'base', color_picker_button_bottom_base.color)
 	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'accent', color_picker_button_bottom_accent.color)
 	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'detail', color_picker_button_bottom_detail.color)
+	CustomizationManager.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
 
 
 func _on_option_button_shoes_style_item_selected(index: int) -> void:
