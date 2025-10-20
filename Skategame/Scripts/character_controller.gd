@@ -204,7 +204,7 @@ func _player_state():
 			if path != null:
 				print(path)
 				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				#print(path_offset)
+				#
 				curve_tangent = _get_path_tangent(path, path_offset)
 				path_dir = _get_path_dir(curve_tangent, 0.1)
 				path_vel = velocity.project(curve_tangent * Vector3(1,0,1)).length() * path_dir
@@ -219,7 +219,9 @@ func _player_state():
 					return
 		if(player_state != PlayerState.PIPESNAP and player_state != PlayerState.PIPESNAPAIR):
 			player_state = PlayerState.AIR	
-			
+	if (player_state == PlayerState.AIR):
+		if is_on_floor():
+			player_state = PlayerState.GROUND	
 	#if is_on_floor():
 	if ray_ground != {}:
 		var _coll_info = null
@@ -537,9 +539,13 @@ func _fall_check():
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
+			
 	#if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != PlayerState.PIPESNAP:	
-	#	_fall("Wall", up_direction.dot(Vector3.UP))		
+		#_fall("Wall", up_direction.dot(Vector3.UP))	
+	#	print(get_floor_normal())	
 	#	return
+	#if is_on_wall_only() and get_wall_normal().dot(up_direction) < 0.1:
+	#	_fall("Wall", get_wall_normal().dot(up_direction))	
 	#hor_vel = abs(last_vel.slide(xform.basis.y).length())
 	#fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
 	#if (player_state == PlayerState.GROUND or player_state == PlayerState.PIPE) and fall_check < 0.5 and hor_vel > 0.5:

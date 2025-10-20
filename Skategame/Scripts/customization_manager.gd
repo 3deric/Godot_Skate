@@ -10,8 +10,8 @@ var character_data : CharacterData
 
 var board_decals = [
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck_cat.png")
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck.jpg"),
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck_cat.jpg")
 ]
 
 var top_decals = [

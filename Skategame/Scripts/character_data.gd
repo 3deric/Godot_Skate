@@ -20,7 +20,7 @@ enum ShoesMesh {Nothing = 0, Sneakers = 1, FlatShoes = 2, Boots = 3, Flipflops =
 @export var board_wheels_color: Color = Color(0.758,0.721,0.471,1.0)
 @export var board_accent_color: Color = Color(0.354,0.95,0.45,1.0)
 @export var board_metal_color: Color = Color(0.8,0.8,0.8,1.0)
-@export var hair_color : Color = Color(0.608,0.518,0.404,1.0)
+@export var hair_color : Color = Color(0.555,0.465,0.351,1.0)
 @export var skin_color : float = 0.25
 @export var eye_color : Color = Color(0.356,0.425,0.583,1.0)
 @export var size : float = 1.0
