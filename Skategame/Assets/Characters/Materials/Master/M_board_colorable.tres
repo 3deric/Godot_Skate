@@ -1,6 +1,6 @@
 [gd_resource type="VisualShader" load_steps=35 format=3 uid="uid://cts04l1g8hx1b"]
 
-[ext_resource type="Texture2D" uid="uid://jnqaktc20tx" path="res://Assets/Characters/Textures/T_skateboard_color.png" id="1_p570h"]
+[ext_resource type="Texture2D" uid="uid://d3cqrl3v0h07f" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_color.jpg" id="1_gd7tu"]
 
 [sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_6v1c0"]
 default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]
@@ -78,7 +78,7 @@ op_type = 3
 source = 5
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_s0idv"]
-texture = ExtResource("1_p570h")
+texture = ExtResource("1_gd7tu")
 texture_type = 1
 
 [sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_np4p7"]
@@ -104,7 +104,7 @@ operator = 2
 [sub_resource type="VisualShaderNodeReroute" id="VisualShaderNodeReroute_wpay4"]
 
 [sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_jq84a"]
-default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1.5, 1.5, 1.5)]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1)]
 operator = 5
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_77vdh"]
@@ -152,7 +152,7 @@ void fragment() {
 
 
 // VectorOp:37
-	vec3 n_in37p1 = vec3(1.50000, 1.50000, 1.50000);
+	vec3 n_in37p1 = vec3(1.00000, 1.00000, 1.00000);
 	vec3 n_out37p0 = pow(vec3(n_out30p0.xyz), n_in37p1);
 
 
@@ -277,14 +277,13 @@ void fragment() {
 
 }
 "
-graph_offset = Vector2(-282.325, -177.118)
 nodes/fragment/0/position = Vector2(2540, 80)
 nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_hxjkc")
 nodes/fragment/2/position = Vector2(140, 440)
 nodes/fragment/3/node = SubResource("VisualShaderNodeTexture_8fm4r")
 nodes/fragment/3/position = Vector2(-340, 140)
 nodes/fragment/4/node = SubResource("VisualShaderNodeColorParameter_77vdh")
-nodes/fragment/4/position = Vector2(-60, -440)
+nodes/fragment/4/position = Vector2(-160, -420)
 nodes/fragment/5/node = SubResource("VisualShaderNodeVectorDecompose_q8txe")
 nodes/fragment/5/position = Vector2(60, 140)
 nodes/fragment/6/node = SubResource("VisualShaderNodeColorParameter_4gks6")

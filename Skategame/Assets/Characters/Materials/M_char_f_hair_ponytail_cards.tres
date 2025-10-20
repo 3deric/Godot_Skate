@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=4 format=3 uid="uid://puyuekcixypa"]
+
+[ext_resource type="Shader" uid="uid://f38jfhnj8mjb" path="res://Assets/Characters/Materials/Master/M_hair.tres" id="1_46x6g"]
+[ext_resource type="Texture2D" uid="uid://brdb1klxpqbc7" path="res://Assets/Characters/Textures/Hair/T_hair_ponytail_attribute.jpg" id="2_x88mf"]
+[ext_resource type="Texture2D" uid="uid://fj7gdmyk824g" path="res://Assets/Characters/Textures/Hair/T_hair_ponytail_tangent.jpg" id="3_h4dmk"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_46x6g")
+shader_parameter/hair_color = Color(0.213922, 0.164778, 0.13699, 1)
+shader_parameter/Rim = 0.47
+shader_parameter/Rim_Tint = 0.23
+shader_parameter/anisotrophy = 0.5
+shader_parameter/Alpha_Threshold = 0.5
+shader_parameter/attribute = ExtResource("2_x88mf")
+shader_parameter/tangent = ExtResource("3_h4dmk")

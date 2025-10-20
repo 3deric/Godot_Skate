@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://vui0cuh6mltw"]
+
+[ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_t2s2f"]
+[ext_resource type="Texture2D" uid="uid://7xv563gdyq72" path="res://Assets/Characters/Textures/Clothes/T_flipflops_mask.jpg" id="2_uk0du"]
+[ext_resource type="Texture2D" uid="uid://b0lotwvib73uk" path="res://Assets/Characters/Textures/Clothes/T_flipflops_normal.jpg" id="3_86ti4"]
+[ext_resource type="Texture2D" uid="uid://d2svg5fl5j8hb" path="res://Assets/Characters/Textures/Clothes/T_flipflops_orm.jpg" id="4_14hif"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_t2s2f")
+shader_parameter/normalOffset = 0.0
+shader_parameter/adjustable_metal_color = false
+shader_parameter/base_color = Color(0.180005, 0.180005, 0.180005, 1)
+shader_parameter/accent_color = Color(0.373092, 0.477247, 0.908067, 1)
+shader_parameter/detail_color = Color(0.74978, 0.74978, 0.74978, 1)
+shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/Rim = 0.2
+shader_parameter/Rim_Tint = 0.5
+shader_parameter/mask = ExtResource("2_uk0du")
+shader_parameter/orm = ExtResource("4_14hif")
+shader_parameter/normal = ExtResource("3_86ti4")
