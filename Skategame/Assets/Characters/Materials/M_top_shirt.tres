@@ -8,7 +8,7 @@
 [resource]
 render_priority = 0
 shader = ExtResource("1_4ql6i")
-shader_parameter/normalOffset = 0.01
+shader_parameter/normalOffset = 0.005
 shader_parameter/adjustable_metal_color = true
 shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
 shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
