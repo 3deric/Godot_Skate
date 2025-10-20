@@ -1,20 +1,22 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://bglopq75lqird"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_wltfj"]
-[ext_resource type="Texture2D" uid="uid://clintx1cvau4r" path="res://Assets/Characters/Textures/T_jeans_mask.png" id="2_farjo"]
-[ext_resource type="Texture2D" uid="uid://cjuic1lq81xb3" path="res://Assets/Characters/Textures/T_jeans_normal.png" id="3_mv82o"]
-[ext_resource type="Texture2D" uid="uid://ba7moakripgrn" path="res://Assets/Characters/Textures/T_jeans_orm.png" id="4_c4ipa"]
+[ext_resource type="Texture2D" uid="uid://dif5htcfo2vej" path="res://Assets/Characters/Textures/Clothes/T_jeans_mask.jpg" id="2_f7jv8"]
+[ext_resource type="Texture2D" uid="uid://bnm6ac3syvar5" path="res://Assets/Characters/Textures/Clothes/T_jeans_normal.jpg" id="3_eujb1"]
+[ext_resource type="Texture2D" uid="uid://bhewtrc0krff5" path="res://Assets/Characters/Textures/Clothes/T_jeans_orm.jpg" id="4_8uh3o"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_wltfj")
-shader_parameter/normalOffset = 0.01
+shader_parameter/normalOffset = 0.002
+shader_parameter/adjustable_metal_color = true
 shader_parameter/base_color = Color(0.281187, 0.281187, 0.281187, 1)
 shader_parameter/accent_color = Color(0.716296, 0.716296, 0.716296, 1)
-shader_parameter/detail_color = Color(0.67562, 0.42158, 0.201014, 1)
-shader_parameter/Roughness_Power = 0.75
-shader_parameter/Rim = 0.5
-shader_parameter/Rim_Tint = 0.1
-shader_parameter/mask = ExtResource("2_farjo")
-shader_parameter/orm = ExtResource("4_c4ipa")
-shader_parameter/normal = ExtResource("3_mv82o")
+shader_parameter/detail_color = Color(0.913304, 0.629644, 0.455112, 1)
+shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/Roughness_Power = 0.42
+shader_parameter/Rim = 0.98
+shader_parameter/Rim_Tint = 0.425
+shader_parameter/mask = ExtResource("2_f7jv8")
+shader_parameter/orm = ExtResource("4_8uh3o")
+shader_parameter/normal = ExtResource("3_eujb1")

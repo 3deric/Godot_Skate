@@ -1,13 +1,21 @@
-[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bv0pms2nocd1y"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://bv0pms2nocd1y"]
 
 [ext_resource type="Shader" uid="uid://cccrwanqhkb6b" path="res://Assets/Characters/Materials/Master/M_skin.tres" id="1_euhac"]
+[ext_resource type="Texture2D" uid="uid://chguw3oqgvu6y" path="res://Assets/Characters/Textures/Body/T_female_normal.jpg" id="2_2auij"]
+[ext_resource type="Texture2D" uid="uid://ctg3vbb07jl8d" path="res://Assets/Characters/Textures/Body/T_female_orm.jpg" id="3_yeqdy"]
+[ext_resource type="Texture2D" uid="uid://ba1kgpxccihcq" path="res://Assets/Characters/Textures/Body/T_female_dark_color.jpg" id="4_wvp6c"]
+[ext_resource type="Texture2D" uid="uid://r2ri5lgx6q1v" path="res://Assets/Characters/Textures/Body/T_female_white_color.jpg" id="5_a2qav"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_euhac")
 shader_parameter/skin_color = 0.0
 shader_parameter/eyes_color = Color(0.356459, 0.425005, 0.583035, 1)
-shader_parameter/Roughness_Power = 0.7
+shader_parameter/Roughness_Power = 0.5
 shader_parameter/Rim = 0.5
 shader_parameter/Rim_Tint = 0.5
 shader_parameter/backlight = Color(0.330515, 0.18443, 0.168102, 1)
+shader_parameter/skin_light = ExtResource("5_a2qav")
+shader_parameter/skin_dark = ExtResource("4_wvp6c")
+shader_parameter/orm = ExtResource("3_yeqdy")
+shader_parameter/normal = ExtResource("2_2auij")

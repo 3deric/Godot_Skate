@@ -1,20 +1,22 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://y3h168m6edo"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_c7ct3"]
-[ext_resource type="Texture2D" uid="uid://b7riqxpu5r3it" path="res://Assets/Characters/Textures/T_sneaker_mask.png" id="2_e24ub"]
-[ext_resource type="Texture2D" uid="uid://dpjie64k0tw2b" path="res://Assets/Characters/Textures/T_sneaker_normal.png" id="3_45ndr"]
-[ext_resource type="Texture2D" uid="uid://debbede1evtbp" path="res://Assets/Characters/Textures/T_sneaker_orm.png" id="4_gv584"]
+[ext_resource type="Texture2D" uid="uid://ejqnwbb8a5l0" path="res://Assets/Characters/Textures/Clothes/T_sneaker_mask.jpg" id="2_ktggu"]
+[ext_resource type="Texture2D" uid="uid://c1ptrgnm7n0ir" path="res://Assets/Characters/Textures/Clothes/T_sneaker_normal.jpg" id="3_bdtkb"]
+[ext_resource type="Texture2D" uid="uid://bg2h0dx8tqnxv" path="res://Assets/Characters/Textures/Clothes/T_sneaker_orm.jpg" id="4_6vncn"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_c7ct3")
-shader_parameter/normalOffset = 0.01
+shader_parameter/normalOffset = 0.0
+shader_parameter/adjustable_metal_color = false
 shader_parameter/base_color = Color(0.180005, 0.180005, 0.180005, 1)
-shader_parameter/accent_color = Color(0.556863, 0.447059, 0.278431, 1)
+shader_parameter/accent_color = Color(0.354896, 0.339932, 0.299679, 1)
 shader_parameter/detail_color = Color(1, 1, 1, 1)
-shader_parameter/Roughness_Power = 1.0
+shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/Roughness_Power = 0.61
 shader_parameter/Rim = 0.1
 shader_parameter/Rim_Tint = 0.5
-shader_parameter/mask = ExtResource("2_e24ub")
-shader_parameter/orm = ExtResource("4_gv584")
-shader_parameter/normal = ExtResource("3_45ndr")
+shader_parameter/mask = ExtResource("2_ktggu")
+shader_parameter/orm = ExtResource("4_6vncn")
+shader_parameter/normal = ExtResource("3_bdtkb")

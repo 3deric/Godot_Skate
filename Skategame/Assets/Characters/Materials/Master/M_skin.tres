@@ -1,6 +1,4 @@
-[gd_resource type="VisualShader" load_steps=29 format=3 uid="uid://cccrwanqhkb6b"]
-
-[ext_resource type="Texture2D" uid="uid://dnrelsij38hpi" path="res://Assets/Characters/Textures/T_male_color.png" id="1_6iwq7"]
+[gd_resource type="VisualShader" load_steps=28 format=3 uid="uid://cccrwanqhkb6b"]
 
 [sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_6v1c0"]
 default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]
@@ -70,7 +68,6 @@ default_value = 1.0
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_8fm4r"]
 source = 5
-texture = ExtResource("1_6iwq7")
 
 [sub_resource type="VisualShaderNodeFloatOp" id="VisualShaderNodeFloatOp_xwc2x"]
 operator = 5
@@ -81,7 +78,6 @@ op_type = 3
 
 [sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_kak08"]
 source = 5
-texture = ExtResource("1_6iwq7")
 
 [sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_i1aqa"]
 default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]

@@ -1,20 +1,22 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
-[ext_resource type="Texture2D" uid="uid://5edyhf7cbq0v" path="res://Assets/Characters/Textures/T_hoodie_normal.png" id="2_21h0y"]
-[ext_resource type="Texture2D" uid="uid://dbqup1dh3n4cu" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
-[ext_resource type="Texture2D" uid="uid://4ytfvpt1xkeu" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
+[ext_resource type="Texture2D" uid="uid://c3ekhjx4j7vv6" path="res://Assets/Characters/Textures/Clothes/T_hoodie_mask.jpg" id="2_d8epe"]
+[ext_resource type="Texture2D" uid="uid://bli4vrvp2gcrm" path="res://Assets/Characters/Textures/Clothes/T_hoodie_normal.jpg" id="3_vf24t"]
+[ext_resource type="Texture2D" uid="uid://i204g3ec5k1j" path="res://Assets/Characters/Textures/Clothes/T_hoodie_orm.jpg" id="4_ukeal"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_ww255")
-shader_parameter/normalOffset = 0.01
+shader_parameter/normalOffset = 0.003
+shader_parameter/adjustable_metal_color = false
 shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
 shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
-shader_parameter/detail_color = Color(0.806717, 0.774369, 0.782551, 1)
-shader_parameter/Roughness_Power = 1.0
-shader_parameter/Rim = 0.5
-shader_parameter/Rim_Tint = 0.25
-shader_parameter/mask = ExtResource("2_51pwq")
-shader_parameter/orm = ExtResource("4_hos3l")
-shader_parameter/normal = ExtResource("2_21h0y")
+shader_parameter/detail_color = Color(0.752475, 0.713574, 0.723471, 1)
+shader_parameter/metal_color = Color(0.72, 0.72, 0.72, 1)
+shader_parameter/Roughness_Power = 0.545
+shader_parameter/Rim = 0.38
+shader_parameter/Rim_Tint = 0.37
+shader_parameter/mask = ExtResource("2_d8epe")
+shader_parameter/orm = ExtResource("4_ukeal")
+shader_parameter/normal = ExtResource("3_vf24t")
