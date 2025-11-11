@@ -350,10 +350,22 @@ func _kill_pipe_orthogonal_velocity(_vel: Vector3, _tangent: Vector3):
 	return _velocity
 
 
-func _align(_xForm, _newUp): 	#align xform to up vector
-	_xForm.basis.y = _newUp
-	_xForm.basis.x = _xForm.basis.z.cross(-_newUp)
+func _align(_xForm, _newUp):
+	var current_up = _xForm.basis.y
+	var target_up = _newUp.normalized()
+	if current_up.dot(target_up) > 0.999:
+		return _xForm
+	
+	var rotation_axis = current_up.cross(target_up)
+	
+	if rotation_axis.length() < 0.001:
+		rotation_axis = Vector3(1, 0, 0)
+	
+	var rotation_angle = current_up.angle_to(target_up)
+	var rotation_quat = Quaternion(rotation_axis.normalized(), rotation_angle)
+	_xForm.basis = Basis(rotation_quat) * _xForm.basis
 	_xForm.basis = _xForm.basis.orthonormalized()
+	
 	return _xForm
 
 
