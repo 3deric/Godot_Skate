@@ -63,7 +63,8 @@ var input_tricks : Vector3 = Vector3.ZERO #input values for tricks
 var balance_time  : float = 1.0
 var balance_angle : float = 0.0 #value between - pi and pi to balance the player on grinds, lips and manuals
 var balance_dir : int = 0 #defines balance direction based on last input
-var path: Path3D = null
+var path : Path3D = null
+var path_closed : bool = false
 var path_dir: int = 0
 var lip_start_up: Vector3 = Vector3.ZERO
 var lip_start_vel: Vector3 = Vector3.ZERO
@@ -163,7 +164,7 @@ func _player_state():
 	var _closest_path : Path3D = null
 	var pathDist : float = 10000.0
 	if (player_state != PlayerState.GRIND and player_state != PlayerState.LIP):
-		for body in Area.get_overlapping_bodies():
+		for body : CSGPolygon3D in Area.get_overlapping_bodies():
 			if(body.is_in_group('rampRail')):
 				var currentPath : Path3D = body.get_node(body.get_path_node())
 				var currentOffset : float = _get_closest_curve_offset(currentPath, position)
@@ -175,6 +176,7 @@ func _player_state():
 		
 	if _closest_path != null:
 		path = _closest_path
+		path_closed = _is_path_closed(path)
 		if input_tricks.x == 1 and player_state != PlayerState.GRIND:
 			path_offset = path.curve.get_closest_offset(position * path.global_transform)
 			curve_tangent = _get_path_tangent(path, path_offset)
@@ -183,14 +185,12 @@ func _player_state():
 				return
 			_randomize_balance()
 			if(path_dir != 0):
-				#print(path_offset)
 				path_vel = velocity.project(curve_tangent).length() * path_dir
 				player_state = PlayerState.GRIND
 				return
 			if(path_dir == 0 and player_state != PlayerState.PIPESNAP):
 				player_state = PlayerState.LIP
 				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				#print(path_offset)
 				lip_start_up = up_direction
 				lip_start_vel = velocity
 				curve_tangent = _get_path_tangent(path, path_offset)
@@ -204,11 +204,9 @@ func _player_state():
 			if path != null:
 				print(path)
 				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				#
 				curve_tangent = _get_path_tangent(path, path_offset)
 				path_dir = _get_path_dir(curve_tangent, 0.1)
 				path_vel = velocity.project(curve_tangent * Vector3(1,0,1)).length() * path_dir
-				#print(path_vel)
 				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
 				if(xform.basis.y.dot(dir) > 0):
 					pipe_snap_flip = true
@@ -222,11 +220,9 @@ func _player_state():
 	if (player_state == PlayerState.AIR):
 		if is_on_floor():
 			player_state = PlayerState.GROUND	
-	#if is_on_floor():
 	if ray_ground != {}:
 		var _coll_info = null
 		_coll_info = ray_ground["collider"]
-		#print(ray_ground["normal"].dot(xform.basis.y))
 		if ray_ground["normal"].dot(xform.basis.y) < 0.5:
 			return
 		if _coll_info.is_in_group('pipe'):
@@ -542,6 +538,22 @@ func _raycast(_from: Vector3, _dir: Vector3, _len: float):
 	_query.exclude = [self]
 	var _col = _spaceState.intersect_ray(_query)
 	return _col
+	
+	
+func _is_path_closed(_path: Path3D)->bool:
+	var _curve = _path.curve
+	if _curve == null:
+		return false
+	 
+	var _baked_points = _curve.get_baked_points()
+	if _baked_points.size() < 2:
+		return false 
+
+	var _first_baked = _baked_points[0]
+	var _last_baked = _baked_points[_baked_points.size() - 1] 
+	print(_first_baked)
+	print(_last_baked)
+	return _first_baked.distance_to(_last_baked) < 0.001	
 	
 
 func _fall_check():
