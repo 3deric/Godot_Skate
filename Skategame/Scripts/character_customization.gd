@@ -146,75 +146,75 @@ func _update_from_data() -> void:
 #Top
 
 func _update_top_base_color(color: Color) -> void:
-	top_mesh.get_active_material(0).set_shader_parameter('base_color', color)
+	_update_color(top_mesh, "base_color", color)
 	
 	
 func _update_top_accent_color(color: Color) -> void:
-	top_mesh.get_active_material(0).set_shader_parameter('accent_color', color)
+	_update_color(top_mesh, "accent_color", color)
 	
 
 func _update_top_detail_color(color: Color) -> void:
-	top_mesh.get_active_material(0).set_shader_parameter('detail_color', color)
+	_update_color(top_mesh, "detail_color", color)
 	
 #Bottom
 
 func _update_bottom_base_color(color: Color) -> void:
-	bottom_mesh.get_active_material(0).set_shader_parameter('base_color', color)
+	_update_color(bottom_mesh, "base_color", color)
 	
 	
 func _update_bottom_accent_color(color: Color) -> void:
-	bottom_mesh.get_active_material(0).set_shader_parameter('accent_color', color)
+	_update_color(bottom_mesh, "accent_color", color)
 	
 
 func _update_bottom_detail_color(color: Color) -> void:
-	bottom_mesh.get_active_material(0).set_shader_parameter('detail_color', color)
+	_update_color(bottom_mesh, "detail_color", color)
 	
 
 #Shoes
 
 func _update_shoes_base_color(color: Color) -> void:
-	shoes_mesh.get_active_material(0).set_shader_parameter('base_color', color)
+	_update_color(shoes_mesh, "base_color", color)
 	
 	
 func _update_shoes_accent_color(color: Color) -> void:
-	shoes_mesh.get_active_material(0).set_shader_parameter('accent_color', color)
+	_update_color(shoes_mesh, "accent_color", color)
 	
 
 func _update_shoes_detail_color(color: Color) -> void:
-	shoes_mesh.get_active_material(0).set_shader_parameter('detail_color', color)
+	_update_color(shoes_mesh, "detail_color", color)
 	
 	
 func _update_board_wheels_color(color: Color) -> void:
-	board_mesh.get_active_material(0).set_shader_parameter('wheels_color', color)
+	_update_color(board_mesh, "wheels_color", color)
 
 
 func _update_board_accent_color(color: Color) -> void:
-	board_mesh.get_active_material(0).set_shader_parameter('accent_color', color)
+	_update_color(board_mesh, "accent_color", color)
 
 
 func _update_board_metal_color(color: Color) -> void:
-	board_mesh.get_active_material(0).set_shader_parameter('metal_color', color)
+	_update_color(board_mesh, "metal_color", color)
 
 
 func _update_board_decal(index: int) -> void:
-	board_mesh.get_active_material(0).set_shader_parameter('decal', CustomizationManager.board_decals[index])
+	_update_decal(board_mesh, "decal", CustomizationManager.board_decals[index])
 
 
 func _update_top_decal(index: int) -> void:
-	top_mesh.get_active_material(0).set_shader_parameter('decal', CustomizationManager.top_decals[index])
-
+	_update_decal(top_mesh, "decal", CustomizationManager.top_decals[index])
+	
 
 func _update_body_eyes_color(color: Color) -> void:
-	body_mesh.get_active_material(0).set_shader_parameter('eyes_color', color)
+	_update_color(body_mesh, "eyes", color)
 
 
 func _update_body_skin_color(value: float) -> void:
-	body_mesh.get_active_material(0).set_shader_parameter('skin_color', value)
+	_update_float(body_mesh, "skin_color", value)
 
 
 func _update_hair_color(color: Color) -> void:
-	hair_mesh.get_active_material(0).set_shader_parameter('hair_color', color)
-	
+	_update_color(hair_mesh, "hair_color", color)
+
 	
 func _update_hair_mesh(index :int) -> void:
 	if index == 0:
@@ -265,3 +265,44 @@ func _update_top_gender(value : float) -> void:
 func _update_bottom_gender(value : float) -> void:
 	bottom_mesh.set_blend_shape_value(0, value)
 	
+
+func _update_color(_mesh : MeshInstance3D, _param : String, _color : Color) -> void:
+	if not _mesh:
+		push_error(str(_mesh)  + " is not assigned")
+		return
+	var material = _mesh.get_active_material(0)
+	if not material:
+		push_error("No material found on " + str(_mesh))
+		return
+	if material is ShaderMaterial:
+		material.set_shader_parameter(_param, _color)
+	else:
+		push_error("Unsupported material type: " + str(material.get_class()))
+
+
+func _update_float(_mesh : MeshInstance3D, _param : String, _value: float) -> void:
+	if not _mesh:
+		push_error(str(_mesh)  + " is not assigned")
+		return
+	var material = _mesh.get_active_material(0)
+	if not material:
+		push_error("No material found on " + str(_mesh))
+		return
+	if material is ShaderMaterial:
+		material.set_shader_parameter(_param, _value)
+	else:
+		push_error("Unsupported material type: " + str(material.get_class()))
+		
+
+func _update_decal(_mesh : MeshInstance3D, _param : String, _decal: CompressedTexture2D) -> void:
+	if not _mesh:
+		push_error(str(_mesh)  + " is not assigned")
+		return
+	var material = _mesh.get_active_material(0)
+	if not material:
+		push_error("No material found on " + str(_mesh))
+		return
+	if material is ShaderMaterial:
+		material.set_shader_parameter(_param, _decal)
+	else:
+		push_error("Unsupported material type: " + str(material.get_class()))

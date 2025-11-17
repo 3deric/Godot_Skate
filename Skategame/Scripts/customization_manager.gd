@@ -12,39 +12,39 @@ var board_decals = [
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
 	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck.jpg"),
 	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck_cat.jpg")
-]
+	]
 
 var top_decals = [
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_captain_bavaria.png"),
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_test.png")
-]
+	]
 
 var hair_meshes = [
 	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_m_messy.res"),
 	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
-]
+	]
 
-var hair_meshes_femmale = [
+var hair_meshes_female = [
 	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
-]
+	]
 
 var top_meshes = [
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_hoodie.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_shirt.res")
-]
+	]
 
 var bottom_meshes = [
 	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res")
-]
+	]
 
 var shoe_meshes = [
 	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_boots.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
-]
+	]
 
 func _ready() -> void:
 	character_data = CharacterData.new()
