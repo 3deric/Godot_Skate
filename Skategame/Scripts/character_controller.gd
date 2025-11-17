@@ -139,6 +139,8 @@ func _player_state():
 		if path == null:
 			player_state = PlayerState.AIR
 			return
+		if path_closed:
+			return
 		if !_get_stick_curve(path,  path_offset):
 			velocity = xform.basis.z * path_vel * path_dir
 			print("losing pipe")
@@ -177,6 +179,7 @@ func _player_state():
 	if _closest_path != null:
 		path = _closest_path
 		path_closed = _is_path_closed(path)
+		print(path_closed)
 		if input_tricks.x == 1 and player_state != PlayerState.GRIND:
 			path_offset = path.curve.get_closest_offset(position * path.global_transform)
 			curve_tangent = _get_path_tangent(path, path_offset)
@@ -543,17 +546,8 @@ func _raycast(_from: Vector3, _dir: Vector3, _len: float):
 func _is_path_closed(_path: Path3D)->bool:
 	var _curve = _path.curve
 	if _curve == null:
-		return false
-	 
-	var _baked_points = _curve.get_baked_points()
-	if _baked_points.size() < 2:
-		return false 
-
-	var _first_baked = _baked_points[0]
-	var _last_baked = _baked_points[_baked_points.size() - 1] 
-	print(_first_baked)
-	print(_last_baked)
-	return _first_baked.distance_to(_last_baked) < 0.001	
+		return false	
+	return _curve.closed
 	
 
 func _fall_check():
