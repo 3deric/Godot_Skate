@@ -6,9 +6,9 @@ extends Node3D
 @onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_shoes"
 @onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_skateboard"
 @onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
-@onready var char: Node3D = $"../Char/Char_Skeleton"
-const BODY_MALE = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")
-const BODY_FEMALE = preload("res://Assets/Characters/Materials/M_char_female_body_colorable.tres")
+@onready var char_skeleton: Node3D = $"../Char/Char_Skeleton"
+const BODY_MALE : Material = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")
+const BODY_FEMALE : Material = preload("res://Assets/Characters/Materials/M_char_female_body_colorable.tres")
 
 
 func _ready() -> void:
@@ -105,7 +105,7 @@ func _on_float_updated(part: CharacterData.CharacterPart, sub: String, value: fl
 				'skin_color':
 					_update_body_skin_color(value)
 				'size':
-					char.scale = Vector3(value, value, value)
+					char_skeleton.scale = Vector3(value, value, value)
 				'gender':
 					_update_gender(value)
 					_update_top_gender(value)

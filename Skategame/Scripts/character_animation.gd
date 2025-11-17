@@ -8,7 +8,7 @@ extends Node3D
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
 
 
-var anim_blend : Vector3 = Vector3.ZERO #blendvector for animations
+var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
 var INTERP_SPEED : float = 10.0 #interpolation speed of the visual character
 
@@ -42,7 +42,7 @@ func _lerp_vis_transform(_delta, _speed):
 
 
 func _animation_handler(delta):
-	anim_blend = anim_blend.lerp(character_controller.input, delta * ANIM_INTERP_SPEED)
+	anim_blend = anim_blend.lerp(Vector2(character_controller.input.x, character_controller.input.y), delta * ANIM_INTERP_SPEED)
 	match character_controller.player_state:
 		character_controller.PlayerState.FALL:
 			return
