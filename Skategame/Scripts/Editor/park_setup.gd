@@ -5,7 +5,7 @@ const OFFSET : float = 0.05
 const PATH_INTERVAL : float = 0.25
 
 func _run():
-	var nodes: Array = get_editor_interface().get_selection().get_selected_nodes()[0].get_children()
+	var nodes: Array = EditorInterface.get_selection().get_selected_nodes()[0].get_children()
 	for node in nodes:
 		##get rails of park element
 		##elements are from type MeshInstance3D
@@ -19,12 +19,14 @@ func _run():
 			var _mesh_arrays = _mesh.surface_get_arrays(0)
 			var _path : Path3D = Path3D.new()
 			var _curve: Curve3D = Curve3D.new()
-			for i in len(_mesh_arrays[0]):
+			for i : int in len(_mesh_arrays[0]):
 				#add points with parent offset
 				var _pos : Vector3 = _mesh_arrays[0][i]
 				var _t : Transform3D = parent.transform.affine_inverse()
 				_pos *= _t
 				_curve.add_point(_pos)
+			if name.split('_')[2] == 'Closed':
+				_curve.closed = true
 			_path.curve = _curve
 			#add _csg and _path to the scene, _csg is a child of the _path
 			parent.add_child(_path)
@@ -58,7 +60,7 @@ func _run():
 			_csg.set_collision_layer_value(1,false)
 			_csg.set_collision_layer_value(4,true)
 			#turn off shadow casting
-			_csg.cast_shadow = 0
+			_csg.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 			#set material
 			_csg.material = load('res://Assets/Materials/M_path.tres')
 			_csg.set_script(load('res://Scripts/Editor/rail_init.gd'))
