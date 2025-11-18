@@ -132,7 +132,6 @@ func _player_state():
 	if (player_state == PlayerState.FALL):	#dont change the state if fallen
 		return
 	
-	
 	if(player_state == PlayerState.GRIND or player_state == PlayerState.LIP):
 		Ingame_Ui.set_balance_view(true)
 		#Collision.disabled = true
@@ -149,7 +148,6 @@ func _player_state():
 		return
 	else:
 		Ingame_Ui.set_balance_view(false)
-		#Collision.disabled = false
 		
 	if(player_state == PlayerState.PIPESNAP):
 		if !_get_stick_curve(path,  path_offset):
@@ -179,7 +177,7 @@ func _player_state():
 	if _closest_path != null:
 		path = _closest_path
 		path_closed = _is_path_closed(path)
-		print(path_closed)
+		
 		if input_tricks.x == 1 and player_state != PlayerState.GRIND:
 			path_offset = path.curve.get_closest_offset(position * path.global_transform)
 			curve_tangent = _get_path_tangent(path, path_offset)
@@ -293,6 +291,12 @@ func _get_stick_curve(_path: Path3D,_offset: float):
 		return false
 	else:
 		return true
+
+
+func _wrap_curve(_path : Path3D, _offset : float) -> float:
+	var _curve : Curve3D = _path.curve
+	_offset = wrapf(_offset, 0.0, _curve.get_baked_length())
+	return _offset
 
 
 func _set_up_direction():
@@ -410,6 +414,8 @@ func _pipe_snap_movement(delta): 	#movement while snapped to a pipe
 	global_rotate(xform.basis.y, input.x * ROT_JUMP * delta)
 	curve_snap = path.curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
+	if path_closed:
+		_wrap_curve(path, path_offset)
 	curve_tangent = (_get_path_tangent(path, path_offset) * Vector3(1,0,1)).normalized()
 	up_direction = _pipe_snap_up_dir(curve_tangent)
 	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * PIPESNAP_OFFSET
@@ -436,6 +442,8 @@ func _pipe_snap_air_movement(delta):	#movement when snapped pipe is left in air
 func _grind_movement(delta) -> void: 	#movement logic while grinding a rail
 	curve_snap = path.curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
+	if path_closed:
+		path_offset = _wrap_curve(path, path_offset)
 	curve_tangent = _get_path_tangent(path, path_offset)
 	position = curve_snap
 	up_direction = path.curve.sample_baked_up_vector(path_offset)
