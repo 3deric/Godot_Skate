@@ -42,3 +42,12 @@ func is_last_player_state(is_state :PlayerState) -> bool:
 func reset_player_state() -> void:
 	player_state = PlayerState.RESET
 	last_player_state = PlayerState.RESET
+
+
+func update_last_player_state() -> void:
+	last_player_state = player_state
+
+
+func debug_player_state() -> void:
+	if(player_state != last_player_state):
+		print(PlayerState.find_key(player_state))
