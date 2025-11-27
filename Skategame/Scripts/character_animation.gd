@@ -1,11 +1,13 @@
+class_name CharacterAnimation
 extends Node3D
 
 #controls the animtree of the character_controller
 @onready var anim_tree: AnimationTree = %AnimationTree
-@onready var character_controller: CharacterBody3D = $".."
+@onready var character_controller: CharacterController = $".."
 @onready var Char : Node3D = %Char
 @onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
+@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
@@ -30,9 +32,10 @@ func _process(delta: float) -> void:
 
 
 func _set_vis_balance():
-	if character_controller.player_state == character_controller.PlayerState.GRIND:
+	if Char_Statemachine.is_player_state(Char_Statemachine.PlayerState.GRIND):
 		Char.rotation.z = -character_controller.balance_angle * 0.5
-	if character_controller.player_state == character_controller.PlayerState.LIP:
+		return
+	if Char_Statemachine.is_player_state(Char_Statemachine.PlayerState.LIP):
 		Char.rotation.x = -character_controller.balance_angle * 0.5	
 
 
@@ -43,10 +46,10 @@ func _lerp_vis_transform(_delta, _speed):
 
 func _animation_handler(delta):
 	anim_blend = anim_blend.lerp(Vector2(character_controller.input.x, character_controller.input.y), delta * ANIM_INTERP_SPEED)
-	match character_controller.player_state:
-		character_controller.PlayerState.FALL:
+	match Char_Statemachine.player_state:
+		Char_Statemachine.PlayerState.FALL:
 			return
-		character_controller.PlayerState.GROUND, character_controller.PlayerState.PIPE:	
+		Char_Statemachine.PlayerState.GROUND, Char_Statemachine.PlayerState.PIPE:	
 			anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/conditions/is_air',false)
 			anim_tree.set('parameters/conditions/is_grind', false)
@@ -58,21 +61,21 @@ func _animation_handler(delta):
 				anim_tree.set('parameters/conditions/is_riding', false)
 				anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/Ground/blend_position', anim_blend)
-		character_controller.PlayerState.AIR, character_controller.PlayerState.PIPESNAP, character_controller.PlayerState.PIPESNAPAIR:
+		Char_Statemachine.PlayerState.AIR, Char_Statemachine.PlayerState.PIPESNAP, Char_Statemachine.PlayerState.PIPESNAPAIR:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', true)
 			anim_tree.set('parameters/conditions/is_grind', false)
 			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Air/blend_position', anim_blend)
-		character_controller.PlayerState.GRIND:
+		Char_Statemachine.PlayerState.GRIND:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', false)
 			anim_tree.set('parameters/conditions/is_grind', true)
 			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Grind/blend_position', anim_blend)
-		character_controller.PlayerState.LIP:
+		Char_Statemachine.PlayerState.LIP:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', false)

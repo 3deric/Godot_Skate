@@ -1,3 +1,4 @@
+class_name CustomizationMenu
 extends Control
 
 @onready var h_slider_skin_color: HSlider = %HSlider_Skin_Color

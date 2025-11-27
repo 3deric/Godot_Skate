@@ -1,4 +1,5 @@
-class_name CharacterData extends Resource
+class_name CharacterData 
+extends Resource
 
 enum CharacterPart {Body, Hair, Top, Bottom, Shoes, Board}
 enum BoardDecal {Bare = 0, Style1 = 1, Style2 = 2}

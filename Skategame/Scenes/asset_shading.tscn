@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="2_tmwgv"]
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_3wad2"]
 [ext_resource type="PackedScene" uid="uid://dvi8ijm8ik3gr" path="res://Assets/Environment/SM_Cyclorama.glb" id="5_s73hg"]
-[ext_resource type="Script" path="res://Scripts/character_turntable.gd" id="6_2sac2"]
+[ext_resource type="Script" uid="uid://cjdpaxthe6v0o" path="res://Scripts/character_turntable.gd" id="6_2sac2"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="6_hadjq"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vndfe"]

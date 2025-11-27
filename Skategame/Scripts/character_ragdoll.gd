@@ -1,3 +1,4 @@
+class_name CharacterRagdoll
 extends Node3D
 
 @onready var physical_bone_simulator_3d: PhysicalBoneSimulator3D = $"../Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"

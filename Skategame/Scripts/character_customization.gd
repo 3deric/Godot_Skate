@@ -1,3 +1,4 @@
+class_name CharacterCustomization
 extends Node3D
 
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"

@@ -1,3 +1,4 @@
+class_name CharacterStatemachine
 extends Node3D
 
 enum PlayerState {

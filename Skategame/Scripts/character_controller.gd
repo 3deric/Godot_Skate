@@ -1,3 +1,4 @@
+class_name CharacterController
 extends CharacterBody3D
 
 #global movement constants
@@ -37,9 +38,9 @@ var ray_down = {}
 @onready var Collision: CollisionShape3D = get_node('CollisionShape3D')
 @export var Camera: Camera3D = null
 @export var Camera_Pos: Node3D = null
-@export var Ingame_Ui: Control = null
-@onready var Char_Ragdoll: Node3D = $character_ragdoll
-@onready var Char_StateMachine: Node3D = $character_statemachine
+@onready var Char_Ragdoll: Node3D = $Char_Ragdoll
+@onready var Char_StateMachine: Node3D = $Char_Statemachine
+@onready var Ingame_Ui: IngameOverlay = $Ingame_Ui
 
 #Enums for player state and Collision detection
 enum PlayerState {
