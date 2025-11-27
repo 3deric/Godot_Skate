@@ -14,7 +14,6 @@ enum PlayerState {
 	MANUAL
 	}
 
-@onready var character: CharacterBody3D = $".."
 
 var player_state : PlayerState = PlayerState.RESET
 var last_player_state : PlayerState = PlayerState.RESET
