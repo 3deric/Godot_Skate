@@ -2,16 +2,16 @@ class_name CharacterController
 extends CharacterBody3D
 
 #global movement constants
-const ACC :float= 0.1
-const JUMP_VEL :float = 5.0
-const ROT :float= 2.0
+const ACC : float= 0.1
+const JUMP_VEL : float = 5.0
+const ROT : float= 2.0
 const ROT_KICKTURN : float = 4.0
-const ROT_JUMP :float= 7.0
-const MAX_VEL :float = 12.0
-const GRAVITY :float = 15.0
+const ROT_JUMP : float= 7.0
+const MAX_VEL : float = 12.0
+const GRAVITY : float = 15.0
 const BALANCE_MULTI : float= 0.75
-const PIPESNAP_OFFSET :float = 0.0
-const UP_ALIGN_SPEED :float = 10.0
+const PIPESNAP_OFFSET : float = 0.0
+const UP_ALIGN_SPEED : float = 10.0
 
 #global movement variables
 var xform = null
@@ -27,20 +27,20 @@ var hor_vel : float = 0.0
 var fall_check : float = 0.0
 var revert_path : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
-var ray_forward = {}
-var ray_ground = {}
-var ray_path = {}
-var ray_down = {}
+var ray_forward : Dictionary = {}
+var ray_ground : Dictionary = {}
+var ray_path : Dictionary = {}
+var ray_down : Dictionary = {}
 
 #global object references
 @export var is_playing : bool = false
-@onready var Area: Area3D = get_node('Area3D')
-@onready var Collision: CollisionShape3D = get_node('CollisionShape3D')
-@export var Camera: Camera3D = null
-@export var Camera_Pos: Node3D = null
-@onready var Char_Ragdoll: CharacterRagdoll = $Char_Ragdoll
-@onready var Char_Statemachine: CharacterStatemachine = $Char_Statemachine
-@onready var Ingame_Ui: IngameOverlay = $Ingame_Ui
+@onready var Area : Area3D = get_node('Area3D')
+@onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
+@export var Camera : Camera3D = null
+@export var Camera_Pos : Node3D = null
+@onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
+@onready var Char_Statemachine : CharacterStatemachine = $Char_Statemachine
+@onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 
 #input variables
 var input : Vector3i = Vector3.ZERO #input values
@@ -138,7 +138,7 @@ func _player_state():
 		_set_balance_view(false)
 		
 	if Char_Statemachine.is_player_state(Char_Statemachine.PlayerState.PIPESNAP):
-		if !LibHelpers.get_stick_curve(path,  path_offset):
+		if !LibHelpers.get_stick_curve(path,  path_offset) and !path_closed:
 			Char_Statemachine.set_player_state(Char_Statemachine.PlayerState.PIPESNAPAIR)
 			var newUpDir : Vector3 = Vector3.UP.cross(curve_tangent)
 			if pipe_snap_flip:
@@ -270,7 +270,8 @@ func _input_handler(): 	#handles player inputs
 
 
 func _ground_movement(delta): 	#movement while grounded
-	last_ground_pos = global_position
+	if Char_Statemachine.is_player_state(Char_Statemachine.PlayerState.GROUND):
+		last_ground_pos = global_position
 	if input.y < 0:
 		velocity *= 0.95
 		global_rotate(xform.basis.y, input.x * ROT_KICKTURN * delta)
@@ -298,10 +299,11 @@ func _air_movement(_delta): 	#movement while in air
 
 func _pipe_snap_movement(delta): 	#movement while snapped to a pipe
 	global_rotate(xform.basis.y, input.x * ROT_JUMP * delta)
-	curve_snap = path.curve.sample_baked(path_offset, true)
+	var _curve : Curve3D = path.curve
+	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
 	if path_closed:
-		LibHelpers.wrap_curve(path, path_offset)
+		path_offset = LibHelpers.wrap_curve(path, path_offset)
 	curve_tangent = (LibHelpers.get_path_tangent(path, path_offset) * Vector3(1,0,1)).normalized()
 	up_direction = LibHelpers.pipe_snap_up_dir(curve_tangent, last_up_dir, pipe_snap_flip)
 	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * PIPESNAP_OFFSET
