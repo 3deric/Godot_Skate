@@ -9,6 +9,8 @@ enum Tricks {
 		HEELFLIP
 	}
 
+var rot : float = 0.0
+
 var tricks : Dictionary = {}
 
 	
@@ -25,8 +27,15 @@ func set_start_trick() -> void:
 	
 	
 func set_end_trick() -> void:
-	pass
-	
+	print("Rotated " + str(rot) )
+	_reset_air_rot()
 
+
+func set_air_rot(_delta : float) -> void:
+	rot = rot + _delta
+	
+func _reset_air_rot() -> void:
+	rot = 0.0
+	
 func end_combo() -> void:
 	tricks = {}
