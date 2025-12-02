@@ -1,6 +1,6 @@
 extends Node3D
 
-@onready var character: CharacterBody3D = $"../Character"
+@onready var Player_Character : Node3D = $"../Player_Character"
 
 #global movement constants
 const ROT :float= 2.0
@@ -19,4 +19,4 @@ func _input_handler() -> void: 	#handles player inputs
 
 
 func _rotate(_delta) -> void:
-	character.rotate_y(input.x * ROT * _delta)
+	Player_Character.rotate_y(input.x * ROT * _delta)

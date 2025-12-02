@@ -1,14 +1,15 @@
 class_name CharacterInput
 extends Node3D
 
-@onready var Char_Controller: CharacterController = $".."
+@onready var Char_Controller : CharacterController = $".."
+@onready var Char_Init : CharacterInit = $"../.."
 
 var input : Vector3i = Vector3.ZERO #input values
 var input_tricks : Vector3i = Vector3.ZERO #input values for tricks
 
 
 func _process(_delta):
-	if !Char_Controller.is_playing:
+	if !Char_Init.is_playing:
 		return
 	_input_handler()
 	

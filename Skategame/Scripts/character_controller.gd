@@ -3,7 +3,7 @@ extends CharacterBody3D
 
 #global movement constants
 const ACC : float= 0.1
-const JUMP_VEL : float = 5.0
+const JUMP_VEL : float = 3.0
 const ROT : float= 2.0
 const ROT_KICKTURN : float = 4.0
 const ROT_JUMP : float= 7.0
@@ -33,16 +33,16 @@ var ray_path : Dictionary = {}
 var ray_down : Dictionary = {}
 
 #global object references
-@export var is_playing : bool = false
 @onready var Area : Area3D = get_node('Area3D')
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
-@export var Camera : Camera3D = null
-@export var Camera_Pos : Node3D = null
+@onready var Camera_Pos: Node3D = $"../Camera_Pos"
+@onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
 @onready var Char_Statemachine : CharacterStatemachine = $Char_Statemachine
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input 
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
+@onready var Char_Init : CharacterInit = $".."
 
 #grind and lip trick variables
 var balance_time  : float = 1.0
@@ -58,7 +58,7 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func _ready():
-	if is_playing:
+	if Char_Init.is_playing:
 		_init_player()
 		_reset_player(Vector3(-3.149,6.868,18.256) + Vector3.UP * 5.0)
 	else:
@@ -69,7 +69,7 @@ func _init_player():
 	pass
 	
 func _physics_process(delta):
-	if !is_playing:
+	if !Char_Init.is_playing:
 		return
 	Camera_Pos.position = Camera_Pos.position.lerp(global_position, delta * 10)
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.FALL):

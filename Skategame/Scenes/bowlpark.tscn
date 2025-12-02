@@ -326,16 +326,6 @@ point_count = 32
 
 [node name="Level" type="Node3D"]
 
-[node name="Node3D" type="Node3D" parent="."]
-
-[node name="Camera3D" type="Camera3D" parent="Node3D"]
-transform = Transform3D(0.851626, 0.39375, -0.345967, 0, 0.660054, 0.751218, 0.524149, -0.639757, 0.562119, -2.11664, 5.29459, 3.55786)
-current = true
-fov = 38.0
-size = 8.0
-near = 3.221
-far = 39.42
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
 light_color = Color(0.87, 0.71543, 0.6438, 1)
@@ -344,11 +334,9 @@ shadow_enabled = true
 shadow_opacity = 0.59
 shadow_blur = 6.306
 
-[node name="player_character" parent="." node_paths=PackedStringArray("Camera", "Camera_Pos") instance=ExtResource("3_7gtpe")]
+[node name="player_character" parent="." instance=ExtResource("3_7gtpe")]
 transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -2.93907, 2.22471, 0.125948)
 is_playing = true
-Camera = NodePath("../Node3D/Camera3D")
-Camera_Pos = NodePath("../Node3D")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_t5anl")

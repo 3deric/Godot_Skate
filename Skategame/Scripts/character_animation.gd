@@ -9,6 +9,7 @@ extends Node3D
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
 @onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 @onready var Char_Input : CharacterInput = $"../Char_Input" 
+@onready var Char_Init : CharacterInit = $"../.."
 
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
@@ -20,7 +21,7 @@ func _ready() -> void:
 	skeleton_3d.show_rest_only = false
 	body_mesh.set_blend_shape_value(1,0.3)
 	body_mesh.set_blend_shape_value(2,0)
-	if !Char_Controller.is_playing:
+	if !Char_Init.is_playing:
 		anim_tree.set('parameters/conditions/is_setup', true)
 	else:
 		Char.top_level = true
