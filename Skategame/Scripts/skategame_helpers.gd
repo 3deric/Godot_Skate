@@ -104,3 +104,62 @@ static func align(_xForm, _newUp):
 static func revert_motion():
 	pass
 	#global_rotate(xform.basis.y, PI)
+	
+static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
+	var _path : Path3D = null
+	var _dist :float = 1e12
+	for body: CSGPolygon3D in area.get_overlapping_bodies():
+		if body.is_in_group("rampRail"):
+			var _curr_path: Path3D = body.get_node(body.get_path_node())
+			var _curr_path_offset : float = LibHelpers.get_closest_curve_offset(_curr_path, pos)
+			var _curr_path_pos : Vector3 = LibHelpers.get_position_on_curve(_curr_path, _curr_path_offset)
+			var _curr_path_dist : float = pos.distance_to(_curr_path_pos)
+			if _curr_path_dist < _dist:
+				_dist = _curr_path_dist
+				_path = _curr_path
+	return _path
+
+static func start_grind(pos: Vector3, vel: Vector3, path: Path3D, offset : float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	if _tan == Vector3.ZERO:
+		return {"valid": false}
+	var _dir : int = LibHelpers.get_path_dir(_tan, vel, 0.25)
+	if _dir == 0:
+		return {"valid": false}
+	var _path_vel : float = vel.project(_tan).length() * _dir
+	return {
+		"valid": true,
+		"vel": _path_vel,
+		"dir": _dir,
+		"tan": _tan
+	}
+
+static func start_lip(xform: Transform3D, pos: Vector3, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	var _dir : Vector3 = _tan.cross(Vector3.UP)
+	if xform.basis.y.dot(_dir) > 0:
+		_dir *= -1
+	return {
+		"tan": _tan,
+		"dir": _dir,
+		"up": xform.basis.y,
+		"vel": vel
+	}
+
+static func start_pipesnap(xform: Transform3D, pos: Vector3, vel: Vector3, last_up: Vector3, path: Path3D, offset: float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	var _dir : Vector3 = _tan.cross(Vector3.UP)
+	var _flip : bool = xform.basis.y.dot(_dir) > 0
+	var _path_dir : int = LibHelpers.get_path_dir(_tan, vel, 0.1)
+	var _path_vel : float = vel.project(_tan * Vector3(1,0,1)).length() * _path_dir
+	var _stick : bool = LibHelpers.get_stick_curve(path, offset)
+	return {
+		"valid": _stick,
+		"tan": _tan,
+		"dir": _path_dir,
+		"vel": _path_vel,
+		"flip": _flip
+	}

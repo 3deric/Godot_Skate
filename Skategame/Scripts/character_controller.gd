@@ -136,61 +136,42 @@ func _player_state():
 				up_direction = last_up_dir
 			return
 	
-	var _closest_path : Path3D = null
-	var _path_dist : float = 10000.0
-	if !Char_Statemachine.is_player_state(Char_Statemachine.State.GRIND) and !Char_Statemachine.is_player_state(Char_Statemachine.State.LIP):
-		for body : CSGPolygon3D in Area.get_overlapping_bodies():
-			if(body.is_in_group('rampRail')):
-				var _current_path : Path3D = body.get_node(body.get_path_node())
-				var _current_offset : float = LibHelpers.get_closest_curve_offset(_current_path, position)
-				var _closest_pos : Vector3 = LibHelpers.get_position_on_curve(_current_path, _current_offset)
-				var _closest_dist : float = position.distance_to(_closest_pos)
-				if(_closest_dist < _path_dist):
-					_path_dist = _closest_dist
-					_closest_path = _current_path
-		
+	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)	
 	if _closest_path != null:
 		path = _closest_path
 		path_closed = LibHelpers.is_path_closed(path)
-		
+		curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
+		path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
+		path_offset = path.curve.get_closest_offset(position * path.global_transform)
 		if Char_Input.get_input_tricks().x == 1 and !Char_Statemachine.is_player_state(Char_Statemachine.State.GRIND):
-			path_offset = path.curve.get_closest_offset(position * path.global_transform)
-			curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
-			path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
-			if(curve_tangent == Vector3.ZERO):
-				return
-			_randomize_balance()
-			if(path_dir != 0):
-				path_vel = velocity.project(curve_tangent).length() * path_dir
+			var grind_start : Dictionary = LibHelpers.start_grind(position, velocity, path, path_offset)
+			if grind_start.valid:
+				_randomize_balance()
+				path_vel = grind_start.vel
+				path_dir = grind_start.dir
+				curve_tangent = grind_start.tan
 				Char_Statemachine.set_player_state(Char_Statemachine.State.GRIND)
 				return
-			if path_dir == 0 and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAP):
+			if path_dir == 0:
+				_randomize_balance()
+				var lip_start : Dictionary = LibHelpers.start_lip(xform, position, velocity, path, path_offset)
+				curve_tangent = lip_start.tan
+				lip_start_dir = lip_start.dir
+				lip_start_vel = lip_start.vel
+				lip_start_up = lip_start.up
 				Char_Statemachine.set_player_state(Char_Statemachine.State.LIP)
-				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				lip_start_up = up_direction
-				lip_start_vel = velocity
-				curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
-				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
-				if(xform.basis.y.dot(dir) > 0):
-					dir *= Vector3(-1,-1,-1)
-				lip_start_dir = dir
 				return
 	if !ray_ground:	#behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0:
-			if path != null:
-				print(path)
-				path_offset = path.curve.get_closest_offset(position * path.global_transform)
-				curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
-				path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.1)
-				path_vel = velocity.project(curve_tangent * Vector3(1,0,1)).length() * path_dir
-				var dir : Vector3 = curve_tangent.cross(Vector3(0,1,0))
-				if(xform.basis.y.dot(dir) > 0):
-					pipe_snap_flip = true
-				else:
-					pipe_snap_flip = false
-				if LibHelpers.get_stick_curve(path, path_offset):
-					Char_Statemachine.set_player_state(Char_Statemachine.State.PIPESNAP)
-					return
+			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, position, velocity, last_up_dir, path, path_offset)
+			print(_pipe_snap.valid)
+			if _pipe_snap.valid:
+				curve_tangent = _pipe_snap.tan
+				path_dir = _pipe_snap.dir
+				path_vel = _pipe_snap.vel
+				pipe_snap_flip = _pipe_snap.flip
+				Char_Statemachine.set_player_state(Char_Statemachine.State.PIPESNAP)
+				return			
 		if !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAP) and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAPAIR):
 			Char_Statemachine.set_player_state(Char_Statemachine.State.AIR)
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.AIR):
