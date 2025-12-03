@@ -175,7 +175,7 @@ func _player_state():
 					dir *= Vector3(-1,-1,-1)
 				lip_start_dir = dir
 				return
-	if ray_ground == {}:	#behavior while in air, or sticked to a pipe
+	if !ray_ground:	#behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0:
 			if path != null:
 				print(path)
@@ -196,9 +196,9 @@ func _player_state():
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.AIR):
 		if is_on_floor() and !Char_Statemachine.is_player_state(Char_Statemachine.State.GROUND):
 			Char_Statemachine.set_player_state(Char_Statemachine.State.GROUND)
-	if ray_ground != {}:
-		var _coll_info = ray_ground["collider"]
-		if ray_ground["normal"].dot(xform.basis.y) < 0.5:
+	if ray_ground:
+		var _coll_info = ray_ground.collider
+		if ray_ground.normal.dot(xform.basis.y) < 0.5:
 			return
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPE):
 			Char_Statemachine.set_player_state(Char_Statemachine.State.PIPE)
@@ -216,8 +216,8 @@ func _surface_check():
 	ray_down = LibHelpers.raycast(position, Vector3.DOWN, 1.0, self)
 
 func _set_up_direction():
-	if ray_ground != {}:	
-		up_direction = ray_ground["normal"]
+	if ray_ground:	
+		up_direction = ray_ground.normal
 	else:
 		up_direction = last_up_dir	
 
@@ -250,7 +250,7 @@ func _ground_movement(delta):
 		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT * delta)
 	if Char_Input.get_input().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input().y > 0:
 		velocity +=xform.basis.z * ACC * 0.25
-	if((Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL)):
+	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
 		velocity += xform.basis.z * Char_Input.get_input().z * ACC
 	if Char_Input.get_input_tricks().z > 0:
 		velocity += Vector3.UP * JUMP_VEL
@@ -262,10 +262,7 @@ func _air_movement(_delta):
 	var _rot_delta = Char_Input.get_input().x * ROT_JUMP * _delta
 	global_rotate(xform.basis.y, _rot_delta)
 	velocity.y -= GRAVITY * _delta
-	if ray_down != {}:
-		up_direction = lerp(up_direction, ray_down.normal, _delta * UP_ALIGN_SPEED)
-	else:
-		up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
+	up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
 	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
@@ -292,8 +289,7 @@ func _grind_movement(delta) -> void:
 		path_offset = LibHelpers.wrap_curve(path, path_offset)
 	curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
 	position = curve_snap
-	var _new_up =  _curve.sample_baked_up_vector(path_offset)
-	up_direction = _new_up
+	up_direction =  _curve.sample_baked_up_vector(path_offset)
 	var _target = global_position + curve_tangent * path_dir
 	if _target != position:
 		look_at(_target, up_direction)
@@ -351,7 +347,7 @@ func _check_reverse_motion() -> void:
 		LibHelpers.revert_motion()
 
 func _check_bounce_path(air : bool) -> void:
-	if ray_path != {} and !revert_path:
+	if ray_path and !revert_path:
 		if air:
 			path_vel *= -0.1
 		else: 
@@ -359,7 +355,7 @@ func _check_bounce_path(air : bool) -> void:
 			look_at(global_position + curve_tangent * -path_dir, up_direction)
 		path_dir *= -1
 		revert_path = true
-	if ray_path == {}:
+	if !ray_path:
 		revert_path = false
 
 func _fall_check() -> void:
