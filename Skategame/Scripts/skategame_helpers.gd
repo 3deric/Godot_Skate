@@ -9,30 +9,25 @@ static func raycast(_from: Vector3, _dir: Vector3, _len: float, _player: Charact
 	var _col = _spaceState.intersect_ray(_query)
 	return _col
 	
-	
 static func is_path_closed(_path: Path3D)->bool:
 	var _curve = _path.curve
 	if _curve == null:
 		return false	
 	return _curve.closed
 
-
 static func forward_velocity(_vel : Vector3, _up_direction: Vector3) -> Vector3:
 	return _vel.slide(_up_direction)
 	
-
 static func horizontal_velocity(_vel : Vector3) -> Vector3:
 	return _vel.slide(Vector3.UP)
 	
-
 static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
 	var _lastOffset : float = _offset + 0.01
 	var _curvePos : Vector3 = _path.curve.sample_baked(_offset, true)
 	var _lastCurvePos : Vector3 = _path.curve.sample_baked(_lastOffset, true)
 	var _tangent : Vector3 = (_curvePos - _lastCurvePos).normalized()
 	return _tangent
-	
-	
+		
 static func get_path_dir(_tangent: Vector3, _vel: Vector3, _treshold): #direction along curve based on start pos
 	var _pathDir : float = _tangent.dot(_vel.normalized())
 	if(_pathDir > _treshold):
@@ -42,20 +37,17 @@ static func get_path_dir(_tangent: Vector3, _vel: Vector3, _treshold): #directio
 	else:
 		return 0
 
-
 static func get_closest_curve_offset(_path: Path3D, _pos: Vector3):
 	var _curve: Curve3D = _path.curve
 	var _pathTransform: Transform3D = _path.global_transform
 	var _localPos: Vector3 = _pos * _pathTransform
 	var _offset: float = _curve.get_closest_offset(_localPos)
 	return _offset
-	
-	
+		
 static func get_position_on_curve(_path: Path3D, _offset):
 	var _curve: Curve3D = _path.curve
 	var _curvePos: Vector3 = _curve.sample_baked(_offset, true)
 	return _curvePos
-
 	
 static func get_stick_curve(_path: Path3D,_offset: float):
 	var _curve: Curve3D = _path.curve
@@ -64,12 +56,10 @@ static func get_stick_curve(_path: Path3D,_offset: float):
 	else:
 		return true
 
-
 static func wrap_curve(_path : Path3D, _offset : float) -> float:
 	var _curve : Curve3D = _path.curve
 	_offset = wrapf(_offset, 0.0, _curve.get_baked_length())
 	return _offset
-
 
 static func pipe_snap_up_dir(_curveTangent : Vector3, _last_up_dir, _pipe_snap_flip : bool) -> Vector3: #calculate upvector while snapped to a pipe
 	var _newUpDir : Vector3 = Vector3.UP.cross(_curveTangent)
@@ -79,13 +69,11 @@ static func pipe_snap_up_dir(_curveTangent : Vector3, _last_up_dir, _pipe_snap_f
 		return _newUpDir
 	else:
 		return _last_up_dir
-		
-		
+			
 static func limit_velocity(_vel : Vector3, _max_vel : float):
 	if _vel.length() > _max_vel:
 		return _vel.normalized() * _max_vel
 		
-
 static func kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3) -> Vector3: 	#remove orthogonal component of velocity
 	var _fwdVel : Vector3 = _xForm.basis.z * _vel.dot(_xForm.basis.z)
 	var _ortVel : Vector3 = _xForm.basis.x * _vel.dot(_xForm.basis.x)
@@ -93,13 +81,11 @@ static func kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3) -> Vec
 	var _velocity :Vector3 = _fwdVel + _ortVel * 0.1 + _upVel
 	return _velocity
 
-
 static func kill_pipe_orthogonal_velocity(_vel: Vector3, _tangent: Vector3):
 	var _newVel : Vector3 = _vel.dot(_tangent) * _tangent
 	_newVel.y = _vel.y
 	var _velocity : Vector3 = _newVel
 	return _velocity
-
 
 static func align(_xForm, _newUp):
 	var current_up = _xForm.basis.y
@@ -115,7 +101,65 @@ static func align(_xForm, _newUp):
 	_xForm.basis = _xForm.basis.orthonormalized()	
 	return _xForm
 
-
 static func revert_motion():
 	pass
 	#global_rotate(xform.basis.y, PI)
+	
+static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
+	var _path : Path3D = null
+	var _dist :float = 1e12
+	for body: CSGPolygon3D in area.get_overlapping_bodies():
+		if body.is_in_group("rampRail"):
+			var _curr_path: Path3D = body.get_node(body.get_path_node())
+			var _curr_path_offset : float = LibHelpers.get_closest_curve_offset(_curr_path, pos)
+			var _curr_path_pos : Vector3 = LibHelpers.get_position_on_curve(_curr_path, _curr_path_offset)
+			var _curr_path_dist : float = pos.distance_to(_curr_path_pos)
+			if _curr_path_dist < _dist:
+				_dist = _curr_path_dist
+				_path = _curr_path
+	return _path
+
+static func start_grind(pos: Vector3, vel: Vector3, path: Path3D, offset : float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	if _tan == Vector3.ZERO:
+		return {"valid": false}
+	var _dir : int = LibHelpers.get_path_dir(_tan, vel, 0.25)
+	if _dir == 0:
+		return {"valid": false}
+	var _path_vel : float = vel.project(_tan).length() * _dir
+	return {
+		"valid": true,
+		"vel": _path_vel,
+		"dir": _dir,
+		"tan": _tan
+	}
+
+static func start_lip(xform: Transform3D, pos: Vector3, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	var _dir : Vector3 = _tan.cross(Vector3.UP)
+	if xform.basis.y.dot(_dir) > 0:
+		_dir *= -1
+	return {
+		"tan": _tan,
+		"dir": _dir,
+		"up": xform.basis.y,
+		"vel": vel
+	}
+
+static func start_pipesnap(xform: Transform3D, pos: Vector3, vel: Vector3, last_up: Vector3, path: Path3D, offset: float) -> Dictionary:
+	print(path)
+	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
+	var _dir : Vector3 = _tan.cross(Vector3.UP)
+	var _flip : bool = xform.basis.y.dot(_dir) > 0
+	var _path_dir : int = LibHelpers.get_path_dir(_tan, vel, 0.1)
+	var _path_vel : float = vel.project(_tan * Vector3(1,0,1)).length() * _path_dir
+	var _stick : bool = LibHelpers.get_stick_curve(path, offset)
+	return {
+		"valid": _stick,
+		"tan": _tan,
+		"dir": _path_dir,
+		"vel": _path_vel,
+		"flip": _flip
+	}
