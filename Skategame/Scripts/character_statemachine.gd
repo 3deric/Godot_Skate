@@ -22,8 +22,9 @@ var last_player_state : State = State.RESET
 func set_player_state(new_state : State) -> void:
 	player_state = new_state
 	_debug_player_state()
-	_update_last_player_state() 
 	
+func set_last_player_state() -> void:
+	_update_last_player_state()	
 
 func get_player_state() -> State:
 	return player_state

@@ -163,3 +163,21 @@ static func start_pipesnap(xform: Transform3D, pos: Vector3, vel: Vector3, last_
 		"vel": _path_vel,
 		"flip": _flip
 	}
+	
+static func landed_on_feet(_ray_down : Dictionary, _up_direction : Vector3, _threshold : float) -> Dictionary:
+	if _ray_down:
+		var _dot : float = _up_direction.dot(_ray_down.normal)
+		return {
+			"valid": _dot >= _threshold,
+			"dot": _dot
+			} 			
+	return {
+			"valid": true,
+			}
+			
+static func landed_perpendicular(_fwd_vel : Vector3, _fwd_dir : Vector3 , _threshold : float) -> Dictionary:
+	var _dot : float = abs(_fwd_vel.normalized().dot(_fwd_dir))
+	return {
+		"valid": _dot >= _threshold,
+		"dot": _dot
+		}

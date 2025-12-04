@@ -12,6 +12,9 @@ const GRAVITY : float = 15.0
 const BALANCE_MULTI : float= 0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 10.0
+const FLOOR_FALL_THRESHOLD : float = 0.25
+const PERPENDICULAR_FALL_THRESHOLD : float = 1.0
+const AIR_BOUNCE_STRENGTH : float = 0.25
 
 #global movement variables
 var xform = null
@@ -77,6 +80,7 @@ func _physics_process(delta):
 			_reset_player(last_ground_pos + Vector3.UP * 0.1)
 	xform = global_transform
 	_surface_check()
+	Char_Statemachine.set_last_player_state()
 	_player_state()
 	_fall_check()
 	match Char_Statemachine.player_state:
@@ -137,7 +141,7 @@ func _player_state():
 			return
 	
 	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)	
-	if _closest_path != null:
+	if _closest_path != null and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAP):
 		path = _closest_path
 		path_closed = LibHelpers.is_path_closed(path)
 		curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
@@ -164,7 +168,6 @@ func _player_state():
 	if !ray_ground:	#behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, position, velocity, last_up_dir, path, path_offset)
-			print(_pipe_snap.valid)
 			if _pipe_snap.valid:
 				curve_tangent = _pipe_snap.tan
 				path_dir = _pipe_snap.dir
@@ -194,7 +197,7 @@ func _surface_check():
 	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5, self)
 	ray_forward = LibHelpers.raycast(position + xform.basis.y, velocity.normalized().slide(xform.basis.y),0.5, self)
 	ray_path = LibHelpers.raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5, self)
-	ray_down = LibHelpers.raycast(position, Vector3.DOWN, 1.0, self)
+	ray_down = LibHelpers.raycast(position + xform.basis.y * 0.25, Vector3.DOWN, 0.5, self)
 
 func _set_up_direction():
 	if ray_ground:	
@@ -277,8 +280,9 @@ func _grind_movement(delta) -> void:
 	velocity = xform.basis.z * path_vel * path_dir
 	if Char_Input.get_input_tricks().z:
 		velocity = xform.basis.z * abs(path_vel)
-		velocity += Vector3.UP * Char_Input.get_input_tricks().z * JUMP_VEL
+		velocity += xform.basis.y * Char_Input.get_input_tricks().z * JUMP_VEL
 		velocity += xform.basis.x * balance_dir
+		Char_Input.set_jump_cooldown()
 		path = null
 		return
 	_balance_logic(delta, 0)
@@ -295,6 +299,7 @@ func _lip_movement(delta) -> void:
 		velocity = lip_start_vel.normalized() * -1
 		up_direction = Vector3.UP
 		rotation.y = atan2(lip_start_dir.x * -balance_dir,lip_start_dir.z * -balance_dir)
+		Char_Input.set_jump_cooldown()
 	_balance_logic(delta, 1)
 
 func _randomize_balance() -> void:
@@ -328,12 +333,13 @@ func _check_reverse_motion() -> void:
 		LibHelpers.revert_motion()
 
 func _check_bounce_path(air : bool) -> void:
+	if ray_path:
+		print("hit!")
 	if ray_path and !revert_path:
 		if air:
-			path_vel *= -0.1
+			path_vel *= -AIR_BOUNCE_STRENGTH
 		else: 
 			path_vel *= -1.0
-			look_at(global_position + curve_tangent * -path_dir, up_direction)
 		path_dir *= -1
 		revert_path = true
 	if !ray_path:
@@ -342,18 +348,25 @@ func _check_bounce_path(air : bool) -> void:
 func _fall_check() -> void:
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.FALL):
 		return
+	if global_position.y < - 100:
+		_fall("out of bounds!", position)
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.GRIND) or Char_Statemachine.is_player_state(Char_Statemachine.State.LIP):
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)
 			return
-			
-	#if (is_on_wall_only() or is_on_ceiling()) and up_direction.dot(Vector3.UP) < 0.5 and player_state != State.PIPESNAP:	
-		#_fall("Wall", up_direction.dot(Vector3.UP))	
-	#	print(get_floor_normal())	
-	#	return
-	#if is_on_wall_only() and get_wall_normal().dot(up_direction) < 0.1:
-	#	_fall("Wall", get_wall_normal().dot(up_direction))	
-	#hor_vel = abs(last_vel.slide(xform.basis.y).length())
-	#fall_check = abs(xform.basis.z.dot(last_vel.slide(xform.basis.y).normalized()))
-	#if (player_state == State.GROUND or player_state == State.PIPE) and fall_check < 0.5 and hor_vel > 0.5:
-	#	_fall("Floor", fall_check)
+	if Char_Statemachine.is_last_player_state(Char_Statemachine.State.AIR) or Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPESNAPAIR):
+		var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, FLOOR_FALL_THRESHOLD)
+		if !_on_feet.valid:
+			_fall("faceplant", _on_feet.dot)
+			return
+	var _is_ground = Char_Statemachine.is_player_state(Char_Statemachine.State.GROUND) or Char_Statemachine.is_player_state(Char_Statemachine.State.PIPE)
+	var _last_air = Char_Statemachine.is_last_player_state(Char_Statemachine.State.AIR) or Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPESNAP)
+	if !_is_ground or !_last_air:
+		return
+	var _fwd_vel := LibHelpers.forward_velocity(velocity, up_direction)
+	if _fwd_vel.length() <= PERPENDICULAR_FALL_THRESHOLD:
+		return
+	var _perp := LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, FLOOR_FALL_THRESHOLD)
+	if _perp.valid:
+		return
+	_fall("perpendicular", _perp.dot)
