@@ -236,7 +236,7 @@ func _ground_movement(delta):
 		velocity +=xform.basis.z * ACC * 0.25
 	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
 		velocity += xform.basis.z * Char_Input.get_input().z * ACC
-	if Char_Input.get_input_tricks().z > 0:
+	if Char_Input.get_input_tricks().z > 0 and Char_Input.can_jump():
 		velocity += Vector3.UP * JUMP_VEL
 		Char_Input.set_jump_cooldown()
 	velocity.y -= GRAVITY * delta
