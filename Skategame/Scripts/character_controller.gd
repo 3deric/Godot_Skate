@@ -12,8 +12,8 @@ const GRAVITY : float = 15.0
 const BALANCE_MULTI : float= 0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 10.0
-const FLOOR_FALL_THRESHOLD : float = 0.25
-const PERPENDICULAR_FALL_THRESHOLD : float = 1.0
+const FLOOR_FALL_THRESHOLD : float = 0.5
+const PERPENDICULAR_FALL_THRESHOLD : float = 2.0
 const AIR_BOUNCE_STRENGTH : float = 0.25
 
 #global movement variables
@@ -177,6 +177,7 @@ func _player_state():
 				return			
 		if !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAP) and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPESNAPAIR):
 			Char_Statemachine.set_player_state(Char_Statemachine.State.AIR)
+			return
 	if Char_Statemachine.is_player_state(Char_Statemachine.State.AIR):
 		if is_on_floor() and !Char_Statemachine.is_player_state(Char_Statemachine.State.GROUND):
 			Char_Statemachine.set_player_state(Char_Statemachine.State.GROUND)
@@ -225,7 +226,7 @@ func _reset_player(_pos):
 	Char_Statemachine.reset_player_state()
 
 func _ground_movement(delta): 	
-	if Char_Statemachine.is_player_state(Char_Statemachine.State.GROUND):
+	if Char_Statemachine.is_player_state(Char_Statemachine.State.GROUND) and path == null:
 		last_ground_pos = global_position
 	if Char_Input.get_input().y < 0:
 		velocity *= 0.95
@@ -367,6 +368,5 @@ func _fall_check() -> void:
 	if _fwd_vel.length() <= PERPENDICULAR_FALL_THRESHOLD:
 		return
 	var _perp := LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, FLOOR_FALL_THRESHOLD)
-	if _perp.valid:
-		return
-	_fall("perpendicular", _perp.dot)
+	if !_perp.valid:
+		_fall("perpendicular", _perp.dot)
