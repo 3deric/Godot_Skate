@@ -33,6 +33,8 @@ var ray_forward : Dictionary = {}
 var ray_ground : Dictionary = {}
 var ray_path : Dictionary = {}
 var ray_down : Dictionary = {}
+var on_wall : bool = false
+var last_on_wall : bool = false
 
 #global object references
 @onready var Area : Area3D = get_node('Area3D')
@@ -195,8 +197,8 @@ func _player_state():
 			return
 
 func _surface_check():
-	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5, self)
-	ray_forward = LibHelpers.raycast(position + xform.basis.y, velocity.normalized().slide(xform.basis.y),0.5, self)
+	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.25, self)
+	ray_forward = LibHelpers.raycast(position + xform.basis.y * 0.25, xform.basis.z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5, self)
 	ray_down = LibHelpers.raycast(position + xform.basis.y * 0.25, Vector3.DOWN, 0.5, self)
 
@@ -241,6 +243,7 @@ func _ground_movement(delta):
 		velocity += Vector3.UP * JUMP_VEL
 		Char_Input.set_jump_cooldown()
 	velocity.y -= GRAVITY * delta
+	_wall_bounce()
 	velocity = LibHelpers.kill_orthogonal_velocity(xform, velocity)
 
 func _air_movement(_delta): 	
@@ -279,7 +282,7 @@ func _grind_movement(delta) -> void:
 	if _target != position:
 		look_at(_target, up_direction)
 	velocity = xform.basis.z * path_vel * path_dir
-	if Char_Input.get_input_tricks().z:
+	if Char_Input.get_input_tricks().z and Char_Input.can_jump():
 		velocity = xform.basis.z * abs(path_vel)
 		velocity += xform.basis.y * Char_Input.get_input_tricks().z * JUMP_VEL
 		velocity += xform.basis.x * balance_dir
@@ -293,7 +296,7 @@ func _lip_movement(delta) -> void:
 	position = _curve.sample_baked(path_offset)
 	up_direction = _curve.sample_baked_up_vector(path_offset)
 	rotation.y = atan2(lip_start_dir.x,lip_start_dir.z)
-	if(Char_Input.get_input_tricks().z):
+	if(Char_Input.get_input_tricks().z) and Char_Input.can_jump():
 		velocity = velocity.normalized() * -1
 		Char_Statemachine.set_player_state(Char_Statemachine.State.AIR)
 		position -= lip_start_dir * balance_dir * 0.5
@@ -370,3 +373,35 @@ func _fall_check() -> void:
 	var _perp := LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, FLOOR_FALL_THRESHOLD)
 	if !_perp.valid:
 		_fall("perpendicular", _perp.dot)
+
+func _wall_bounce() -> void:
+	if ray_forward and ray_forward.collider.is_in_group("wall"):
+		on_wall = true
+		if not last_on_wall:
+			print("Wall hit!")
+			var normal = ray_forward.normal      
+	else:
+		on_wall = false
+	last_on_wall = on_wall
+	pass
+	#var _vel_length = LibHelpers.forward_velocity(velocity, up_direction).length()
+	#if _vel_length < 1.0:
+		#return
+	#if get_slide_collision_count() > 0:
+		#for i in range(get_slide_collision_count()):
+			#var collision = get_slide_collision(i)
+			#var collider = collision.get_collider()	
+			#if collider and collider.is_in_group("wall"):
+				#var normal = collision.get_normal()
+				#velocity = xform.basis.z.bounce(normal) * _vel_length
+				#position += normal * 0.1
+				#print("Wall bounce! Normal: ", normal, " Velocity: ", velocity.length())
+				#look_at(global_position - velocity.normalized())
+				#on_wall = true
+				#break  # Only handle first wall collision
+				#
+	#else:
+		#on_wall = false
+			
+		
+	
