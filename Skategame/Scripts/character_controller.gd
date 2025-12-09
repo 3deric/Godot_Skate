@@ -197,7 +197,7 @@ func _player_state():
 			return
 
 func _surface_check():
-	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.25, self)
+	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.1, xform.basis.y, -0.5, self)
 	ray_forward = LibHelpers.raycast(position + xform.basis.y * 0.25, xform.basis.z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5, self)
 	ray_down = LibHelpers.raycast(position + xform.basis.y * 0.25, Vector3.DOWN, 0.5, self)
