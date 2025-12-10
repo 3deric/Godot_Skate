@@ -165,9 +165,10 @@ func _player_state():
 				lip_start_up = lip_start.up
 				Char_Statemachine.set_player_state(Char_Statemachine.State.LIP)
 				return
-	if !ray_ground:	#behavior while in air, or sticked to a pipe
+	if !ray_ground: #behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
+			print(_pipe_snap.valid)
 			if _pipe_snap.valid and !ray_ground:
 				curve_tangent = _pipe_snap.tan
 				path_dir = _pipe_snap.dir
@@ -191,6 +192,8 @@ func _player_state():
 			Char_Statemachine.set_player_state(Char_Statemachine.State.GROUND)
 	if ray_ground:
 		var _coll_info = ray_ground.collider
+		if _coll_info.is_in_group("wall"):
+			return
 		if ray_ground.normal.dot(xform.basis.y) < 0.5:
 			return
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(Char_Statemachine.State.PIPE):
@@ -203,14 +206,18 @@ func _player_state():
 			return
 
 func _surface_check():
-	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.05, -xform.basis.y, 0.45, self)
+	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.05, -xform.basis.y, 0.65, self)
 	ray_forward = LibHelpers.raycast(position + xform.basis.y * 0.25, xform.basis.z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.5, self)
 	ray_down = LibHelpers.raycast(position + xform.basis.y * 0.05, Vector3.DOWN, 0.3, self)
+	if ray_ground:
+		if ray_ground.collider.is_in_group("wall"):
+			ray_ground = {}
 
 func _set_up_direction():
 	if ray_ground:	
-		up_direction = ray_ground.normal
+		if !ray_ground.collider.is_in_group("wall"):
+			up_direction = ray_ground.normal
 	else:
 		up_direction = last_up_dir	
 
