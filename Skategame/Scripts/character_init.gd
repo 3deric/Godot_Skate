@@ -2,6 +2,16 @@ class_name CharacterInit
 extends Node3D
 
 @export var is_playing : bool = false
+var start_position : Vector3 = Vector3.ZERO
+@onready var Char_Controller : CharacterController = $Character
+
+
+func _ready() -> void:
+	start_position = global_position
+	Char_Controller.init_player()
 
 func get_is_playing() -> bool:
 	return is_playing
+	
+func get_start_position() -> Vector3:
+	return start_position
