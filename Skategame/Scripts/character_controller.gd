@@ -211,10 +211,12 @@ func _player_state():
 			return
 
 func _surface_check():
-	ray_ground = LibHelpers.raycast(position + xform.basis.y * 0.05, -xform.basis.y, 0.5, self)
-	ray_forward = LibHelpers.raycast(position + xform.basis.y * 0.25, xform.basis.z, 1.0, self)
-	ray_path = LibHelpers.raycast(position + xform.basis.y * 1.0, curve_tangent * path_dir, -0.25, self)
-	ray_down = LibHelpers.raycast(position + xform.basis.y * 0.05, Vector3.DOWN, 0.3, self)
+	var _basis_y = xform.basis.y
+	var _basis_z = xform.basis.z
+	ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)
+	ray_forward = LibHelpers.raycast(position + _basis_y * 0.25, _basis_z, 1.0, self)
+	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
+	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.3, self)
 	if ray_ground:
 		if ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
@@ -242,6 +244,7 @@ func _reset_player(_pos, _rot):
 	last_vel = Vector3.ZERO
 	global_position = _pos
 	global_rotation = _rot
+	Camera_Pos.global_position = _pos
 	balance_angle = 0.0
 	Char_Statemachine.reset_player_state()
 

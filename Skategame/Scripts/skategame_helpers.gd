@@ -75,10 +75,9 @@ static func limit_velocity(_vel : Vector3, _max_vel : float):
 		return _vel.normalized() * _max_vel
 		
 static func kill_orthogonal_velocity(_xForm : Transform3D, _vel: Vector3) -> Vector3: 	#remove orthogonal component of velocity
-	var _fwdVel : Vector3 = _xForm.basis.z * _vel.dot(_xForm.basis.z)
-	var _ortVel : Vector3 = _xForm.basis.x * _vel.dot(_xForm.basis.x)
-	var _upVel : Vector3 = _xForm.basis.y  * _vel.dot(_xForm.basis.y)
-	var _velocity :Vector3 = _fwdVel + _ortVel * 0.1 + _upVel
+	var _basis = _xForm.basis
+	var _fwdVel = _basis.z * _vel.dot(_basis.z)
+	var _velocity = _fwdVel + (_basis.x * _vel.dot(_basis.x)) * 0.1 + _basis.y * _vel.dot(_basis.y)
 	return _velocity
 
 static func kill_pipe_orthogonal_velocity(_vel: Vector3, _tangent: Vector3):
