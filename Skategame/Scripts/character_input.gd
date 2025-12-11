@@ -4,7 +4,7 @@ extends Node3D
 @onready var Char_Controller : CharacterController = $".."
 @onready var Char_Init : CharacterInit = $"../.."
 
-const JUMP_COOLDOWN = 1.0
+const JUMP_COOLDOWN : float = 1.0
 
 var input : Vector3i = Vector3.ZERO #input values
 var input_tricks : Vector3i = Vector3.ZERO #input values for tricks

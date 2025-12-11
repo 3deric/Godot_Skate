@@ -49,9 +49,9 @@ static func get_position_on_curve(_path: Path3D, _offset):
 	var _curvePos: Vector3 = _curve.sample_baked(_offset, true)
 	return _curvePos
 	
-static func get_stick_curve(_path: Path3D,_offset: float):
+static func get_stick_curve(_path: Path3D,_offset: float, _threshold):
 	var _curve: Curve3D = _path.curve
-	if(_offset <= 0.1 or _offset >= _curve.get_baked_length() -.1):
+	if(_offset <= _threshold or _offset >= _curve.get_baked_length() -_threshold):
 		return false
 	else:
 		return true
@@ -155,7 +155,7 @@ static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offse
 	var _flip : bool = xform.basis.y.dot(_dir) > 0
 	var _path_dir : int = LibHelpers.get_path_dir(_tan, vel, 0.1)
 	var _path_vel : float = vel.project(_tan * Vector3(1,0,1)).length() * _path_dir
-	var _stick : bool = LibHelpers.get_stick_curve(path, offset)
+	var _stick : bool = LibHelpers.get_stick_curve(path, offset, 0.25)
 	return {
 		"valid": _stick,
 		"tan": _tan,

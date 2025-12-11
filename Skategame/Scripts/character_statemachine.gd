@@ -14,14 +14,20 @@ enum State {
 	MANUAL
 	}
 
+const STATE_UPDATE_COOLDOWN_TIME : float = 0.05
 
 var player_state : State = State.RESET
 var last_player_state : State = State.RESET
+var state_update_cooldown : float = 0.0
 
+
+func _process(delta: float) -> void:
+	_update_state_cooldown(delta)
 
 func set_player_state(new_state : State) -> void:
 	player_state = new_state
 	_debug_player_state()
+	_set_state_cooldown()
 	
 func set_last_player_state() -> void:
 	_update_last_player_state()	
@@ -54,3 +60,13 @@ func _update_last_player_state() -> void:
 func _debug_player_state() -> void:
 	if(player_state != last_player_state):
 		print(State.find_key(player_state))
+
+func get_can_change_state() -> bool:
+	return state_update_cooldown < 0.01
+	
+func _set_state_cooldown():
+	state_update_cooldown = STATE_UPDATE_COOLDOWN_TIME
+	
+func _update_state_cooldown(_delta : float):
+	if state_update_cooldown >= 0:
+		state_update_cooldown -= _delta

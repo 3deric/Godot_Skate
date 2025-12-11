@@ -61,7 +61,7 @@ transform = Transform3D(1, 0, 1.0658141e-14, 0, 1, 0, -1.0658141e-14, 0, 1, 0.52
 fov = 20.0
 
 [node name="Player_Character" parent="." instance=ExtResource("3_3wad2")]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.155, 0, 0.62)
+transform = Transform3D(0.9955373, 0, 0.09436897, 0, 1, 0, -0.09436897, 0, 0.9955373, 0.155, 0, 0.62)
 
 [node name="SM_Cyclorama" parent="." instance=ExtResource("5_s73hg")]
 transform = Transform3D(1, 0, 1.0658141e-14, 0, 1, 0, -1.0658141e-14, 0, 1, 0.647921, 0, 0)
