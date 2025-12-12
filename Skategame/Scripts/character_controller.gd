@@ -172,8 +172,9 @@ func _player_state():
 	if !ray_ground: #behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(Char_Statemachine.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
-			print(_pipe_snap.valid)
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 0.25)
+			if path_closed: #always set stick to true when the path is closed
+				_stick = true
 			if _pipe_snap.valid and !ray_ground and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
 				curve_tangent = _pipe_snap.tan
 				path_dir = _pipe_snap.dir
