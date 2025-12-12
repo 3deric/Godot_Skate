@@ -1,3 +1,4 @@
+class_name IngameOverlay
 extends Control
 
 @onready var Fail_View: Control = get_node('FailView')

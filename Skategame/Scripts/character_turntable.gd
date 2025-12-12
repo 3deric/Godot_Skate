@@ -1,22 +1,15 @@
+class_name CharacterTurntable
 extends Node3D
 
-@onready var character: CharacterBody3D = $"../Character"
+@onready var Char_Controller: CharacterController = $".."
+@onready var Char_Input: CharacterInput = $"../Char_Input"
+@onready var Player_Character: CharacterInit = $"../.."
 
-#global movement constants
-const ROT :float= 2.0
+const ROT : float= 2.0
 
-#input variables
-var input : Vector3 = Vector3.ZERO #input values
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	_input_handler()
-	_rotate(delta)
-
-
-func _input_handler() -> void: 	#handles player inputs
-	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
-
+func _physics_process(delta: float) -> void:
+	if !Player_Character.get_is_playing():
+		_rotate(delta)
 
 func _rotate(_delta) -> void:
-	character.rotate_y(input.x * ROT * _delta)
+	Char_Controller.rotate_y(Char_Input.get_input().x * ROT * _delta)

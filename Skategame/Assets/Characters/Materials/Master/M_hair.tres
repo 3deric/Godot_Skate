@@ -45,7 +45,7 @@ operator = 7
 operator = 7
 
 [sub_resource type="VisualShaderNodeClamp" id="VisualShaderNodeClamp_y2i84"]
-default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(0.01, 0.01, 0.01), 2, Vector3(0.7, 0.7, 0.7)]
+default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(0.02, 0.02, 0.02), 2, Vector3(0.7, 0.7, 0.7)]
 op_type = 4
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_mrnlg"]
@@ -55,7 +55,7 @@ default_value = Color(0.106055, 0.0649224, 0.0621805, 1)
 
 [resource]
 code = "shader_type spatial;
-render_mode blend_mix, depth_draw_always, cull_disabled, diffuse_lambert, specular_schlick_ggx;
+render_mode blend_mix, depth_draw_always, depth_test_default, cull_disabled, diffuse_lambert, specular_schlick_ggx;
 
 uniform vec4 hair_color : source_color = vec4(0.106055, 0.064922, 0.062181, 1.000000);
 uniform sampler2D attribute;
@@ -113,14 +113,14 @@ void fragment() {
 	vec4 n_out42p0;
 // Texture2D:42
 	n_out42p0 = texture(tangent, UV);
-	float n_out42p4 = n_out42p0.a;
+	float n_out42p3 = n_out42p0.b;
 
 
 	vec3 n_out47p0;
 // ColorOp:47
 	{
 		float base = n_out46p0.x;
-		float blend = vec3(n_out42p4).x;
+		float blend = vec3(n_out42p3).x;
 		if (base < 0.5) {
 			n_out47p0.x = (base * (blend + 0.5));
 		} else {
@@ -129,7 +129,7 @@ void fragment() {
 	}
 	{
 		float base = n_out46p0.y;
-		float blend = vec3(n_out42p4).y;
+		float blend = vec3(n_out42p3).y;
 		if (base < 0.5) {
 			n_out47p0.y = (base * (blend + 0.5));
 		} else {
@@ -138,7 +138,7 @@ void fragment() {
 	}
 	{
 		float base = n_out46p0.z;
-		float blend = vec3(n_out42p4).z;
+		float blend = vec3(n_out42p3).z;
 		if (base < 0.5) {
 			n_out47p0.z = (base * (blend + 0.5));
 		} else {
@@ -148,7 +148,7 @@ void fragment() {
 
 
 // Clamp:48
-	vec3 n_in48p1 = vec3(0.01000, 0.01000, 0.01000);
+	vec3 n_in48p1 = vec3(0.02000, 0.02000, 0.02000);
 	vec3 n_in48p2 = vec3(0.70000, 0.70000, 0.70000);
 	vec3 n_out48p0 = clamp(n_out47p0, n_in48p1, n_in48p2);
 
@@ -188,7 +188,7 @@ void fragment() {
 "
 modes/depth_draw = 1
 modes/cull = 2
-nodes/fragment/0/position = Vector2(2920, 20)
+nodes/fragment/0/position = Vector2(2500, 20)
 nodes/fragment/7/node = SubResource("VisualShaderNodeColorParameter_mrnlg")
 nodes/fragment/7/position = Vector2(-60, -640)
 nodes/fragment/19/node = SubResource("VisualShaderNodeFloatParameter_xrlae")
@@ -200,11 +200,11 @@ nodes/fragment/37/position = Vector2(1640, 1060)
 nodes/fragment/38/node = SubResource("VisualShaderNodeTexture2DParameter_tgsed")
 nodes/fragment/38/position = Vector2(-120, -200)
 nodes/fragment/39/node = SubResource("VisualShaderNodeTexture2DParameter_3sbne")
-nodes/fragment/39/position = Vector2(20, 160)
+nodes/fragment/39/position = Vector2(340, 240)
 nodes/fragment/40/node = SubResource("VisualShaderNodeTexture_8vsnn")
 nodes/fragment/40/position = Vector2(380, -120)
 nodes/fragment/42/node = SubResource("VisualShaderNodeTexture_lhhjn")
-nodes/fragment/42/position = Vector2(360, 220)
+nodes/fragment/42/position = Vector2(860, 260)
 nodes/fragment/44/node = SubResource("VisualShaderNodeFloatOp_42kes")
 nodes/fragment/44/position = Vector2(1560, 140)
 nodes/fragment/45/node = SubResource("VisualShaderNodeFloatParameter_1l68f")
@@ -212,7 +212,7 @@ nodes/fragment/45/position = Vector2(2220, 1080)
 nodes/fragment/46/node = SubResource("VisualShaderNodeColorOp_ttt60")
 nodes/fragment/46/position = Vector2(980, -260)
 nodes/fragment/47/node = SubResource("VisualShaderNodeColorOp_4agcd")
-nodes/fragment/47/position = Vector2(1440, -80)
+nodes/fragment/47/position = Vector2(1320, -100)
 nodes/fragment/48/node = SubResource("VisualShaderNodeClamp_y2i84")
 nodes/fragment/48/position = Vector2(1820, -260)
-nodes/fragment/connections = PackedInt32Array(19, 0, 0, 11, 28, 0, 0, 12, 37, 0, 0, 15, 38, 0, 40, 2, 39, 0, 42, 2, 45, 0, 0, 19, 40, 1, 46, 1, 46, 0, 47, 0, 42, 4, 47, 1, 44, 0, 0, 1, 40, 4, 0, 3, 40, 1, 44, 0, 7, 0, 46, 0, 47, 0, 48, 0, 48, 0, 0, 0)
+nodes/fragment/connections = PackedInt32Array(19, 0, 0, 11, 28, 0, 0, 12, 37, 0, 0, 15, 38, 0, 40, 2, 39, 0, 42, 2, 45, 0, 0, 19, 40, 1, 46, 1, 46, 0, 47, 0, 44, 0, 0, 1, 40, 4, 0, 3, 40, 1, 44, 0, 7, 0, 46, 0, 48, 0, 0, 0, 42, 3, 47, 1, 47, 0, 48, 0)
