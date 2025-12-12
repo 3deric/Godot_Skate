@@ -57,7 +57,7 @@ func _animation_handler(delta):
 			anim_tree.set('parameters/conditions/is_air',false)
 			anim_tree.set('parameters/conditions/is_grind', false)
 			anim_tree.set('parameters/conditions/is_lip', false)
-			if Char_Controller.velocity.length() > 0.25:
+			if Char_Controller.velocity.length() > 0.05:
 				anim_tree.set('parameters/conditions/is_riding', true)
 				anim_tree.set('parameters/conditions/is_stopped', false)
 			else:
