@@ -34,25 +34,25 @@ func _process(delta: float) -> void:
 
 
 func _set_vis_balance():
-	if Char_Statemachine.is_player_state(Char_Statemachine.State.GRIND):
+	if Char_Statemachine.is_player_state(CharStates.State.GRIND):
 		Char.rotation.z = -Char_Controller.balance_angle * 0.5
 		return
-	if Char_Statemachine.is_player_state(Char_Statemachine.State.LIP):
+	if Char_Statemachine.is_player_state(CharStates.State.LIP):
 		Char.rotation.x = -Char_Controller.balance_angle * 0.5	
 
 
 func _lerp_vis_transform(_delta, _speed):
 	Char.global_transform = Char.global_transform.interpolate_with(Char_Controller.global_transform, _delta * _speed)
-	if !Char_Statemachine.is_player_state(Char_Statemachine.State.GRIND):
+	if !Char_Statemachine.is_player_state(CharStates.State.GRIND):
 		Char.global_position = Char_Controller.global_position
 
 
 func _animation_handler(delta):
 	anim_blend = anim_blend.lerp(Vector2(Char_Input.input.x, Char_Input.input.y), delta * ANIM_INTERP_SPEED)
 	match Char_Statemachine.player_state:
-		Char_Statemachine.State.FALL:
+		CharStates.State.FALL:
 			return
-		Char_Statemachine.State.GROUND, Char_Statemachine.State.PIPE:	
+		CharStates.State.GROUND, CharStates.State.PIPE:	
 			anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/conditions/is_air',false)
 			anim_tree.set('parameters/conditions/is_grind', false)
@@ -64,21 +64,21 @@ func _animation_handler(delta):
 				anim_tree.set('parameters/conditions/is_riding', false)
 				anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/Ground/blend_position', anim_blend)
-		Char_Statemachine.State.AIR, Char_Statemachine.State.PIPESNAP, Char_Statemachine.State.PIPESNAPAIR:
+		CharStates.State.AIR, CharStates.State.PIPESNAP, CharStates.State.PIPESNAPAIR:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', true)
 			anim_tree.set('parameters/conditions/is_grind', false)
 			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Air/blend_position', anim_blend)
-		Char_Statemachine.State.GRIND:
+		CharStates.State.GRIND:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', false)
 			anim_tree.set('parameters/conditions/is_grind', true)
 			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Grind/blend_position', anim_blend)
-		Char_Statemachine.State.LIP:
+		CharStates.State.LIP:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/conditions/is_air', false)
