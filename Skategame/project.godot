@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 CustomizationManager="*res://Scripts/customization_manager.gd"
+CharStates="*res://Scripts/character_states.gd"
 
 [debug]
 
