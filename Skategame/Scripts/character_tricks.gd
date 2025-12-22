@@ -18,14 +18,14 @@ func _ready() -> void:
 	
 	
 func _process(delta: float) -> void:
+	if combo_cooldown > 0.0:
+		combo_cooldown -= delta
 	if !is_trick:
 		return
 	if curr_trick_state == CharStates.State.AIR or\
 		curr_trick_state == CharStates.State.PIPESNAP or\
 		curr_trick_state == CharStates.State.PIPESNAPAIR:
 		curr_trick_rot += Char_Input.get_input().x * Char.ROT_JUMP
-	if combo_cooldown > 0.0:
-		combo_cooldown -= delta
 		
 		
 func set_start_trick(state : CharStates.State) -> void:
