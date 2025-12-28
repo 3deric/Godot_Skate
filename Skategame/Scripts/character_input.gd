@@ -4,15 +4,18 @@ extends Node3D
 @onready var Char_Controller : CharacterController = $".."
 @onready var Char_Init : CharacterInit = $"../.."
 
-const JUMP_COOLDOWN : float = 1.0
+const JUMP_COOLDOWN : float = 0.5
+const INPUT_COOLDOWN : float = 0.25
 
-var input : Vector3i = Vector3.ZERO #input values
-var input_tricks : Vector3i = Vector3.ZERO #input values for tricks
+var input : Vector3i = Vector3i.ZERO #input values
+var input_tricks : Vector3i = Vector3i.ZERO #input values for tricks
 var _jump_timer : float = 0.0
-
+var _input_timer : float = 0.0
+var last_input : Vector3i = Vector3i.ZERO
 
 func _process(_delta):
 	_jump_cooldown(_delta)
+	_input_cooldown(_delta)
 	_input_handler()
 	
 func _input_handler(): 	#handles player inputs
@@ -22,10 +25,20 @@ func _input_handler(): 	#handles player inputs
 	input_tricks.x = int(Input.is_action_pressed('Grind'))
 	input_tricks.y = int(Input.is_action_pressed('Revert'))
 	input_tricks.z = int(Input.is_action_just_released('Jump'))
+	
+	if input != Vector3i.ZERO:
+		last_input = input
+		_input_timer = INPUT_COOLDOWN
 
 func _jump_cooldown(_delta) -> void:
 	if _jump_timer > 0:
 		_jump_timer -= _delta
+		
+func _input_cooldown(_delta) -> void:
+	if _input_timer > 0:
+		_input_timer -= _delta
+	else:
+		last_input = Vector3i.ZERO
 
 func can_jump() -> bool:
 	return _jump_timer < 0.01
@@ -38,3 +51,6 @@ func get_input() -> Vector3i:
 	
 func get_input_tricks() -> Vector3i:
 	return input_tricks
+	
+func get_last_input() -> Vector3i:
+	return last_input
