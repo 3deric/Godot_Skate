@@ -164,7 +164,6 @@ static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offse
 	}
 	
 static func landed_on_feet(_ray_down : Dictionary, _up_direction : Vector3, _threshold : float) -> Dictionary:
-	print(_up_direction.dot(Vector3.UP))
 	if _up_direction.dot(Vector3.UP) > 0.05:
 		return {
 			"valid": true
