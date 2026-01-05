@@ -4,6 +4,8 @@ extends Node3D
 const COMBO_COOLDOWN_TIME : float = 0.5
 const ROT_ROUNDING : float = 45
 
+var available_tricks: Array[Trick] = []
+
 var curr_trick_rot : float = 0.0
 var curr_trick_time : float = 0.0
 var curr_trick_state : CharStates.State = CharStates.State.RESET
@@ -34,10 +36,11 @@ func _process(delta: float) -> void:
 func set_start_trick(state : CharStates.State) -> void:
 	if is_trick or combo_cooldown > 0.01:
 		_set_append_trick(state)
-		print("ending trick! with rot: " + str(abs(curr_trick_rot)))
-		print("appending trick!")			
+		#print("ending trick! with rot: " + str(abs(curr_trick_rot)))
+		#print("appending trick!")			
 	else:
-		print("starting trick!")
+		pass
+		#print("starting trick!")
 	is_trick = true
 	curr_trick_state = state
 	

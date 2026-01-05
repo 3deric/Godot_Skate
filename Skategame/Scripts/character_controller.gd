@@ -217,7 +217,7 @@ func _surface_check():
 	ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.25, _basis_z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
-	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.3, self)
+	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
 	if ray_ground:
 		if ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
@@ -248,6 +248,7 @@ func _reset_player(_pos, _rot):
 	Camera_Pos.global_position = _pos
 	balance_angle = 0.0
 	Char_Statemachine.reset_player_state()
+	Char_Input.reset()
 
 func _ground_movement(delta): 	
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) and path == null:
@@ -387,7 +388,7 @@ func _fall_check() -> void:
 			var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, FLOOR_FALL_THRESHOLD)
 			if !_on_feet.valid:
 				_fall("faceplant", _on_feet.dot)
-				return
+			return
 	var _is_ground = Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE)
 	var _last_air = Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP)
 	if !_is_ground or !_last_air:

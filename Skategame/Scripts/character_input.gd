@@ -4,18 +4,30 @@ extends Node3D
 @onready var Char_Controller : CharacterController = $".."
 @onready var Char_Init : CharacterInit = $"../.."
 
+enum Action {
+	JUMP,
+	FLIP,
+	GRAB,
+	GRIND,
+	UP,
+	DOWN,
+	LEFT,
+	RIGHT
+	}
+
 const JUMP_COOLDOWN : float = 0.5
 const INPUT_COOLDOWN : float = 0.25
 
+var input_buffer : InputBuffer = InputBuffer.new()
 var input : Vector3i = Vector3i.ZERO #input values
 var input_tricks : Vector3i = Vector3i.ZERO #input values for tricks
 var _jump_timer : float = 0.0
 var _input_timer : float = 0.0
-var last_input : Vector3i = Vector3i.ZERO
 
 func _process(_delta):
+	_update_input_buffer()
+	#input_buffer.debug()
 	_jump_cooldown(_delta)
-	_input_cooldown(_delta)
 	_input_handler()
 	
 func _input_handler(): 	#handles player inputs
@@ -27,18 +39,41 @@ func _input_handler(): 	#handles player inputs
 	input_tricks.z = int(Input.is_action_just_released('Jump'))
 	
 	if input != Vector3i.ZERO:
-		last_input = input
 		_input_timer = INPUT_COOLDOWN
 
 func _jump_cooldown(_delta) -> void:
 	if _jump_timer > 0:
 		_jump_timer -= _delta
 		
-func _input_cooldown(_delta) -> void:
-	if _input_timer > 0:
-		_input_timer -= _delta
-	else:
-		last_input = Vector3i.ZERO
+func _update_input_buffer():
+	if Input.is_action_just_pressed("Jump"):
+		input_buffer.push(Action.JUMP)
+
+	if Input.is_action_just_pressed("Grind"):
+		input_buffer.push(Action.GRIND)
+		
+	#if Input.is_action_just_pressed("Grab"):
+	#	input_buffer.push(Action.GRAB)
+		
+	#if Input.is_action_just_pressed("Flip"):
+	#	input_buffer.push(Action.FLIP)
+
+	if Input.is_action_just_pressed("Forward"):
+		input_buffer.push(Action.UP)
+
+	if Input.is_action_just_pressed("Backward"):
+		input_buffer.push(Action.DOWN)
+		
+	if Input.is_action_just_pressed("Left"):
+		input_buffer.push(Action.LEFT)
+		
+	if Input.is_action_just_pressed("Right"):
+		input_buffer.push(Action.RIGHT)
+
+func reset() -> void:
+	input = Vector3i.ZERO
+	input_tricks = Vector3i.ZERO
+	input_buffer.clear()
 
 func can_jump() -> bool:
 	return _jump_timer < 0.01
@@ -52,5 +87,3 @@ func get_input() -> Vector3i:
 func get_input_tricks() -> Vector3i:
 	return input_tricks
 	
-func get_last_input() -> Vector3i:
-	return last_input
