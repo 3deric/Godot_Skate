@@ -2,6 +2,7 @@ class_name Trick
 extends Node
 
 var trick_name : String
+var duration : float
 var base_score : int
 var difficulty : float
 var base_state : CharacterStates.State
@@ -21,6 +22,7 @@ func matches_input(buffer: Array[int]) -> bool:
 	for i in input_sequence.size():
 		if buffer[start + i] != input_sequence[i]:
 			return false
+	print(trick_name)
 	return true
 
 func calculate_score(combo_multiplier : int = 1) -> int:

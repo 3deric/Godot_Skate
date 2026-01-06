@@ -16,7 +16,6 @@ enum Action {
 	}
 
 const JUMP_COOLDOWN : float = 0.5
-const INPUT_COOLDOWN : float = 0.25
 
 var input_buffer : InputBuffer = InputBuffer.new()
 var input : Vector3i = Vector3i.ZERO #input values
@@ -26,8 +25,9 @@ var _input_timer : float = 0.0
 
 func _process(_delta):
 	_update_input_buffer()
-	#input_buffer.debug()
+	input_buffer.debug()
 	_jump_cooldown(_delta)
+	input_buffer.input_cooldown(_delta)
 	_input_handler()
 	
 func _input_handler(): 	#handles player inputs
@@ -37,9 +37,6 @@ func _input_handler(): 	#handles player inputs
 	input_tricks.x = int(Input.is_action_pressed('Grind'))
 	input_tricks.y = int(Input.is_action_pressed('Revert'))
 	input_tricks.z = int(Input.is_action_just_released('Jump'))
-	
-	if input != Vector3i.ZERO:
-		_input_timer = INPUT_COOLDOWN
 
 func _jump_cooldown(_delta) -> void:
 	if _jump_timer > 0:
@@ -52,24 +49,24 @@ func _update_input_buffer():
 	if Input.is_action_just_pressed("Grind"):
 		input_buffer.push(Action.GRIND)
 		
-	#if Input.is_action_just_pressed("Grab"):
-	#	input_buffer.push(Action.GRAB)
+	if Input.is_action_just_pressed("Grab"):
+		input_buffer.push(Action.GRAB)
 		
-	#if Input.is_action_just_pressed("Flip"):
-	#	input_buffer.push(Action.FLIP)
+	if Input.is_action_just_pressed("Flip"):
+		input_buffer.push(Action.FLIP)
 
 	if Input.is_action_just_pressed("Forward"):
 		input_buffer.push(Action.UP)
 
 	if Input.is_action_just_pressed("Backward"):
 		input_buffer.push(Action.DOWN)
-		
+				
 	if Input.is_action_just_pressed("Left"):
 		input_buffer.push(Action.LEFT)
-		
+				
 	if Input.is_action_just_pressed("Right"):
 		input_buffer.push(Action.RIGHT)
-
+		
 func reset() -> void:
 	input = Vector3i.ZERO
 	input_tricks = Vector3i.ZERO

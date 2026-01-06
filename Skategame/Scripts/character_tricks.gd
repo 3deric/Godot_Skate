@@ -4,7 +4,25 @@ extends Node3D
 const COMBO_COOLDOWN_TIME : float = 0.5
 const ROT_ROUNDING : float = 45
 
-var available_tricks: Array[Trick] = []
+var available_grind_tricks: Array[Trick] = [
+	Frontslide.new(),
+	Tailslide.new(),
+	Fiftyfifty.new(),
+	Darkslide.new(),
+	Boardslide.new()
+	]
+var available_grab_tricks : Array[Trick] = [
+	Nosegrab.new(),
+	Tailgrab.new(),
+	Indygrab.new()
+]
+var available_flip_tricks : Array[Trick] = [
+	Kickflip.new()
+]
+var available_lip_tricks : Array[Trick] = []
+var available_manual_tricks : Array[Trick] = []
+	
+var current_trick : Trick = null
 
 var curr_trick_rot : float = 0.0
 var curr_trick_time : float = 0.0
@@ -16,12 +34,22 @@ var is_trick : bool = false
 @onready var Char_Input : CharacterInput = $"../Char_Input"
 @onready var Char : CharacterController = $".."
 @onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
+@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 	
 func _ready() -> void:
 	pass
 	
-	
-func _process(delta: float) -> void:
+func _process(delta: float) -> void:	
+	_update_trick_ui()
+	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == 3:
+		for trick in available_grind_tricks:
+			if trick.matches_input(Char_Input.input_buffer.buffer):
+				Char_Statemachine.set_player_state(CharStates.State.GRIND)
+				Char_Input.input_buffer.clear()
+				current_trick = trick
+				break
+	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == 3:
+		Char_Statemachine.set_player_state(CharStates.State.LIP)
 	if combo_cooldown > 0.0:
 		combo_cooldown -= delta
 	if !is_trick:
@@ -30,8 +58,6 @@ func _process(delta: float) -> void:
 		curr_trick_state == CharStates.State.PIPESNAP or\
 		curr_trick_state == CharStates.State.PIPESNAPAIR:
 		curr_trick_rot += Char_Input.get_input().x * Char.ROT_JUMP
-		
-	_update_trick_ui()
 			
 func set_start_trick(state : CharStates.State) -> void:
 	if is_trick or combo_cooldown > 0.01:
@@ -52,6 +78,7 @@ func set_end_trick(state : CharStates.State) -> void:
 		print("ending trick! with rot: " + str(abs(curr_trick_rot)))
 		_reset_trick_rot()
 	is_trick = false
+	current_trick = null
 	curr_trick_state = CharStates.State.RESET
 	combo_cooldown = COMBO_COOLDOWN_TIME
 		
@@ -74,8 +101,9 @@ func _rot_round(rot : float) -> String:
 	return ""
 	
 func _update_trick_ui():
-	if curr_trick_state == CharStates.State.FALL:
-		return
-	if curr_trick_state == CharStates.State.RESET:
-		return
-	Ingame_Ui.set_trick_view(CharStates.state_to_string(curr_trick_state) + " " + _rot_round(curr_trick_rot))
+	#if curr_trick_state == CharStates.State.FALL:
+		#return
+	#if curr_trick_state == CharStates.State.RESET:
+		#return
+	if current_trick != null:
+		Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(curr_trick_rot))

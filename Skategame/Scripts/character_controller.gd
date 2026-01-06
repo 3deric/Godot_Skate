@@ -50,6 +50,8 @@ var last_on_wall : bool = false
 @onready var Char_Init : CharacterInit = $".."
 
 #grind and lip trick variables
+var can_grind : bool = false
+var can_lip : bool = false
 var balance_time  : float = 1.0
 var balance_angle : float = 0.0 #value between - pi and pi to balance the player on grinds, lips and manuals
 var balance_dir : int = 0 #defines balance direction based on last input
@@ -70,10 +72,18 @@ func init_player():
 	else:
 		Ingame_Ui.set_fail_view(false)
 		Ingame_Ui.set_balance_view(false)
+		
+func get_can_grind() -> bool:
+	return can_grind
+	
+func get_can_lip() -> bool:
+	return can_lip
 	
 func _physics_process(delta):
 	if !Char_Init.is_playing:
 		return
+	can_grind = false
+	can_lip = false
 	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		fall_timer -= delta
@@ -151,24 +161,23 @@ func _player_state():
 			curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
 			path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
 			path_offset = path.curve.get_closest_offset(position * path.global_transform)
-		if Char_Input.get_input_tricks().x == 1 and !Char_Statemachine.is_player_state(CharStates.State.GRIND):
+		if !Char_Statemachine.is_player_state(CharStates.State.GRIND) and !Char_Statemachine.is_player_state(CharStates.State.LIP):
 			var grind_start : Dictionary = LibHelpers.start_grind(velocity, path, path_offset)
 			if grind_start.valid:
-				_randomize_balance()
 				path_vel = grind_start.vel
 				path_dir = grind_start.dir
 				curve_tangent = grind_start.tan
-				Char_Statemachine.set_player_state(CharStates.State.GRIND)
-				return
+				can_grind = true#Char_Statemachine.set_player_state(CharStates.State.GRIND)
+				#return
 			if path_dir == 0:
-				_randomize_balance()
 				var lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
 				curve_tangent = lip_start.tan
 				lip_start_dir = lip_start.dir
 				lip_start_vel = lip_start.vel
 				lip_start_up = lip_start.up
-				Char_Statemachine.set_player_state(CharStates.State.LIP)
-				return
+				can_lip = true #Char_Statemachine.set_player_state(CharStates.State.LIP)
+				#return
+			_randomize_balance()
 	if !ray_ground: #behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
@@ -296,6 +305,7 @@ func _pipe_snap_air_movement(delta):
 func _grind_movement(delta) -> void: 	
 	if !path:
 		return
+	can_grind = true
 	var _curve : Curve3D = path.curve
 	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
@@ -318,6 +328,9 @@ func _grind_movement(delta) -> void:
 	_balance_logic(delta, 0)
 	
 func _lip_movement(delta) -> void:
+	if !path:
+		return
+	can_lip = true
 	var _curve : Curve3D = path.curve
 	position = _curve.sample_baked(path_offset)
 	up_direction = _curve.sample_baked_up_vector(path_offset)

@@ -119,7 +119,6 @@ static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
 	return _path
 
 static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionary:
-	print(path)
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	if _tan == Vector3.ZERO:
 		return {"valid": false}
@@ -135,7 +134,6 @@ static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionar
 	}
 
 static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
-	print(path)
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	var _dir : Vector3 = _tan.cross(Vector3.UP)
 	if xform.basis.y.dot(_dir) > 0:
@@ -148,7 +146,6 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 	}
 
 static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
-	print(path)
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	var _dir : Vector3 = _tan.cross(Vector3.UP)
 	var _flip : bool = xform.basis.y.dot(_dir) > 0
