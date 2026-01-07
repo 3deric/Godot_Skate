@@ -1,7 +1,7 @@
 class_name InputBuffer
 
-const MAX_SIZE := 3
-const COOLDOWN : float = 0.5
+const MAX_SIZE := 8
+const COOLDOWN : float = 0.25
 var buffer: Array[int] = []
 var cooldown : float = 0
 
@@ -29,4 +29,5 @@ func input_cooldown(_delta) -> void:
 	if cooldown > 0:
 		cooldown -= _delta
 	else:
-		clear()
+		buffer.pop_front()
+		_set_cooldown()

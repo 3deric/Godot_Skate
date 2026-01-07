@@ -50,6 +50,7 @@ var last_on_wall : bool = false
 @onready var Char_Init : CharacterInit = $".."
 
 #grind and lip trick variables
+var can_air : bool = false
 var can_grind : bool = false
 var can_lip : bool = false
 var balance_time  : float = 1.0
@@ -79,15 +80,19 @@ func get_can_grind() -> bool:
 func get_can_lip() -> bool:
 	return can_lip
 	
+func get_can_air() -> bool:
+	return can_air
+
 func _physics_process(delta):
 	if !Char_Init.is_playing:
 		return
+	can_air = false
 	can_grind = false
 	can_lip = false
 	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		fall_timer -= delta
-		if Char_Input.get_input().y and fall_timer < 0.1:
+		if Char_Input.get_input_steering().y and fall_timer < 0.1:
 			_reset_player(last_ground_pos + Vector3.UP * 0.1, last_ground_rot)
 	xform = global_transform
 	_surface_check()
@@ -121,8 +126,6 @@ func _physics_process(delta):
 		apply_floor_snap()
 		
 func _player_state():
-	if !Char_Statemachine.get_can_change_state():
-		return
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
 		return
 	
@@ -179,7 +182,7 @@ func _player_state():
 				#return
 			_randomize_balance()
 	if !ray_ground: #behavior while in air, or sticked to a pipe
-		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input().y == 0 and path:
+		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input_steering().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 0.25)
 			if path_closed: #always set stick to true when the path is closed
@@ -223,7 +226,7 @@ func _player_state():
 func _surface_check():
 	var _basis_y = xform.basis.y
 	var _basis_z = xform.basis.z
-	ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)
+	ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.25, self)
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.25, _basis_z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
 	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
@@ -263,14 +266,14 @@ func _ground_movement(delta):
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) and path == null:
 		last_ground_pos = global_position
 		last_ground_rot = global_rotation
-	if Char_Input.get_input().y < 0:
+	if Char_Input.get_input_steering().y < 0:
 		velocity *= 0.95
-		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_KICKTURN * delta)
+		global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_KICKTURN * delta)
 	else:
-		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT * delta)
-	if Char_Input.get_input().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input().y > 0:
+		global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT * delta)
+	if Char_Input.get_input_steering().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input_steering().y > 0:
 		velocity +=xform.basis.z * ACC * 0.25
-	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
+	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input_steering().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
 		velocity += xform.basis.z * Char_Input.get_input().z * ACC
 	if Char_Input.get_input_tricks().z > 0 and Char_Input.can_jump():
 		velocity += Vector3.UP * JUMP_VEL
@@ -280,13 +283,15 @@ func _ground_movement(delta):
 	velocity = LibHelpers.kill_orthogonal_velocity(xform, velocity)
 
 func _air_movement(_delta): 	
-	var _rot_delta = Char_Input.get_input().x * ROT_JUMP * _delta
+	can_air = true
+	var _rot_delta = Char_Input.get_input_steering().x * ROT_JUMP * _delta
 	global_rotate(xform.basis.y, _rot_delta)
 	velocity.y -= GRAVITY * _delta
 	up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
-	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
+	can_air = true
+	global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_JUMP * delta)
 	var _curve : Curve3D = path.curve
 	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
@@ -298,8 +303,9 @@ func _pipe_snap_movement(delta):
 	velocity.y -= GRAVITY * delta
 	velocity = LibHelpers.kill_pipe_orthogonal_velocity(velocity, curve_tangent)
 
-func _pipe_snap_air_movement(delta):	
-	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
+func _pipe_snap_air_movement(delta):
+	can_air = true
+	global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_JUMP * delta)
 	velocity.y -= GRAVITY * delta
 
 func _grind_movement(delta) -> void: 	
@@ -356,11 +362,11 @@ func _randomize_balance() -> void:
 
 func _balance_logic(delta: float, axis : int):
 	if axis == 0:
-		if(Char_Input.get_input().x != 0):
-			_set_balance_dir(Char_Input.get_input().x)
+		if(Char_Input.get_input_steering().x != 0):
+			_set_balance_dir(Char_Input.get_input_steering().x)
 	else:
-		if(Char_Input.get_input().y != 0):
-			_set_balance_dir(-Char_Input.get_input().y)
+		if(Char_Input.get_input_steering().y != 0):
+			_set_balance_dir(-Char_Input.get_input_steering().y)
 	balance_time += 0.05 * delta
 	balance_angle += BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
@@ -392,6 +398,9 @@ func _fall_check() -> void:
 		return
 	if global_position.y < - 100:
 		_fall("out of bounds!", position)
+	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
+		if !Char_Tricks.get_can_trick():
+			_fall("Trick not finished!", Char_Tricks.get_trick_duration())
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
 			_fall("balance issues", balance_angle)

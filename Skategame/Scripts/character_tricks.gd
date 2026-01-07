@@ -15,21 +15,28 @@ var available_grab_tricks : Array[Trick] = [
 	Nosegrab.new(),
 	Tailgrab.new(),
 	Indygrab.new()
-]
+	]
+var available_air_tricks : Array[Trick] = [
+	Olli.new()
+	]
 var available_flip_tricks : Array[Trick] = [
+	Heelflip.new(),
 	Kickflip.new()
-]
-var available_lip_tricks : Array[Trick] = []
+	]
+var available_lip_tricks : Array[Trick] = [
+	Axlestall.new(),
+	Nosestall.new()
+	]
 var available_manual_tricks : Array[Trick] = []
-	
-var current_trick : Trick = null
 
-var curr_trick_rot : float = 0.0
-var curr_trick_time : float = 0.0
-var curr_trick_state : CharStates.State = CharStates.State.RESET
+var can_trick : bool = true
+var current_trick : Trick = null
+var tricks : Array[Trick] = []
+var current_trick_duration : float = 0
+var current_trick_rot : float = 0.0
+var is_trick_active : bool = false
 var combo_cooldown : float = 0.0
-var tricks : Dictionary = {}
-var is_trick : bool = false
+
 
 @onready var Char_Input : CharacterInput = $"../Char_Input"
 @onready var Char : CharacterController = $".."
@@ -39,60 +46,41 @@ var is_trick : bool = false
 func _ready() -> void:
 	pass
 	
-func _process(delta: float) -> void:	
+func _process(delta: float) -> void:
 	_update_trick_ui()
-	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == 3:
-		for trick in available_grind_tricks:
-			if trick.matches_input(Char_Input.input_buffer.buffer):
-				Char_Statemachine.set_player_state(CharStates.State.GRIND)
-				Char_Input.input_buffer.clear()
-				current_trick = trick
-				break
-	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == 3:
-		Char_Statemachine.set_player_state(CharStates.State.LIP)
-	if combo_cooldown > 0.0:
-		combo_cooldown -= delta
-	if !is_trick:
+	_trick_cooldown(delta)
+	_combo_cooldown(delta)
+	_set_trick_rot(delta * Char_Input.get_input_steering().x * Char.ROT_JUMP)
+	if !can_trick:
 		return
-	if curr_trick_state == CharStates.State.AIR or\
-		curr_trick_state == CharStates.State.PIPESNAP or\
-		curr_trick_state == CharStates.State.PIPESNAPAIR:
-		curr_trick_rot += Char_Input.get_input().x * Char.ROT_JUMP
+	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
+		Char_Statemachine.set_player_state(CharStates.State.GRIND)
+		_start_trick(available_grind_tricks)
+		return
+	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
+		Char_Statemachine.set_player_state(CharStates.State.LIP)
+		_start_trick(available_lip_tricks)
+		return
+	if Char.get_can_air():
+		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.JUMP:
+			_start_trick(available_air_tricks)
+			return
+		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.FLIP:
+			_start_trick(available_flip_tricks)
+			return
+		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRAB:
+			_start_trick(available_grab_tricks)
+			return
 			
-func set_start_trick(state : CharStates.State) -> void:
-	if is_trick or combo_cooldown > 0.01:
-		_set_append_trick(state)
-		#print("ending trick! with rot: " + str(abs(curr_trick_rot)))
-		#print("appending trick!")			
+func _trick_cooldown(_delta) -> void:
+	if current_trick_duration > 0.0:
+		current_trick_duration -= _delta
+		can_trick = false
 	else:
-		pass
-		#print("starting trick!")
-	is_trick = true
-	curr_trick_state = state
-	
-func set_end_trick(state : CharStates.State) -> void:
-	if state == CharStates.State.FALL:
-		_reset_trick_rot()
-		print("failed trick!")
-	else:
-		print("ending trick! with rot: " + str(abs(curr_trick_rot)))
-		_reset_trick_rot()
-	is_trick = false
-	current_trick = null
-	curr_trick_state = CharStates.State.RESET
-	combo_cooldown = COMBO_COOLDOWN_TIME
+		can_trick = true
 		
-func _set_append_trick(state : CharStates.State) -> void:
-	curr_trick_rot = 0
-
-func set_trick_rot(_delta : float) -> void:
-	curr_trick_rot += _delta
-	
-func _reset_trick_rot() -> void:
-	curr_trick_rot = 0.0
-	
-func end_combo() -> void:
-	tricks = {}
+func _combo_cooldown(_delta) -> void:
+	pass
 	
 func _rot_round(rot : float) -> String:
 	var _rounded : int = int(abs(ceil(rot / ROT_ROUNDING) * ROT_ROUNDING))
@@ -101,9 +89,36 @@ func _rot_round(rot : float) -> String:
 	return ""
 	
 func _update_trick_ui():
-	#if curr_trick_state == CharStates.State.FALL:
-		#return
-	#if curr_trick_state == CharStates.State.RESET:
-		#return
-	if current_trick != null:
-		Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(curr_trick_rot))
+	if current_trick == null:
+		return
+	Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
+		
+func _start_trick(_tricks : Array[Trick]):
+	print("start trick!")
+	for trick in _tricks:
+		if trick.matches_input(Char_Input.input_buffer.buffer):
+			Char_Input.input_buffer.clear()
+			current_trick = trick.get_script().new()
+			is_trick_active = true
+			current_trick_duration = current_trick.duration
+			break
+			
+func _end_trick() -> void:
+	print("ending trick!")
+	is_trick_active = false
+	current_trick = null
+	
+func get_can_trick() -> bool:
+	return can_trick
+#
+func _set_trick_rot(_delta : float) -> void:
+	if current_trick == null:
+		return
+	current_trick.set_rotation(_delta)
+
+func set_state_changed() -> void:
+	if is_trick_active:
+		_end_trick()
+		
+func get_trick_duration() -> float:
+	return current_trick_duration

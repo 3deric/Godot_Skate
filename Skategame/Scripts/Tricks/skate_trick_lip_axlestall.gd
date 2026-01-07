@@ -1,12 +1,12 @@
-class_name Fiftyfifty
+class_name Axlestall
 extends Trick
 
 func _init():
-	trick_name = "50-50"
+	trick_name = "Axlestall"
 	duration = 0.1
 	base_score = 300
 	difficulty = 1.0
 	input_sequence = [
-		CharacterInput.Action.RIGHT,
+		CharacterInput.Action.UP,
 		CharacterInput.Action.GRIND
 		]

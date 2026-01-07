@@ -48,7 +48,7 @@ func _lerp_vis_transform(_delta, _speed):
 
 
 func _animation_handler(delta):
-	anim_blend = anim_blend.lerp(Vector2(Char_Input.input.x, Char_Input.input.y), delta * ANIM_INTERP_SPEED)
+	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input_steering().x, Char_Input.get_input_steering().y), delta * ANIM_INTERP_SPEED)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:
 			return

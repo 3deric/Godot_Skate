@@ -7,6 +7,8 @@ var base_score : int
 var difficulty : float
 var base_state : CharacterStates.State
 var input_sequence: Array[int]
+var trick_rotation : float
+var is_air : bool = false
 
 func _init(): #prevent direct instancing of base class
 	assert(false, "Trick is an abstract base class")
@@ -27,3 +29,11 @@ func matches_input(buffer: Array[int]) -> bool:
 
 func calculate_score(combo_multiplier : int = 1) -> int:
 	return int(base_score  * combo_multiplier)
+	
+func set_rotation(_delta) -> void:
+	trick_rotation += _delta
+	
+func get_rotation() -> float:
+	if is_air:
+		return trick_rotation
+	return 0

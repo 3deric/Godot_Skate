@@ -30,7 +30,7 @@ Enables and disables the character ragdoll.
 
 ## character_tricks
 
-Handles trick inputs for the player.
+Handles trick execution for the player. Trick execution is based on the character_input input_buffer.
 
 ## debug_view
 
