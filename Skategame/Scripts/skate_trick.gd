@@ -8,6 +8,7 @@ var difficulty : float
 var base_state : CharacterStates.State
 var input_sequence: Array[int]
 var trick_rotation : float
+var trick_animation : Resource
 var is_air : bool = false
 
 func _init(): #prevent direct instancing of base class

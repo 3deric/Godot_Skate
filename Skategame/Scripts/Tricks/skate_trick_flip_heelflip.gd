@@ -9,6 +9,5 @@ func _init():
 	is_air = true
 	input_sequence = [
 		CharacterInput.Action.UP,
-		CharacterInput.Action.DOWN,
 		CharacterInput.Action.FLIP
 		]

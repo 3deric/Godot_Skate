@@ -12,4 +12,4 @@ func _physics_process(delta: float) -> void:
 		_rotate(delta)
 
 func _rotate(_delta) -> void:
-	Char_Controller.rotate_y(Char_Input.get_input().x * ROT * _delta)
+	Char_Controller.rotate_y(Char_Input.get_input_steering().x * ROT * _delta)

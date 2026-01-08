@@ -3,6 +3,7 @@ extends Node3D
 
 @onready var Char_Controller : CharacterController = $".."
 @onready var Char_Init : CharacterInit = $"../.."
+@onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 
 enum Action {
 	JUMP,
@@ -23,7 +24,6 @@ var input : Vector3i = Vector3i.ZERO #input values
 var input_steering : Vector3 = Vector3.ZERO #input values
 var input_tricks : Vector3i = Vector3i.ZERO #input values for tricks
 var _jump_timer : float = 0.0
-var _input_timer : float = 0.0
 
 func _process(_delta):
 	_update_input_buffer()
@@ -46,15 +46,15 @@ func _jump_cooldown(_delta) -> void:
 		_jump_timer -= _delta
 		
 func _update_input_buffer():
-	if Input.is_action_just_pressed("Jump") or int(Input.is_action_just_released('Jump')):
+	if Input.is_action_just_released('Jump'):
 		input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):
 		input_buffer.push(Action.GRIND)
-		
+				
 	if Input.is_action_just_pressed("Grab"):
 		input_buffer.push(Action.GRAB)
-		
+	
 	if Input.is_action_just_pressed("Flip"):
 		input_buffer.push(Action.FLIP)
 
@@ -73,6 +73,9 @@ func _update_input_buffer():
 	if Input.is_action_just_pressed('Revert'):
 		input_buffer.push(Action.REVERT)
 		
+	if input_buffer.get_buffer_cooldown() or input_buffer.get_buffer_updated():
+		Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
+			
 func reset() -> void:
 	input = Vector3i.ZERO
 	input_tricks = Vector3i.ZERO
