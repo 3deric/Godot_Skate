@@ -10,6 +10,7 @@ var input_sequence: Array[int]
 var trick_rotation : float
 var trick_animation : Resource
 var is_air : bool = false
+var allow_repeat : bool = false
 
 func _init(): #prevent direct instancing of base class
 	assert(false, "Trick is an abstract base class")
@@ -38,3 +39,6 @@ func get_rotation() -> float:
 	if is_air:
 		return trick_rotation
 	return 0
+	
+func get_allow_repeat() -> bool:
+	return allow_repeat

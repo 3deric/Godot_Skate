@@ -9,7 +9,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP : float= 7.0
 const MAX_VEL : float = 12.0
 const GRAVITY : float = 15.0
-const BALANCE_MULTI : float= 0.75
+const BALANCE_MULTI : float= 0 #0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
 const FLOOR_FALL_THRESHOLD : float = 0.5
@@ -275,7 +275,7 @@ func _ground_movement(delta):
 		velocity +=xform.basis.z * ACC * 0.25
 	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input_steering().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
 		velocity += xform.basis.z * Char_Input.get_input().z * ACC
-	if Char_Input.get_input_tricks().z > 0 and Char_Input.can_jump():
+	if Char_Input.get_input_tricks().z > 0 and Char_Input.can_jump() and Char_Tricks.get_can_trick() and Char_Tricks.get_can_trick():
 		velocity += Vector3.UP * JUMP_VEL
 		Char_Input.set_jump_cooldown()
 	velocity.y -= GRAVITY * delta
@@ -324,7 +324,7 @@ func _grind_movement(delta) -> void:
 	if _target != position:
 		look_at(_target, up_direction)
 	velocity = xform.basis.z * path_vel * path_dir
-	if Char_Input.get_input_tricks().z and Char_Input.can_jump():
+	if Char_Input.get_input_tricks().z and Char_Input.can_jump() and Char_Tricks.get_can_trick():
 		velocity = xform.basis.z * abs(path_vel)
 		velocity += xform.basis.y * Char_Input.get_input_tricks().z * JUMP_VEL
 		velocity += xform.basis.x * balance_dir
@@ -341,7 +341,7 @@ func _lip_movement(delta) -> void:
 	position = _curve.sample_baked(path_offset)
 	up_direction = _curve.sample_baked_up_vector(path_offset)
 	rotation.y = atan2(lip_start_dir.x,lip_start_dir.z)
-	if(Char_Input.get_input_tricks().z) and Char_Input.can_jump():
+	if(Char_Input.get_input_tricks().z) and Char_Input.can_jump() and Char_Tricks.get_can_trick():
 		velocity = velocity.normalized() * -1
 		Char_Statemachine.set_player_state(CharStates.State.AIR)
 		position -= lip_start_dir * balance_dir * 0.5

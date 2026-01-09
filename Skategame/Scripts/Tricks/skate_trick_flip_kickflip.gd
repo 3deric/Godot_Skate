@@ -7,6 +7,7 @@ func _init():
 	base_score = 300
 	difficulty = 1.2
 	is_air = true
+	allow_repeat = true
 	input_sequence = [
 		CharacterInput.Action.FLIP
 		]

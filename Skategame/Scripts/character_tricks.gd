@@ -89,24 +89,24 @@ func _rot_round(rot : float) -> String:
 	return ""
 	
 func _update_trick_ui():
-	if current_trick == null:
+	if !is_trick_active:
 		return
 	Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
 		
 func _start_trick(_tricks : Array[Trick]):
-	print("start trick!")
 	for trick in _tricks:
 		if trick.matches_input(Char_Input.input_buffer.buffer):
 			Char_Input.input_buffer.clear()
 			current_trick = trick.get_script().new()
 			is_trick_active = true
 			current_trick_duration = current_trick.duration
+			Ingame_Ui.set_trick_view(current_trick.trick_name)
 			break
 			
 func _end_trick() -> void:
-	print("ending trick!")
 	is_trick_active = false
 	current_trick = null
+	can_trick = true
 	
 func get_can_trick() -> bool:
 	return can_trick

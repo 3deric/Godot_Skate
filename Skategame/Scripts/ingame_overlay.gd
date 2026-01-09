@@ -1,7 +1,7 @@
 class_name IngameOverlay
 extends Control
 
-const TRICK_LABEL_COOLDOWN_TIME : float = 2.0
+const TRICK_LABEL_COOLDOWN_TIME : float = 0.25
 
 var trick_label_cooldown : float = 0.0
 
@@ -23,15 +23,15 @@ var input_images : Array[TextureRect] = []
 @onready var Balance_View: Control = get_node('BalanceView')
 @onready var Balance_Indicator: Control = get_node('BalanceView/BalanceIndicator')
 @onready var Trick_Label : Label = $TrickView/TrickLabel
-@onready var Input_Container : HBoxContainer = $InputView
-
-func _process(delta: float) -> void:
-	_trick_label_view_cooldown(delta)
+@onready var Input_Container : HBoxContainer = $TrickView/InputView
 
 func _ready():
 	set_fail_view(false)
 	set_balance_value(false)
 	_create_input_buffer_vis()
+	
+func _process(delta: float) -> void:
+	_trick_label_view_cooldown(delta)
 		
 func set_fail_view(_val):
 	#enable or disable fail view
