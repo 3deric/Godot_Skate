@@ -4,9 +4,11 @@ const MAX_SIZE : int = 8
 const COOLDOWN : float = 1.0
 var buffer: Array[int] = []
 var cooldown : float = 0
+var last_input : CharacterInput.Action
 
 func push(action: int):
 	buffer.append(action)
+	last_input = action
 	if buffer.size() > MAX_SIZE:
 		buffer.pop_front()
 	_set_cooldown()
@@ -17,10 +19,11 @@ func clear():
 func debug():
 	print(buffer)
 
-func get_last_input():
+func get_last_input() -> int:
 	var _size : int = buffer.size()
 	if _size > 0:
 		return buffer[_size -1]
+	return -1
 		
 func _set_cooldown() -> void:
 	cooldown = COOLDOWN

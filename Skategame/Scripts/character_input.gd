@@ -3,6 +3,7 @@ extends Node3D
 
 @onready var Char_Controller : CharacterController = $".."
 @onready var Char_Init : CharacterInit = $"../.."
+@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 @onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 
 enum Action {
@@ -31,6 +32,7 @@ func _process(_delta):
 	_jump_cooldown(_delta)
 	input_buffer.input_cooldown(_delta)
 	_input_handler()
+	_on_player_state_changed()
 	
 func _input_handler(): 	#handles player inputs
 	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
@@ -46,7 +48,11 @@ func _jump_cooldown(_delta) -> void:
 		_jump_timer -= _delta
 		
 func _update_input_buffer():
-	if Input.is_action_just_released('Jump'):
+	if Input.is_action_just_released('Jump') and input_buffer.last_input != Action.JUMP:
+		if Char_Statemachine.is_player_state(CharStates.State.AIR) or \
+		Char_Statemachine.is_player_state(CharStates.State.PIPESNAP) or \
+		Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
+			return
 		input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):
@@ -96,3 +102,11 @@ func get_input_tricks() -> Vector3i:
 func get_input_steering() -> Vector3:
 	return input_steering
 	
+func _on_player_state_changed():
+	var current_state : CharStates.State = Char_Statemachine.player_state
+	var last_state : CharStates.State = Char_Statemachine.last_player_state
+
+	if (current_state == CharStates.State.AIR or current_state == CharStates.State.PIPESNAP) and current_state != last_state and last_state != CharStates.State.RESET:
+		var last_input = input_buffer.get_last_input()
+		if not last_input == Action.JUMP:
+			input_buffer.push(Action.JUMP)

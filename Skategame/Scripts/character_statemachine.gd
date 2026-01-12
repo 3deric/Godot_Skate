@@ -17,7 +17,8 @@ func _process(delta: float) -> void:
 func set_player_state(new_state : CharStates.State) -> void:
 	if player_state != new_state:
 		player_state = new_state
-		Char_Tricks.set_state_changed()
+		if player_state != CharStates.State.PIPESNAPAIR:
+			Char_Tricks.set_state_changed()
 		_debug_player_state()
 		_set_state_cooldown()
 	
