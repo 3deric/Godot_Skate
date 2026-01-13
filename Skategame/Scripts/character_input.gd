@@ -48,11 +48,7 @@ func _jump_cooldown(_delta) -> void:
 		_jump_timer -= _delta
 		
 func _update_input_buffer():
-	if Input.is_action_just_released('Jump') and input_buffer.last_input != Action.JUMP:
-		if Char_Statemachine.is_player_state(CharStates.State.AIR) or \
-		Char_Statemachine.is_player_state(CharStates.State.PIPESNAP) or \
-		Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
-			return
+	if Input.is_action_just_released('Jump'):
 		input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):

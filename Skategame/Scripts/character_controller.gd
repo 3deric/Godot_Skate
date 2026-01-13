@@ -9,7 +9,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP : float= 7.0
 const MAX_VEL : float = 12.0
 const GRAVITY : float = 15.0
-const BALANCE_MULTI : float = 0.75
+const BALANCE_MULTI : float = 0 #0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
 const FLOOR_FALL_THRESHOLD : float = 0.5
@@ -96,7 +96,6 @@ func _physics_process(delta):
 			_reset_player(last_ground_pos + Vector3.UP * 0.1, last_ground_rot)
 	xform = global_transform
 	_surface_check()
-	Char_Statemachine.set_last_player_state()
 	_player_state()
 	_fall_check()
 	match Char_Statemachine.player_state:
@@ -128,7 +127,7 @@ func _physics_process(delta):
 func _player_state():
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
 		return
-	
+	Char_Statemachine.set_last_player_state()
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
 		Ingame_Ui.set_balance_view(true)
 		if path == null:
@@ -241,7 +240,7 @@ func _set_up_direction():
 	else:
 		up_direction = last_up_dir	
 
-func _fall(_fall_reason, _fall_value):
+func set_fall(_fall_reason, _fall_value):
 	print(_fall_reason + ": " + str(_fall_value)+ "last velocity: " + str(last_vel.length()))
 	Char_Ragdoll.set_start_simulation(last_vel)
 	Char_Statemachine.set_player_state(CharStates.State.FALL)
@@ -397,19 +396,16 @@ func _fall_check() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
 	if global_position.y < - 100:
-		_fall("out of bounds!", position)
-	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
-		if !Char_Tricks.get_can_trick():
-			_fall("Trick not finished!", Char_Tricks.get_trick_duration())
+		set_fall("out of bounds!", position)
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
 		if (balance_angle > PI /4 or balance_angle < -PI /4):
-			_fall("balance issues", balance_angle)
+			set_fall("balance issues", balance_angle)
 			return
 	if Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR):
 		if is_on_wall_only():
 			var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, FLOOR_FALL_THRESHOLD)
 			if !_on_feet.valid:
-				_fall("faceplant", _on_feet.dot)
+				set_fall("faceplant", _on_feet.dot)
 			return
 	var _is_ground = Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE)
 	var _last_air = Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP)
@@ -420,7 +416,7 @@ func _fall_check() -> void:
 		return
 	var _perp : Dictionary = LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, FLOOR_FALL_THRESHOLD)
 	if !_perp.valid:
-		_fall("perpendicular", _perp.dot)
+		set_fall("perpendicular", _perp.dot)
 
 func _wall_bounce() -> void:
 	if ray_forward and ray_forward.collider.is_in_group("wall"):

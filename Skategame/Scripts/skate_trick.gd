@@ -26,7 +26,7 @@ func matches_input(buffer: Array[int]) -> bool:
 	for i in input_sequence.size():
 		if buffer[start + i] != input_sequence[i]:
 			return false
-	print(trick_name)
+	#print(trick_name)
 	return true
 
 func calculate_score(combo_multiplier : int = 1) -> int:
