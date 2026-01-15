@@ -2,6 +2,7 @@ class_name Trick
 extends Node
 
 var trick_name : String
+var base_states : Array[CharStates.State]
 var duration : float
 var base_score : int
 var difficulty : float
@@ -9,8 +10,6 @@ var base_state : CharacterStates.State
 var input_sequence: Array[int]
 var trick_rotation : float
 var trick_animation : Resource
-var is_air : bool = false
-var allow_repeat : bool = false
 
 func _init(): #prevent direct instancing of base class
 	assert(false, "Trick is an abstract base class")
@@ -26,7 +25,6 @@ func matches_input(buffer: Array[int]) -> bool:
 	for i in input_sequence.size():
 		if buffer[start + i] != input_sequence[i]:
 			return false
-	#print(trick_name)
 	return true
 
 func calculate_score(combo_multiplier : int = 1) -> int:
@@ -36,9 +34,6 @@ func set_rotation(_delta) -> void:
 	trick_rotation += _delta
 	
 func get_rotation() -> float:
-	if is_air:
+	if CharStates.State.AIR in base_states:
 		return trick_rotation
 	return 0
-	
-func get_allow_repeat() -> bool:
-	return allow_repeat

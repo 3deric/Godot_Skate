@@ -1,7 +1,7 @@
 class_name IngameOverlay
 extends Control
 
-const TRICK_LABEL_COOLDOWN_TIME : float = 0.25
+const TRICK_LABEL_COOLDOWN_TIME : float = 2.0
 
 var trick_label_cooldown : float = 0.0
 

@@ -9,7 +9,7 @@ const ROT_KICKTURN : float = 4.0
 const ROT_JUMP : float= 7.0
 const MAX_VEL : float = 12.0
 const GRAVITY : float = 15.0
-const BALANCE_MULTI : float = 0 #0.75
+const BALANCE_MULTI : float = 0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
 const FLOOR_FALL_THRESHOLD : float = 0.5
@@ -120,7 +120,8 @@ func _physics_process(delta):
 	last_up_dir = up_direction
 	last_vel = velocity
 	_set_up_direction()
-	move_and_slide()
+	if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
+		move_and_slide()
 	if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
 		apply_floor_snap()
 		
@@ -241,6 +242,7 @@ func _set_up_direction():
 		up_direction = last_up_dir	
 
 func set_fall(_fall_reason, _fall_value):
+	Char_Tricks.set_clear_tricks()
 	print(_fall_reason + ": " + str(_fall_value)+ "last velocity: " + str(last_vel.length()))
 	Char_Ragdoll.set_start_simulation(last_vel)
 	Char_Statemachine.set_player_state(CharStates.State.FALL)
@@ -310,7 +312,6 @@ func _pipe_snap_air_movement(delta):
 func _grind_movement(delta) -> void: 	
 	if !path:
 		return
-	can_grind = true
 	var _curve : Curve3D = path.curve
 	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
@@ -327,6 +328,7 @@ func _grind_movement(delta) -> void:
 		velocity = xform.basis.z * abs(path_vel)
 		velocity += xform.basis.y * Char_Input.get_input_tricks().z * JUMP_VEL
 		velocity += xform.basis.x * balance_dir
+		position += xform.basis.y * 0.05
 		Char_Input.set_jump_cooldown()
 		path = null
 		return
@@ -343,7 +345,7 @@ func _lip_movement(delta) -> void:
 	if(Char_Input.get_input_tricks().z) and Char_Input.can_jump() and Char_Tricks.get_can_trick():
 		velocity = velocity.normalized() * -1
 		Char_Statemachine.set_player_state(CharStates.State.AIR)
-		position -= lip_start_dir * balance_dir * 0.5
+		position -= lip_start_dir * balance_dir * 0.5 + xform.basis.y * 0.05
 		velocity = lip_start_vel.normalized() * -1
 		up_direction = Vector3.UP
 		rotation.y = atan2(lip_start_dir.x * -balance_dir,lip_start_dir.z * -balance_dir)
