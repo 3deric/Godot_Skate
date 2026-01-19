@@ -50,7 +50,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_update_trick_ui()
 	_trick_cooldown(delta)
-	_set_trick_rot(delta * Char_Input.get_input_steering().x * Char.ROT_JUMP)
+	_set_trick_rot(delta * Char_Input.get_input().x * Char.ROT_JUMP)
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
 		_combo_cooldown(delta)
 		performed_olli = false
@@ -71,6 +71,7 @@ func _process(delta: float) -> void:
 			if performed_olli:
 				return
 			_start_trick(available_air_tricks)
+			print("starting olli!!!")
 			performed_olli = true
 			return
 		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.FLIP:

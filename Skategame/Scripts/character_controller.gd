@@ -92,7 +92,7 @@ func _physics_process(delta):
 	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		fall_timer -= delta
-		if Char_Input.get_input_steering().y and fall_timer < 0.1:
+		if Char_Input.get_input().y and fall_timer < 0.1:
 			_reset_player(last_ground_pos + Vector3.UP * 0.1, last_ground_rot)
 	xform = global_transform
 	_surface_check()
@@ -116,6 +116,8 @@ func _physics_process(delta):
 			_grind_movement(delta)
 		CharStates.State.LIP:
 			_lip_movement(delta)
+	if Char_Input.get_input_jump():
+		_handle_jump()
 	global_transform = LibHelpers.align(global_transform, up_direction)
 	last_up_dir = up_direction
 	last_vel = velocity
@@ -161,28 +163,26 @@ func _player_state():
 		if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 			path = _closest_path
 			path_closed = LibHelpers.is_path_closed(path)
-			curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
 			path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
 			path_offset = path.curve.get_closest_offset(position * path.global_transform)
+			curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
 		if !Char_Statemachine.is_player_state(CharStates.State.GRIND) and !Char_Statemachine.is_player_state(CharStates.State.LIP):
 			var grind_start : Dictionary = LibHelpers.start_grind(velocity, path, path_offset)
 			if grind_start.valid:
 				path_vel = grind_start.vel
 				path_dir = grind_start.dir
 				curve_tangent = grind_start.tan
-				can_grind = true#Char_Statemachine.set_player_state(CharStates.State.GRIND)
-				#return
+				can_grind = true
 			if path_dir == 0:
 				var lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
 				curve_tangent = lip_start.tan
 				lip_start_dir = lip_start.dir
 				lip_start_vel = lip_start.vel
 				lip_start_up = lip_start.up
-				can_lip = true #Char_Statemachine.set_player_state(CharStates.State.LIP)
-				#return
+				can_lip = true
 			_randomize_balance()
 	if !ray_ground: #behavior while in air, or sticked to a pipe
-		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input_tricks().z == 0 and Char_Input.get_input_steering().y == 0 and path:
+		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 0.25)
 			if path_closed: #always set stick to true when the path is closed
@@ -226,7 +226,10 @@ func _player_state():
 func _surface_check():
 	var _basis_y = xform.basis.y
 	var _basis_z = xform.basis.z
-	ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.25, self)
+	if Char_Input.can_jump():
+		ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)
+	else:
+		ray_ground = {}
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.25, _basis_z, 1.0, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
 	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
@@ -267,32 +270,29 @@ func _ground_movement(delta):
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) and path == null:
 		last_ground_pos = global_position
 		last_ground_rot = global_rotation
-	if Char_Input.get_input_steering().y < 0:
+	if Char_Input.get_input().y < 0:
 		velocity *= 0.95
-		global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_KICKTURN * delta)
+		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_KICKTURN * delta)
 	else:
-		global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT * delta)
-	if Char_Input.get_input_steering().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input_steering().y > 0:
+		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT * delta)
+	if Char_Input.get_input().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input().y > 0:
 		velocity +=xform.basis.z * ACC * 0.25
-	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input_steering().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
+	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
 		velocity += xform.basis.z * Char_Input.get_input().z * ACC
-	if Char_Input.get_input_tricks().z > 0 and Char_Input.can_jump() and Char_Tricks.get_can_trick() and Char_Tricks.get_can_trick():
-		velocity += Vector3.UP * JUMP_VEL
-		Char_Input.set_jump_cooldown()
 	velocity.y -= GRAVITY * delta
 	_wall_bounce()
 	velocity = LibHelpers.kill_orthogonal_velocity(xform, velocity)
 
 func _air_movement(_delta): 	
 	can_air = true
-	var _rot_delta = Char_Input.get_input_steering().x * ROT_JUMP * _delta
+	var _rot_delta = Char_Input.get_input().x * ROT_JUMP * _delta
 	global_rotate(xform.basis.y, _rot_delta)
 	velocity.y -= GRAVITY * _delta
 	up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
 	can_air = true
-	global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_JUMP * delta)
+	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
 	var _curve : Curve3D = path.curve
 	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
@@ -306,7 +306,7 @@ func _pipe_snap_movement(delta):
 
 func _pipe_snap_air_movement(delta):
 	can_air = true
-	global_rotate(xform.basis.y, Char_Input.get_input_steering().x * ROT_JUMP * delta)
+	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
 	velocity.y -= GRAVITY * delta
 
 func _grind_movement(delta) -> void: 	
@@ -324,14 +324,6 @@ func _grind_movement(delta) -> void:
 	if _target != position:
 		look_at(_target, up_direction)
 	velocity = xform.basis.z * path_vel * path_dir
-	if Char_Input.get_input_tricks().z and Char_Input.can_jump() and Char_Tricks.get_can_trick():
-		velocity = xform.basis.z * abs(path_vel)
-		velocity += xform.basis.y * Char_Input.get_input_tricks().z * JUMP_VEL
-		velocity += xform.basis.x * balance_dir
-		position += xform.basis.y * 0.05
-		Char_Input.set_jump_cooldown()
-		path = null
-		return
 	_balance_logic(delta, 0)
 	
 func _lip_movement(delta) -> void:
@@ -342,14 +334,6 @@ func _lip_movement(delta) -> void:
 	position = _curve.sample_baked(path_offset)
 	up_direction = _curve.sample_baked_up_vector(path_offset)
 	rotation.y = atan2(lip_start_dir.x,lip_start_dir.z)
-	if(Char_Input.get_input_tricks().z) and Char_Input.can_jump() and Char_Tricks.get_can_trick():
-		velocity = velocity.normalized() * -1
-		Char_Statemachine.set_player_state(CharStates.State.AIR)
-		position -= lip_start_dir * balance_dir * 0.5 + xform.basis.y * 0.05
-		velocity = lip_start_vel.normalized() * -1
-		up_direction = Vector3.UP
-		rotation.y = atan2(lip_start_dir.x * -balance_dir,lip_start_dir.z * -balance_dir)
-		Char_Input.set_jump_cooldown()
 	_balance_logic(delta, 1)
 
 func _randomize_balance() -> void:
@@ -363,11 +347,11 @@ func _randomize_balance() -> void:
 
 func _balance_logic(delta: float, axis : int):
 	if axis == 0:
-		if(Char_Input.get_input_steering().x != 0):
-			_set_balance_dir(Char_Input.get_input_steering().x)
+		if(Char_Input.get_input().x != 0):
+			_set_balance_dir(Char_Input.get_input().x)
 	else:
-		if(Char_Input.get_input_steering().y != 0):
-			_set_balance_dir(-Char_Input.get_input_steering().y)
+		if(Char_Input.get_input().y != 0):
+			_set_balance_dir(-Char_Input.get_input().y)
 	balance_time += 0.05 * delta
 	balance_angle += BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
@@ -449,3 +433,29 @@ func _wall_bounce() -> void:
 	#else:
 		#on_wall = false
 			
+
+func _handle_jump():
+	match Char_Statemachine.player_state:
+		CharStates.State.GROUND, CharStates.State.PIPE:
+			velocity += Vector3.UP * JUMP_VEL
+			Char_Input.set_jump_cooldown()
+		
+		CharStates.State.PIPE:
+			velocity += xform.basis.z * JUMP_VEL * 0.15 - up_direction.slide(Vector3.UP) * 0.5
+			Char_Input.set_jump_cooldown()
+		
+		CharStates.State.GRIND:
+			velocity = xform.basis.z * abs(path_vel)
+			velocity += xform.basis.y * JUMP_VEL
+			velocity += xform.basis.x * balance_dir
+			position += xform.basis.y * 0.05
+			Char_Input.set_jump_cooldown()
+			path = null
+		
+		CharStates.State.LIP:
+			velocity = velocity.normalized() + Vector3.UP * JUMP_VEL * 0.25
+			position -= lip_start_dir * balance_dir * 0.5 + xform.basis.y * 0.05
+			up_direction = Vector3.UP
+			rotation.y = atan2(lip_start_dir.x * -balance_dir, lip_start_dir.z * -balance_dir)
+			Char_Input.set_jump_cooldown()
+			path = null

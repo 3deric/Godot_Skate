@@ -133,14 +133,26 @@ static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionar
 		"tan": _tan
 	}
 
-static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
+static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:	
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
-	var _dir : Vector3 = _tan.cross(Vector3.UP)
-	if xform.basis.y.dot(_dir) > 0:
-		_dir *= -1
+	var _path_global_transform = path.global_transform
+	var _curve = path.curve
+	var _local_path_pos = _curve.sample_baked(offset, true)
+	var _global_path_pos = _path_global_transform * _local_path_pos
+	var _to_player = (xform.origin - _global_path_pos)
+	var _to_player_horizontal = _to_player.slide(Vector3.UP).normalized()
+	var _perp = _tan.cross(Vector3.UP).normalized()
+	var _dot_to_perp = _to_player_horizontal.dot(_perp)
+	var _dir = _perp if _dot_to_perp > 0 else -_perp
+	if _to_player_horizontal.length_squared() < 0.01 or abs(_dot_to_perp) < 0.1:
+		var _vel_horizontal = vel.slide(Vector3.UP).normalized()
+		if _vel_horizontal.length_squared() > 0.01:
+			var _vel_on_perp = _vel_horizontal.dot(_perp)
+			_dir = _perp if _vel_on_perp > 0 else -_perp
+	
 	return {
 		"tan": _tan,
-		"dir": _dir,
+		"dir" : _dir.normalized() * -1,
 		"up": xform.basis.y,
 		"vel": vel
 	}

@@ -23,7 +23,6 @@ const JUMP_COOLDOWN : float = 0.5
 var input_buffer : InputBuffer = InputBuffer.new()
 var input : Vector3i = Vector3i.ZERO #input values
 var input_steering : Vector3 = Vector3.ZERO #input values
-var input_tricks : Vector3i = Vector3i.ZERO #input values for tricks
 var _jump_timer : float = 0.0
 
 func _process(_delta):
@@ -38,10 +37,6 @@ func _input_handler(): 	#handles player inputs
 	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
 	input.y = int(Input.is_action_pressed('Up')) - int(Input.is_action_pressed('Down'))
 	input.z = int(Input.is_action_pressed('Jump'))
-	#input_tricks.x = int(Input.is_action_pressed('Grind'))
-	input_tricks.z = int(Input.is_action_just_released('Jump'))
-	input_steering.x = int(Input.is_action_pressed('Steer_Left')) - int(Input.is_action_pressed('Steer_Right'))
-	input_steering.y = int(Input.is_action_pressed('Steer_Up')) - int(Input.is_action_pressed('Steer_Down'))
 
 func _jump_cooldown(_delta) -> void:
 	if _jump_timer > 0:
@@ -80,7 +75,6 @@ func _update_input_buffer():
 			
 func reset() -> void:
 	input = Vector3i.ZERO
-	input_tricks = Vector3i.ZERO
 	input_buffer.clear()
 
 func can_jump() -> bool:
@@ -92,17 +86,14 @@ func set_jump_cooldown() -> void:
 func get_input() -> Vector3i:
 	return input
 	
-func get_input_tricks() -> Vector3i:
-	return input_tricks
-	
-func get_input_steering() -> Vector3:
-	return input_steering
+func get_input_jump() -> bool:
+	return input_buffer.get_last_input() == Action.JUMP and can_jump()
 	
 func _on_player_state_changed():
 	var current_state : CharStates.State = Char_Statemachine.player_state
 	var last_state : CharStates.State = Char_Statemachine.last_player_state
 
-	if (current_state == CharStates.State.AIR or current_state == CharStates.State.PIPESNAP) and current_state != last_state and last_state != CharStates.State.RESET:
+	if current_state == CharStates.State.PIPESNAP and current_state != last_state and last_state != CharStates.State.RESET:
 		var last_input = input_buffer.get_last_input()
 		if not last_input == Action.JUMP:
 			input_buffer.push(Action.JUMP)
