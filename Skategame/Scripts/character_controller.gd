@@ -36,6 +36,8 @@ var ray_path : Dictionary = {}
 var ray_down : Dictionary = {}
 var on_wall : bool = false
 var last_on_wall : bool = false
+var trick_not_finished : bool = false
+var is_jump : bool = false
 
 #global object references
 @onready var Area : Area3D = get_node('Area3D')
@@ -93,7 +95,7 @@ func _physics_process(delta):
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		fall_timer -= delta
 		if Char_Input.get_input().y and fall_timer < 0.1:
-			_reset_player(last_ground_pos + Vector3.UP * 0.1, last_ground_rot)
+			_reset_player(last_ground_pos, last_ground_rot)
 	xform = global_transform
 	_surface_check()
 	_player_state()
@@ -117,7 +119,8 @@ func _physics_process(delta):
 		CharStates.State.LIP:
 			_lip_movement(delta)
 	if Char_Input.get_input_jump():
-		_handle_jump()
+		if !is_jump:
+			_handle_jump()
 	global_transform = LibHelpers.align(global_transform, up_direction)
 	last_up_dir = up_direction
 	last_vel = velocity
@@ -208,6 +211,7 @@ func _player_state():
 	if Char_Statemachine.is_player_state(CharStates.State.AIR):
 		if is_on_floor() and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
 			Char_Statemachine.set_player_state(CharStates.State.GROUND)
+			is_jump = false
 	if ray_ground:
 		var _coll_info = ray_ground.collider
 		if _coll_info.is_in_group("wall"):
@@ -217,10 +221,12 @@ func _player_state():
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(CharStates.State.PIPE):
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
 			path = null
+			is_jump = false
 			return
 		if _coll_info.is_in_group('floor') and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
 			Char_Statemachine.set_player_state(CharStates.State.GROUND)
 			path = null
+			is_jump = false
 			return
 
 func _surface_check():
@@ -381,6 +387,10 @@ func _check_bounce_path(air : bool) -> void:
 func _fall_check() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
+	if trick_not_finished:
+		set_fall("trick not finished", Char_Tricks.current_trick_duration)
+		trick_not_finished = false
+		return
 	if global_position.y < - 100:
 		set_fall("out of bounds!", position)
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
@@ -435,6 +445,7 @@ func _wall_bounce() -> void:
 			
 
 func _handle_jump():
+	is_jump = true
 	match Char_Statemachine.player_state:
 		CharStates.State.GROUND, CharStates.State.PIPE:
 			velocity += Vector3.UP * JUMP_VEL
@@ -453,9 +464,9 @@ func _handle_jump():
 			path = null
 		
 		CharStates.State.LIP:
-			velocity = velocity.normalized() + Vector3.UP * JUMP_VEL * 0.25
 			position -= lip_start_dir * balance_dir * 0.5 + xform.basis.y * 0.05
 			up_direction = Vector3.UP
 			rotation.y = atan2(lip_start_dir.x * -balance_dir, lip_start_dir.z * -balance_dir)
+			velocity = xform.basis.z * 0.15 + Vector3.UP * JUMP_VEL * 0.25
 			Char_Input.set_jump_cooldown()
 			path = null

@@ -59,10 +59,12 @@ func _process(delta: float) -> void:
 	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
 		Char_Statemachine.set_player_state(CharStates.State.GRIND)
 		_start_trick(available_grind_tricks)	
+		Char.is_jump = false
 		performed_olli = false
 		return
 	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
 		Char_Statemachine.set_player_state(CharStates.State.LIP)
+		Char.is_jump = false
 		_start_trick(available_lip_tricks)
 		performed_olli = false
 		return
@@ -71,14 +73,15 @@ func _process(delta: float) -> void:
 			if performed_olli:
 				return
 			_start_trick(available_air_tricks)
-			print("starting olli!!!")
 			performed_olli = true
 			return
 		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.FLIP:
 			_start_trick(available_flip_tricks)
+			performed_olli = true
 			return
 		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRAB:
 			_start_trick(available_grab_tricks)
+			performed_olli = true
 			return
 			
 func _trick_cooldown(_delta) -> void:
@@ -137,7 +140,7 @@ func set_state_changed() -> void:
 		return
 	if is_trick_active:
 		if !can_trick:
-			Char.set_fall("trick not finished", current_trick_duration)
+			Char.trick_not_finished = true
 		_end_trick()
 		
 func get_trick_duration() -> float:
@@ -156,6 +159,7 @@ func set_end_combo():
 			break
 		_combo_text += " " + trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
 		print(" - " + trick.trick_name)
+	_combo_text +=  " X" +str(tricks.size())
 	Ingame_Ui.set_trick_view(_combo_text)
 	tricks.clear()
 	
