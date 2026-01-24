@@ -14,7 +14,7 @@ extends Node3D
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
-var INTERP_SPEED : float = 10.0 #interpolation speed of the visual character
+var INTERP_SPEED : float = 15.0 #interpolation speed of the visual character
 
 
 func _ready() -> void:

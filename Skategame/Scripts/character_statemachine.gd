@@ -14,15 +14,17 @@ var has_changed : bool = false
 func _process(delta: float) -> void:
 	_update_state_cooldown(delta)
 
-func set_player_state(new_state : CharStates.State) -> void:
-	if state_update_cooldown > 0 and new_state != CharStates.State.FALL and new_state != CharStates.State.GRIND and new_state != CharStates.State.LIP:
-		return
+func set_player_state(new_state : CharStates.State) -> bool:
+	if state_update_cooldown > 0 and new_state != CharStates.State.FALL :
+		return false
 	if player_state != new_state:
 		player_state = new_state
 		if player_state != CharStates.State.PIPESNAPAIR:
 			Char_Tricks.set_state_changed()
 			_debug_player_state()
 			_set_state_cooldown()
+			return true
+	return false
 	
 func set_last_player_state() -> void:
 	_update_last_player_state()	

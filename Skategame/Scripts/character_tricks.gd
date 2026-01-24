@@ -57,16 +57,16 @@ func _process(delta: float) -> void:
 	if !can_trick:
 		return
 	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
-		Char_Statemachine.set_player_state(CharStates.State.GRIND)
-		_start_trick(available_grind_tricks)	
-		Char.is_jump = false
-		performed_olli = false
+		if Char_Statemachine.set_player_state(CharStates.State.GRIND):
+			_start_trick(available_grind_tricks)	
+			Char.is_jump = false
+			performed_olli = false
 		return
 	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
-		Char_Statemachine.set_player_state(CharStates.State.LIP)
-		Char.is_jump = false
-		_start_trick(available_lip_tricks)
-		performed_olli = false
+		if Char_Statemachine.set_player_state(CharStates.State.LIP):
+			Char.is_jump = false
+			_start_trick(available_lip_tricks)
+			performed_olli = false
 		return
 	if Char.get_can_air():
 		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.JUMP:
