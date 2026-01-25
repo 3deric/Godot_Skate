@@ -8,7 +8,6 @@ const STATE_UPDATE_COOLDOWN_TIME : float = 0.15
 var player_state : CharStates.State = CharStates.State.RESET
 var last_player_state : CharStates.State = CharStates.State.RESET
 var state_update_cooldown : float = 0.0
-var has_changed : bool = false
 
 
 func _process(delta: float) -> void:
@@ -52,16 +51,10 @@ func reset_player_state() -> void:
 func _update_last_player_state() -> void:
 	last_player_state = player_state
 	
-func has_state_changed() -> bool:
-	return player_state != last_player_state
-
 func _debug_player_state() -> void:
 	if(player_state != last_player_state):
 		print(CharStates.State.find_key(player_state))
 
-func get_state_changed() -> bool:
-	return has_changed
-	
 func _set_state_cooldown():
 	state_update_cooldown = STATE_UPDATE_COOLDOWN_TIME
 	

@@ -50,6 +50,8 @@ static func get_position_on_curve(_path: Path3D, _offset):
 	return _curvePos
 	
 static func get_stick_curve(_path: Path3D,_offset: float, _threshold):
+	if _path == null:
+		return false
 	var _curve: Curve3D = _path.curve
 	if(_offset <= _threshold or _offset >= _curve.get_baked_length() -_threshold):
 		return false

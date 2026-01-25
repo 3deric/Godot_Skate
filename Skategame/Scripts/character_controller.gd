@@ -297,6 +297,8 @@ func _air_movement(_delta):
 	up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
+	if path == null:
+		return
 	can_air = true
 	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
 	var _curve : Curve3D = path.curve
