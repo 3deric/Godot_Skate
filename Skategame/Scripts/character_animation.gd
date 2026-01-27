@@ -11,6 +11,7 @@ extends Node3D
 @onready var Char_Input : CharacterInput = $"../Char_Input" 
 @onready var Char_Init : CharacterInit = $"../.."
 
+const LIP = preload("res://Assets/Characters/Meshes/Animations/Lip.res")
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
@@ -26,12 +27,10 @@ func _ready() -> void:
 	else:
 		Char.top_level = true
 
-
 func _process(delta: float) -> void:
 	_animation_handler(delta)
 	_set_vis_balance()
 	_lerp_vis_transform(delta, INTERP_SPEED)
-
 
 func _set_vis_balance():
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND):
@@ -39,13 +38,11 @@ func _set_vis_balance():
 		return
 	if Char_Statemachine.is_player_state(CharStates.State.LIP):
 		Char.rotation.x = -Char_Controller.balance_angle * 0.5	
-
-
+	
 func _lerp_vis_transform(_delta, _speed):
 	Char.global_transform = Char.global_transform.interpolate_with(Char_Controller.global_transform, _delta * _speed)
 	if !Char_Statemachine.is_player_state(CharStates.State.GRIND):
 		Char.global_position = Char_Controller.global_position
-
 
 func _animation_handler(delta):
 	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input().x, Char_Input.get_input().y), delta * ANIM_INTERP_SPEED)
@@ -85,3 +82,6 @@ func _animation_handler(delta):
 			anim_tree.set('parameters/conditions/is_grind', false)
 			anim_tree.set('parameters/conditions/is_lip', true)
 			anim_tree.set('parameters/Lip/blend_position', anim_blend)
+
+func set_trick_animation(node : String, animation: String):
+	anim_tree.tree_root.get_node(node).animation = animation
