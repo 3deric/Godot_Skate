@@ -11,8 +11,6 @@ extends Node3D
 @onready var Char_Input : CharacterInput = $"../Char_Input" 
 @onready var Char_Init : CharacterInit = $"../.."
 
-const LIP = preload("res://Assets/Characters/Meshes/Animations/Lip.res")
-
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
 var INTERP_SPEED : float = 15.0 #interpolation speed of the visual character
