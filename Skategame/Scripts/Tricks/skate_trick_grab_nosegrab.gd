@@ -7,6 +7,7 @@ func _init():
 	duration = 0.15
 	base_score = 300
 	difficulty = 1.2
+	trick_animation = "Air_Right"
 
 	input_sequence = [
 		CharacterInput.Action.UP,

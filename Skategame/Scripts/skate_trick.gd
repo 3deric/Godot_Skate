@@ -9,7 +9,7 @@ var difficulty : float
 var base_state : CharacterStates.State
 var input_sequence: Array[int]
 var trick_rotation : float
-var trick_animation : Resource
+var trick_animation : String
 
 func _init(): #prevent direct instancing of base class
 	assert(false, "Trick is an abstract base class")
@@ -27,7 +27,7 @@ func matches_input(buffer: Array[int]) -> bool:
 			return false
 	return true
 
-func calculate_score(combo_multiplier : int = 1) -> int:
+func get_score(combo_multiplier : int = 1) -> int:
 	return int(base_score  * combo_multiplier)
 	
 func set_rotation(_delta) -> void:
@@ -37,3 +37,6 @@ func get_rotation() -> float:
 	if CharStates.State.AIR in base_states:
 		return trick_rotation
 	return 0
+
+func get_animation() -> String:
+	return trick_animation

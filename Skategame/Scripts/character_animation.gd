@@ -17,11 +17,17 @@ var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
 var INTERP_SPEED : float = 15.0 #interpolation speed of the visual character
 
+var trick_anim : bool = false #false if first trick animation is used, true if second
+var trick0 : AnimationNode
+var trick1 : AnimationNode
+
 
 func _ready() -> void:
 	skeleton_3d.show_rest_only = false
 	body_mesh.set_blend_shape_value(1,0.3)
 	body_mesh.set_blend_shape_value(2,0)
+	trick0 = anim_tree.tree_root.get_node("Trick0")
+	trick1 = anim_tree.tree_root.get_node("Trick1")
 	if !Char_Init.is_playing:
 		anim_tree.set('parameters/conditions/is_setup', true)
 	else:
@@ -83,5 +89,16 @@ func _animation_handler(delta):
 			anim_tree.set('parameters/conditions/is_lip', true)
 			anim_tree.set('parameters/Lip/blend_position', anim_blend)
 
-func set_trick_animation(node : String, animation: String):
-	anim_tree.tree_root.get_node(node).animation = animation
+func set_trick_animation(animation: String):
+	if !trick_anim:
+		trick_anim = true
+		trick0.animation = animation
+		anim_tree.set('parameters/conditions/is_trick_0',true)
+		anim_tree.set('parameters/conditions/is_trick_1',false)
+	else:
+		trick_anim = false
+		trick1.animation = animation
+		anim_tree.set('parameters/conditions/is_trick_0',false)
+		anim_tree.set('parameters/conditions/is_trick_1',true)
+	anim_tree.set('parameters/conditions/is_riding', false)
+	anim_tree.set('parameters/conditions/is_stopped', false)
