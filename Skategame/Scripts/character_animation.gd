@@ -52,51 +52,43 @@ func _animation_handler(delta):
 	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input().x, Char_Input.get_input().y), delta * ANIM_INTERP_SPEED)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:
-			return
+			anim_tree.set('parameters/conditions/is_riding', false)
+			anim_tree.set('parameters/conditions/is_stopped', false)
+			anim_tree.set('parameters/conditions/is_trick0', false)
+			anim_tree.set('parameters/conditions/is_trick1', false)	
 		CharStates.State.GROUND, CharStates.State.PIPE:	
-			anim_tree.set('parameters/conditions/is_stopped', true)
-			anim_tree.set('parameters/conditions/is_air',false)
-			anim_tree.set('parameters/conditions/is_grind', false)
-			anim_tree.set('parameters/conditions/is_lip', false)
 			if Char_Controller.velocity.length() > 0.05:
 				anim_tree.set('parameters/conditions/is_riding', true)
 				anim_tree.set('parameters/conditions/is_stopped', false)
 			else:
 				anim_tree.set('parameters/conditions/is_riding', false)
 				anim_tree.set('parameters/conditions/is_stopped', true)
+			anim_tree.set('parameters/conditions/is_trick0', false)
+			anim_tree.set('parameters/conditions/is_trick1', false)
 			anim_tree.set('parameters/Ground/blend_position', anim_blend)
 		CharStates.State.AIR, CharStates.State.PIPESNAP, CharStates.State.PIPESNAPAIR:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
-			anim_tree.set('parameters/conditions/is_air', true)
-			anim_tree.set('parameters/conditions/is_grind', false)
-			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Air/blend_position', anim_blend)
 		CharStates.State.GRIND:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
-			anim_tree.set('parameters/conditions/is_air', false)
-			anim_tree.set('parameters/conditions/is_grind', true)
-			anim_tree.set('parameters/conditions/is_lip', false)
 			anim_tree.set('parameters/Grind/blend_position', anim_blend)
 		CharStates.State.LIP:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', false)
-			anim_tree.set('parameters/conditions/is_air', false)
-			anim_tree.set('parameters/conditions/is_grind', false)
-			anim_tree.set('parameters/conditions/is_lip', true)
 			anim_tree.set('parameters/Lip/blend_position', anim_blend)
 
 func set_trick_animation(animation: String):
 	if !trick_anim:
 		trick_anim = true
 		trick0.animation = animation
-		anim_tree.set('parameters/conditions/is_trick_0',true)
-		anim_tree.set('parameters/conditions/is_trick_1',false)
+		anim_tree.set('parameters/conditions/is_trick0',true)
+		anim_tree.set('parameters/conditions/is_trick1',false)
 	else:
 		trick_anim = false
 		trick1.animation = animation
-		anim_tree.set('parameters/conditions/is_trick_0',false)
-		anim_tree.set('parameters/conditions/is_trick_1',true)
+		anim_tree.set('parameters/conditions/is_trick0',false)
+		anim_tree.set('parameters/conditions/is_trick1',true)
 	anim_tree.set('parameters/conditions/is_riding', false)
 	anim_tree.set('parameters/conditions/is_stopped', false)

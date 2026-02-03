@@ -43,6 +43,7 @@ var performed_olli : bool = false
 @onready var Char : CharacterController = $".."
 @onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 @onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
+@onready var Char_Animation : CharacterAnimation = $"../Char_Animation"
 	
 func _ready() -> void:
 	pass
@@ -119,6 +120,7 @@ func _start_trick(_tricks : Array[Trick]):
 			current_trick_duration = current_trick.duration
 			Ingame_Ui.set_trick_view(current_trick.trick_name)
 			combo_cooldown = COMBO_COOLDOWN_TIME
+			Char_Animation.set_trick_animation(trick.get_animation())
 			break
 			
 func _end_trick() -> void:
