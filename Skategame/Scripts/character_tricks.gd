@@ -51,7 +51,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	_update_trick_ui()
 	_trick_cooldown(delta)
-	_set_trick_rot(delta * Char_Input.get_input().x * Char.ROT_JUMP)
+	_set_trick_rot(delta * Char_Input.get_input().x * Char.stats.rot_jump)
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
 		_combo_cooldown(delta)
 		performed_olli = false

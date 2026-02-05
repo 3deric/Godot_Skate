@@ -1,20 +1,8 @@
 class_name CharacterController
 extends CharacterBody3D
 
-#global movement constants
-const ACC : float= 0.1
-const JUMP_VEL : float = 5.0
-const ROT : float= 2.0
-const ROT_KICKTURN : float = 4.0
-const ROT_JUMP : float= 7.0
-const MAX_VEL : float = 12.0
-const GRAVITY : float = 15.0
-const BALANCE_MULTI : float = 0.75
-const PIPESNAP_OFFSET : float = 0.0
-const UP_ALIGN_SPEED : float = 5.0
-const FLOOR_FALL_THRESHOLD : float = 0.5
-const PERPENDICULAR_FALL_THRESHOLD : float = 4.0
-const AIR_BOUNCE_STRENGTH : float = 0.25
+#player settings
+@export var stats : PlayerSettings
 
 #global movement variables
 var xform = null
@@ -201,11 +189,11 @@ func _player_state():
 			Char_Statemachine.set_player_state(CharStates.State.AIR)
 			if Char_Statemachine.is_last_player_state(CharStates.State.PIPE):
 				if xform.basis.z.dot(Vector3.UP) > 0.5:
-					velocity += xform.basis.z * JUMP_VEL * 0.15 - up_direction.slide(Vector3.UP) * 0.5
+					velocity += xform.basis.z * stats.jump_vel * 0.15 - up_direction.slide(Vector3.UP) * 0.5
 					return
 			if Char_Statemachine.is_last_player_state(CharStates.State.GROUND):
 				if xform.basis.z.dot(Vector3.UP) > 0.5:
-					velocity += Vector3.UP * JUMP_VEL * 0.25
+					velocity += Vector3.UP * stats.jump_vel * 0.25
 					return
 			return
 	if Char_Statemachine.is_player_state(CharStates.State.AIR):
@@ -278,29 +266,29 @@ func _ground_movement(delta):
 		last_ground_rot = global_rotation
 	if Char_Input.get_input().y < 0:
 		velocity *= 0.95
-		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_KICKTURN * delta)
+		global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_kickturn * delta)
 	else:
-		global_rotate(xform.basis.y, Char_Input.get_input().x * ROT * delta)
-	if Char_Input.get_input().y >= 0 and velocity.length() < MAX_VEL/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input().y > 0:
-		velocity +=xform.basis.z * ACC * 0.25
-	if (Char_Input.get_input().z > 0 and velocity.length() <= MAX_VEL and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -MAX_VEL):
-		velocity += xform.basis.z * Char_Input.get_input().z * ACC
-	velocity.y -= GRAVITY * delta
+		global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot * delta)
+	if Char_Input.get_input().y >= 0 and velocity.length() < stats.max_vel/8 and LibHelpers.forward_velocity(velocity, up_direction).length() > 0.1 or Char_Input.get_input().y > 0:
+		velocity +=xform.basis.z * stats.acc * 0.25
+	if (Char_Input.get_input().z > 0 and velocity.length() <= stats.max_vel and Char_Input.get_input().y != -1) or (Char_Input.get_input().z < 0 and velocity.length() >= -stats.max_vel):
+		velocity += xform.basis.z * Char_Input.get_input().z * stats.acc
+	velocity.y -= GlobalSettings.GRAVITY * delta
 	_wall_bounce()
 	velocity = LibHelpers.kill_orthogonal_velocity(xform, velocity)
 
 func _air_movement(_delta): 	
 	can_air = true
-	var _rot_delta = Char_Input.get_input().x * ROT_JUMP * _delta
+	var _rot_delta = Char_Input.get_input().x * stats.rot_jump * _delta
 	global_rotate(xform.basis.y, _rot_delta)
-	velocity.y -= GRAVITY * _delta
-	up_direction = lerp(up_direction,Vector3.UP, _delta * UP_ALIGN_SPEED)
+	velocity.y -= GlobalSettings.GRAVITY * _delta
+	up_direction = lerp(up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
 	if path == null:
 		return
 	can_air = true
-	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
+	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
 	var _curve : Curve3D = path.curve
 	curve_snap = _curve.sample_baked(path_offset, true)
 	path_offset += path_vel * delta
@@ -308,14 +296,14 @@ func _pipe_snap_movement(delta):
 		path_offset = LibHelpers.wrap_curve(path, path_offset)
 	curve_tangent = (LibHelpers.get_path_tangent(path, path_offset) * Vector3(1,0,1)).normalized()
 	up_direction = LibHelpers.pipe_snap_up_dir(curve_tangent, last_up_dir, pipe_snap_flip)
-	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * PIPESNAP_OFFSET
-	velocity.y -= GRAVITY * delta
+	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * GlobalSettings.PIPESNAP_OFFSET
+	velocity.y -= GlobalSettings.GRAVITY * delta
 	velocity = LibHelpers.kill_pipe_orthogonal_velocity(velocity, curve_tangent)
 
 func _pipe_snap_air_movement(delta):
 	can_air = true
-	global_rotate(xform.basis.y, Char_Input.get_input().x * ROT_JUMP * delta)
-	velocity.y -= GRAVITY * delta
+	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
+	velocity.y -= GlobalSettings.GRAVITY * delta
 
 func _grind_movement(delta) -> void: 	
 	if !path:
@@ -361,7 +349,7 @@ func _balance_logic(delta: float, axis : int):
 		if(Char_Input.get_input().y != 0):
 			_set_balance_dir(-Char_Input.get_input().y)
 	balance_time += 0.05 * delta
-	balance_angle += BALANCE_MULTI * delta * balance_dir * balance_time
+	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
 	
 func _set_balance_dir(_dir: int):
@@ -372,13 +360,13 @@ func _check_reverse_motion() -> void:
 		return
 	var revertCheck : float = velocity.normalized().dot(xform.basis.z)
 	if revertCheck < 0:
-		LibHelpers.revert_motion()
+		pass #add revert function
 
 func _check_bounce_path(air : bool) -> void:
 	if ray_path and !revert_path:
 		if ray_path.collider.is_in_group("wall"):
 			if air:
-				path_vel *= -AIR_BOUNCE_STRENGTH
+				path_vel *= -GlobalSettings.AIR_BOUNCE_STRENGTH
 			else: 
 				path_vel *= -1.0
 			path_dir *= -1
@@ -401,7 +389,7 @@ func _fall_check() -> void:
 			return
 	if Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR):
 		if is_on_wall_only():
-			var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, FLOOR_FALL_THRESHOLD)
+			var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, GlobalSettings.FLOOR_FALL_THRESHOLD)
 			if !_on_feet.valid:
 				set_fall("faceplant", _on_feet.dot)
 			return
@@ -410,9 +398,9 @@ func _fall_check() -> void:
 	if !_is_ground or !_last_air:
 		return
 	var _fwd_vel : Vector3 = LibHelpers.forward_velocity(velocity, up_direction)
-	if _fwd_vel.length() <= PERPENDICULAR_FALL_THRESHOLD:
+	if _fwd_vel.length() <= GlobalSettings.PERPENDICULAR_FALL_THRESHOLD:
 		return
-	var _perp : Dictionary = LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, FLOOR_FALL_THRESHOLD)
+	var _perp : Dictionary = LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, GlobalSettings.FLOOR_FALL_THRESHOLD)
 	if !_perp.valid:
 		set_fall("perpendicular", _perp.dot)
 
@@ -450,16 +438,16 @@ func _handle_jump():
 	is_jump = true
 	match Char_Statemachine.player_state:
 		CharStates.State.GROUND, CharStates.State.PIPE:
-			velocity += Vector3.UP * JUMP_VEL
+			velocity += Vector3.UP * stats.jump_vel
 			Char_Input.set_jump_cooldown()
 		
 		CharStates.State.PIPE:
-			velocity += xform.basis.z * JUMP_VEL * 0.15 - up_direction.slide(Vector3.UP) * 0.5
+			velocity += xform.basis.z * stats.jump_vel * 0.15 - up_direction.slide(Vector3.UP) * 0.5
 			Char_Input.set_jump_cooldown()
 		
 		CharStates.State.GRIND:
 			velocity = xform.basis.z * abs(path_vel)
-			velocity += xform.basis.y * JUMP_VEL
+			velocity += xform.basis.y * stats.jump_vel
 			velocity += xform.basis.x * balance_dir
 			position += xform.basis.y * 0.05
 			Char_Input.set_jump_cooldown()
@@ -469,6 +457,6 @@ func _handle_jump():
 			position -= lip_start_dir * balance_dir * 0.5 + xform.basis.y * 0.05
 			up_direction = Vector3.UP
 			rotation.y = atan2(lip_start_dir.x * -balance_dir, lip_start_dir.z * -balance_dir)
-			velocity = xform.basis.z * 0.15 + Vector3.UP * JUMP_VEL * 0.25
+			velocity = xform.basis.z * 0.15 + Vector3.UP * stats.jump_vel * 0.25
 			Char_Input.set_jump_cooldown()
 			path = null

@@ -101,10 +101,6 @@ static func align(_xForm, _newUp):
 	_xForm.basis = Basis(rotation_quat) * _xForm.basis
 	_xForm.basis = _xForm.basis.orthonormalized()	
 	return _xForm
-
-static func revert_motion():
-	pass
-	#global_rotate(xform.basis.y, PI)
 	
 static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
 	var _path : Path3D = null
@@ -121,6 +117,10 @@ static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
 	return _path
 
 static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionary:
+	if !path:
+		return {
+		"valid": false
+		}
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	if _tan == Vector3.ZERO:
 		return {"valid": false}
