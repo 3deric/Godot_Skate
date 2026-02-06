@@ -221,7 +221,10 @@ func _surface_check():
 	var _basis_y = xform.basis.y
 	var _basis_z = xform.basis.z
 	if Char_Input.can_jump():
-		ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)
+		if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 1.0, self)		
+		else: 
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.25, self)		
 	else:
 		ray_ground = {}
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.25, _basis_z, 1.0, self)

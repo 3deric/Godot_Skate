@@ -18,7 +18,7 @@ enum Action {
 	REVERT
 	}
 
-const JUMP_COOLDOWN : float = 0.025
+const JUMP_COOLDOWN : float = 0.1
 
 var input_buffer : InputBuffer = InputBuffer.new()
 var input : Vector3i = Vector3i.ZERO #input values
