@@ -247,7 +247,7 @@ func set_fall(_fall_reason, _fall_value):
 	Char_Ragdoll.set_start_simulation(last_vel)
 	Char_Statemachine.set_player_state(CharStates.State.FALL)
 	Ingame_Ui.set_fail_view(true)
-	fall_timer = 2.0
+	fall_timer = GlobalSettings.FALL_TIMER
 	
 func _reset_player(_pos, _rot):
 	Ingame_Ui.set_fail_view(false)
@@ -268,7 +268,7 @@ func _ground_movement(delta):
 		last_ground_pos = global_position
 		last_ground_rot = global_rotation
 	if Char_Input.get_input().y < 0:
-		velocity *= 0.95
+		velocity *= GlobalSettings.GROUND_SLOWDOWN
 		global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_kickturn * delta)
 	else:
 		global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot * delta)
@@ -351,7 +351,7 @@ func _balance_logic(delta: float, axis : int):
 	else:
 		if(Char_Input.get_input().y != 0):
 			_set_balance_dir(-Char_Input.get_input().y)
-	balance_time += 0.05 * delta
+	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
 	

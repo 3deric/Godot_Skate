@@ -45,15 +45,15 @@ func _set_vis_balance():
 	
 func _lerp_vis_transform(_delta, _speed):
 	Char.global_transform = Char.global_transform.interpolate_with(Char_Controller.global_transform, _delta * _speed)
-	if !Char_Statemachine.is_player_state(CharStates.State.GRIND):
-		Char.global_position = Char_Controller.global_position
+	#if !Char_Statemachine.is_player_state(CharStates.State.GRIND):
+	#	Char.global_position = Char_Controller.global_position
 
 func _animation_handler(delta):
 	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input().x, Char_Input.get_input().y), delta * ANIM_INTERP_SPEED)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:
 			anim_tree.set('parameters/conditions/is_riding', false)
-			anim_tree.set('parameters/conditions/is_stopped', false)
+			anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/conditions/is_trick0', false)
 			anim_tree.set('parameters/conditions/is_trick1', false)	
 		CharStates.State.GROUND, CharStates.State.PIPE:	
@@ -80,6 +80,8 @@ func _animation_handler(delta):
 			anim_tree.set('parameters/Lip/blend_position', anim_blend)
 
 func set_trick_animation(animation: String):
+	anim_tree.set('parameters/conditions/is_riding', false)
+	anim_tree.set('parameters/conditions/is_stopped', false)
 	if !trick_anim:
 		trick_anim = true
 		trick0.animation = animation
@@ -90,5 +92,3 @@ func set_trick_animation(animation: String):
 		trick1.animation = animation
 		anim_tree.set('parameters/conditions/is_trick0',false)
 		anim_tree.set('parameters/conditions/is_trick1',true)
-	anim_tree.set('parameters/conditions/is_riding', false)
-	anim_tree.set('parameters/conditions/is_stopped', false)

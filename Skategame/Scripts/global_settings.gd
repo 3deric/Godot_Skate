@@ -8,3 +8,6 @@ const UP_ALIGN_SPEED : float = 5.0
 const FLOOR_FALL_THRESHOLD : float = 0.5
 const PERPENDICULAR_FALL_THRESHOLD : float = 4.0
 const AIR_BOUNCE_STRENGTH : float = 0.25
+const FALL_TIMER : float = 2.0
+const GROUND_SLOWDOWN : float = 0.95
+const BALANCE_TIME_INC : float = 0.05
