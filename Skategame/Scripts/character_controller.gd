@@ -34,6 +34,7 @@ var is_jump : bool = false
 @onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
 @onready var Char_Statemachine : CharacterStatemachine = $Char_Statemachine
+@onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input 
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
@@ -253,6 +254,7 @@ func _reset_player(_pos, _rot):
 	Ingame_Ui.set_fail_view(false)
 	Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
+	Char_Animation.reset_vis_transform()
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	last_vel = Vector3.ZERO

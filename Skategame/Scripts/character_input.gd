@@ -21,8 +21,7 @@ enum Action {
 const JUMP_COOLDOWN : float = 0.1
 
 var input_buffer : InputBuffer = InputBuffer.new()
-var input : Vector3i = Vector3i.ZERO #input values
-var input_steering : Vector3 = Vector3.ZERO #input values
+var input : Vector3 = Vector3.ZERO #input values
 var _jump_timer : float = 0.0
 
 func _process(_delta):
@@ -34,8 +33,8 @@ func _process(_delta):
 	_on_player_state_changed()
 	
 func _input_handler(): 	#handles player inputs
-	input.x = int(Input.is_action_pressed('Left')) - int(Input.is_action_pressed('Right'))
-	input.y = int(Input.is_action_pressed('Up')) - int(Input.is_action_pressed('Down'))
+	input.x = Input.get_action_strength('Left') - Input.get_action_strength('Right')
+	input.y = Input.get_action_strength('Up') - Input.get_action_strength('Down')
 	input.z = int(Input.is_action_pressed('Jump'))
 
 func _jump_cooldown(_delta) -> void:
@@ -83,7 +82,7 @@ func can_jump() -> bool:
 func set_jump_cooldown() -> void:
 	_jump_timer = JUMP_COOLDOWN
 	
-func get_input() -> Vector3i:
+func get_input() -> Vector3:
 	return input
 	
 func get_input_jump() -> bool:
