@@ -93,6 +93,7 @@ offset_top = -230.0
 offset_bottom = -97.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 alignment = 1
 
 [node name="FailView" type="Control" parent="."]
