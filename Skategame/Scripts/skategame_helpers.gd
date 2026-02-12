@@ -22,6 +22,8 @@ static func horizontal_velocity(_vel : Vector3) -> Vector3:
 	return _vel.slide(Vector3.UP)
 	
 static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
+	if !_path:
+		return Vector3.ZERO
 	var _lastOffset : float = _offset + 0.01
 	var _curvePos : Vector3 = _path.curve.sample_baked(_offset, true)
 	var _lastCurvePos : Vector3 = _path.curve.sample_baked(_lastOffset, true)
@@ -136,6 +138,10 @@ static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionar
 	}
 
 static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:	
+	if !path:
+		return {
+		"valid": false,
+	}
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	var _path_global_transform = path.global_transform
 	var _curve = path.curve
@@ -153,6 +159,7 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 			_dir = _perp if _vel_on_perp > 0 else -_perp
 	
 	return {
+		"valid": true,
 		"tan": _tan,
 		"dir" : _dir.normalized() * -1,
 		"up": xform.basis.y,

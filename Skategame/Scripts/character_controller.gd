@@ -160,13 +160,13 @@ func _player_state():
 			curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
 		if !Char_Statemachine.is_player_state(CharStates.State.GRIND) and !Char_Statemachine.is_player_state(CharStates.State.LIP):
 			var grind_start : Dictionary = LibHelpers.start_grind(velocity, path, path_offset)
+			var lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
 			if grind_start.valid:
 				path_vel = grind_start.vel
 				path_dir = grind_start.dir
 				curve_tangent = grind_start.tan
 				can_grind = true
-			if path_dir == 0:
-				var lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
+			if path_dir == 0 and lip_start.valid:
 				curve_tangent = lip_start.tan
 				lip_start_dir = lip_start.dir
 				lip_start_vel = lip_start.vel
@@ -209,12 +209,12 @@ func _player_state():
 			return
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(CharStates.State.PIPE):
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
-			path = null
+			#path = null
 			is_jump = false
 			return
 		if _coll_info.is_in_group('floor') and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
 			Char_Statemachine.set_player_state(CharStates.State.GROUND)
-			path = null
+			#path = null
 			is_jump = false
 			return
 
@@ -290,8 +290,6 @@ func _air_movement(_delta):
 	up_direction = lerp(up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
 	
 func _pipe_snap_movement(delta): 
-	if path == null:
-		return
 	can_air = true
 	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
 	var _curve : Curve3D = path.curve
