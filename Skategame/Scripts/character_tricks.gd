@@ -5,15 +5,13 @@ const COMBO_COOLDOWN_TIME : float = 0.5
 const ROT_ROUNDING : float = 45
 
 var available_grind_tricks: Array[Trick] = [
-	Frontslide.new(),
-	Tailslide.new(),
+	Frontside.new(),
+	Backside.new(),
 	Fiftyfifty.new(),
-	Darkslide.new(),
 	Boardslide.new()
 	]
 var available_grab_tricks : Array[Trick] = [
-	Nosegrab.new(),
-	Tailgrab.new(),
+	MelonGrab.new(),
 	Indygrab.new()
 	]
 var available_air_tricks : Array[Trick] = [
@@ -25,6 +23,7 @@ var available_flip_tricks : Array[Trick] = [
 	]
 var available_lip_tricks : Array[Trick] = [
 	Axlestall.new(),
+	Blunt.new(),
 	Nosestall.new()
 	]
 var available_manual_tricks : Array[Trick] = []

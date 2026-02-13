@@ -7,7 +7,7 @@ func _init():
 	duration = 0.15
 	base_score = 300
 	difficulty = 1.2
-	trick_animation = "AirLeft"
+	trick_animation = "Grab_IndyGrab"
 
 	input_sequence = [
 		CharacterInput.Action.GRAB
