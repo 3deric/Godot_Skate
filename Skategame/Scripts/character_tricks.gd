@@ -5,10 +5,10 @@ const COMBO_COOLDOWN_TIME : float = 0.5
 const ROT_ROUNDING : float = 45
 
 var available_grind_tricks: Array[Trick] = [
-	Frontside.new(),
 	Backside.new(),
 	Fiftyfifty.new(),
-	Boardslide.new()
+	Boardslide.new(),
+	Frontside.new(),
 	]
 var available_grab_tricks : Array[Trick] = [
 	MelonGrab.new(),
@@ -45,7 +45,10 @@ var performed_olli : bool = false
 @onready var Char_Animation : CharacterAnimation = $"../Char_Animation"
 	
 func _ready() -> void:
-	pass
+	available_air_tricks = order_tricks_by_desc_complexity(available_air_tricks)
+	available_lip_tricks = order_tricks_by_desc_complexity(available_lip_tricks)
+	available_grab_tricks = order_tricks_by_desc_complexity(available_grab_tricks)
+	available_grind_tricks = order_tricks_by_desc_complexity(available_grind_tricks)
 	
 func _process(delta: float) -> void:
 	_update_trick_ui()
@@ -108,7 +111,7 @@ func _update_trick_ui():
 		return
 	Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
 		
-func _start_trick(_tricks : Array[Trick]):
+func _start_trick(_tricks : Array[Trick]) -> void:
 	for trick in _tricks:
 		if trick.matches_input(Char_Input.input_buffer.buffer):
 			if _get_trick_active():
@@ -153,7 +156,7 @@ func get_last_trick() -> Trick:
 		return tricks[_size -1]
 	return null
 
-func set_end_combo():
+func set_end_combo() -> void:
 	var _combo_text : String = ""
 	for trick in tricks:
 		if trick == null:
@@ -164,13 +167,18 @@ func set_end_combo():
 	Ingame_Ui.set_trick_view(_combo_text)
 	tricks.clear()
 	
-func _set_trick_active(active : bool):
+func _set_trick_active(active : bool) -> void:
 	is_trick_active = active
 	
 func _get_trick_active() -> bool:
 	return is_trick_active
 	
-func set_clear_tricks():
+func set_clear_tricks() -> void:
 	_end_trick()
 	tricks.clear()
 	current_trick = null
+
+func order_tricks_by_desc_complexity(tricks : Array[Trick]) -> Array[Trick]:
+	var _sorted_tricks = tricks.duplicate()
+	_sorted_tricks.sort_custom(func(a, b): return a.input_sequence.size() > b.input_sequence.size())
+	return _sorted_tricks

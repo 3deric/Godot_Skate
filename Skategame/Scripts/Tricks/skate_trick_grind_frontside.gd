@@ -10,6 +10,5 @@ func _init():
 	trick_animation = "Grind_Frontside"
 
 	input_sequence = [
-		CharacterInput.Action.UP,
 		CharacterInput.Action.GRIND
 		]

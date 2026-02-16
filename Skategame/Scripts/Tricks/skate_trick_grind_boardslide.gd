@@ -10,5 +10,6 @@ func _init():
 	trick_animation = "Grind_Boardslide"
 
 	input_sequence = [
+		CharacterInput.Action.UP,
 		CharacterInput.Action.GRIND
 		]
