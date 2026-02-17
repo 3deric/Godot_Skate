@@ -22,6 +22,8 @@ static func horizontal_velocity(_vel : Vector3) -> Vector3:
 	return _vel.slide(Vector3.UP)
 	
 static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
+	if !_path:
+		return Vector3.ZERO
 	var _lastOffset : float = _offset + 0.01
 	var _curvePos : Vector3 = _path.curve.sample_baked(_offset, true)
 	var _lastCurvePos : Vector3 = _path.curve.sample_baked(_lastOffset, true)
@@ -50,6 +52,8 @@ static func get_position_on_curve(_path: Path3D, _offset):
 	return _curvePos
 	
 static func get_stick_curve(_path: Path3D,_offset: float, _threshold):
+	if _path == null:
+		return false
 	var _curve: Curve3D = _path.curve
 	if(_offset <= _threshold or _offset >= _curve.get_baked_length() -_threshold):
 		return false
@@ -99,10 +103,6 @@ static func align(_xForm, _newUp):
 	_xForm.basis = Basis(rotation_quat) * _xForm.basis
 	_xForm.basis = _xForm.basis.orthonormalized()	
 	return _xForm
-
-static func revert_motion():
-	pass
-	#global_rotate(xform.basis.y, PI)
 	
 static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
 	var _path : Path3D = null
@@ -119,7 +119,10 @@ static func get_closest_path(area: Area3D, pos: Vector3) -> Path3D:
 	return _path
 
 static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionary:
-	print(path)
+	if !path:
+		return {
+		"valid": false
+		}
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	if _tan == Vector3.ZERO:
 		return {"valid": false}
@@ -134,21 +137,36 @@ static func start_grind(vel: Vector3, path: Path3D, offset : float) -> Dictionar
 		"tan": _tan
 	}
 
-static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
-	print(path)
+static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:	
+	if !path:
+		return {
+		"valid": false,
+	}
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
-	var _dir : Vector3 = _tan.cross(Vector3.UP)
-	if xform.basis.y.dot(_dir) > 0:
-		_dir *= -1
+	var _path_global_transform = path.global_transform
+	var _curve = path.curve
+	var _local_path_pos = _curve.sample_baked(offset, true)
+	var _global_path_pos = _path_global_transform * _local_path_pos
+	var _to_player = (xform.origin - _global_path_pos)
+	var _to_player_horizontal = _to_player.slide(Vector3.UP).normalized()
+	var _perp = _tan.cross(Vector3.UP).normalized()
+	var _dot_to_perp = _to_player_horizontal.dot(_perp)
+	var _dir = _perp if _dot_to_perp > 0 else -_perp
+	if _to_player_horizontal.length_squared() < 0.01 or abs(_dot_to_perp) < 0.1:
+		var _vel_horizontal = vel.slide(Vector3.UP).normalized()
+		if _vel_horizontal.length_squared() > 0.01:
+			var _vel_on_perp = _vel_horizontal.dot(_perp)
+			_dir = _perp if _vel_on_perp > 0 else -_perp
+	
 	return {
+		"valid": true,
 		"tan": _tan,
-		"dir": _dir,
+		"dir" : _dir.normalized() * -1,
 		"up": xform.basis.y,
 		"vel": vel
 	}
 
 static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
-	print(path)
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	var _dir : Vector3 = _tan.cross(Vector3.UP)
 	var _flip : bool = xform.basis.y.dot(_dir) > 0
@@ -164,6 +182,10 @@ static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offse
 	}
 	
 static func landed_on_feet(_ray_down : Dictionary, _up_direction : Vector3, _threshold : float) -> Dictionary:
+	if _up_direction.dot(Vector3.UP) > 0.05:
+		return {
+			"valid": true
+		}
 	if _ray_down:
 		var _dot : float = _up_direction.dot(_ray_down.normal)
 		return {
