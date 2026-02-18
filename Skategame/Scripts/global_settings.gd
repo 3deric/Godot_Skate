@@ -13,6 +13,6 @@ const GROUND_SLOWDOWN : float = 0.95
 const BALANCE_TIME_INC : float = 0.05
 const WALL_BOUNCE_RAY_DIST : float = 0.5
 const WALL_BOUNCE_VEL_THRESH : float = 3.0
-const WALL_BOUNCE_MULTI : float = 0.5
+const WALL_BOUNCE_MULTI : float = 0.1
 const WALL_BOUNCE_OFFSET_MULTI : float = 0.05
 const JUMP_GRIND_DIR_MULTI : float = 0.5

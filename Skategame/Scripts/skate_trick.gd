@@ -22,7 +22,7 @@ func matches_input(buffer: Array[int]) -> bool:
 		return false
 
 	var start : int = buffer.size() - input_sequence.size()
-	for i in input_sequence.size():
+	for i : int in input_sequence.size():
 		if buffer[start + i] != input_sequence[i]:
 			return false
 	return true

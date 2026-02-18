@@ -60,7 +60,7 @@ func _trick_label_view_cooldown(_delta):
 		clear_trick_view()
 		
 func _create_input_buffer_vis() -> void:
-	for i in range(8):
+	for i : int in range(8):
 		var tex_rect : TextureRect= TextureRect.new()
 		tex_rect.expand_mode = TextureRect.EXPAND_FIT_WIDTH
 		tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -68,7 +68,7 @@ func _create_input_buffer_vis() -> void:
 		input_images.append(tex_rect)
 	
 func update_input_buffer_vis(_buffer : Array[int]) -> void:
-	for i in range(input_images.size()):
+	for i : int in range(input_images.size()):
 		if i < _buffer.size():
 			input_images[i].texture = image_map[_buffer[i]]
 		else:

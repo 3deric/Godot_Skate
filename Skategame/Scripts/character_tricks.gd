@@ -112,7 +112,7 @@ func _update_trick_ui():
 	Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
 		
 func _start_trick(_tricks : Array[Trick]) -> void:
-	for trick in _tricks:
+	for trick : Trick in _tricks:
 		if trick.matches_input(Char_Input.input_buffer.buffer):
 			if _get_trick_active():
 				_end_trick()
@@ -158,7 +158,7 @@ func get_last_trick() -> Trick:
 
 func set_end_combo() -> void:
 	var _combo_text : String = ""
-	for trick in tricks:
+	for trick : Trick in tricks:
 		if trick == null:
 			break
 		_combo_text += " " + trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
@@ -178,7 +178,7 @@ func set_clear_tricks() -> void:
 	tricks.clear()
 	current_trick = null
 
-func order_tricks_by_desc_complexity(tricks : Array[Trick]) -> Array[Trick]:
-	var _sorted_tricks = tricks.duplicate()
+func order_tricks_by_desc_complexity(_tricks : Array[Trick]) -> Array[Trick]:
+	var _sorted_tricks = _tricks.duplicate()
 	_sorted_tricks.sort_custom(func(a, b): return a.input_sequence.size() > b.input_sequence.size())
 	return _sorted_tricks

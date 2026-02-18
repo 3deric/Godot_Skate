@@ -225,12 +225,12 @@ func _surface_check() -> void:
 	var _forward_dir = velocity.normalized()
 	if Char_Input.can_jump():
 		if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 1.0, self)		
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 1.0, self)	
 		else: 
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.25, self)		
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)	
 	else:
 		ray_ground = {}
-	ray_forward = LibHelpers.raycast(position + _basis_y * 0.15, _forward_dir, GlobalSettings.WALL_BOUNCE_RAY_DIST, self)
+	ray_forward = LibHelpers.raycast(position + _basis_y * 0.05, _forward_dir, GlobalSettings.WALL_BOUNCE_RAY_DIST, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
 	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
 	if ray_ground:
@@ -348,10 +348,10 @@ func _randomize_balance() -> void:
 func _balance_logic(delta: float, axis : int) -> void:
 	if axis == 0:
 		if(Char_Input.get_input().x != 0):
-			_set_balance_dir(Char_Input.get_input().x)
+			_set_balance_dir(int(Char_Input.get_input().x))
 	else:
 		if(Char_Input.get_input().y != 0):
-			_set_balance_dir(-Char_Input.get_input().y)
+			_set_balance_dir(int(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
