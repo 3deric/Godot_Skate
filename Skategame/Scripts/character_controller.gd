@@ -18,6 +18,7 @@ var hor_vel : float = 0.0
 var fall_check : float = 0.0
 var revert_path : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
+var shape_col : Array = []
 var ray_forward : Dictionary = {}
 var ray_ground : Dictionary = {}
 var ray_path : Dictionary = {}
@@ -30,6 +31,7 @@ var is_jump : bool = false
 #global object references
 @onready var Area : Area3D = get_node('Area3D')
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
+@onready var Shape_Cast : ShapeCast3D = $ShapeCast3D
 @onready var Camera_Pos: Node3D = $"../Camera_Pos"
 @onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
@@ -222,7 +224,8 @@ func _player_state() -> void:
 func _surface_check() -> void:
 	var _basis_y = xform.basis.y
 	var _basis_z = xform.basis.z
-	var _forward_dir = velocity.normalized()
+	var _forward_dir = 	LibHelpers.horizontal_velocity(velocity).normalized() * clamp(velocity.length(),0.0, 0.25)
+	var _shape_cast_dir = velocity * clamp(velocity.length(),0.0, GlobalSettings.WALL_BOUNCE_MULTI)
 	if Char_Input.can_jump():
 		if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
 			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 1.0, self)	
@@ -230,6 +233,8 @@ func _surface_check() -> void:
 			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)	
 	else:
 		ray_ground = {}
+	Shape_Cast.target_position = to_local(position + _forward_dir)
+	shape_col = Shape_Cast.collision_result
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.05, _forward_dir, GlobalSettings.WALL_BOUNCE_RAY_DIST, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
 	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
@@ -370,7 +375,7 @@ func _check_bounce_path(air : bool) -> void:
 	if ray_path and !revert_path:
 		if ray_path.collider.is_in_group("wall"):
 			if air:
-				path_vel *= -GlobalSettings.AIR_BOUNCE_STRENGTH
+				path_vel *= -GlobalSettings.PATH_BOUNCE_MULTI
 			else: 
 				path_vel *= -1.0
 			path_dir *= -1
@@ -415,11 +420,21 @@ func _wall_bounce() -> void:
 		on_wall = false
 		last_on_wall = false
 		return
-	if ray_forward and ray_forward.collider.is_in_group('wall'):
-		var _normal = ray_forward.normal
+	var wall_col = null
+	if len(shape_col) > 0:
+		for col in shape_col:
+			if col.collider.is_in_group('wall'):
+				wall_col = col
+	#if ray_forward and ray_forward.collider.is_in_group('wall'):
+	if wall_col:
+		var _normal = wall_col.normal
 		var _fwd_vel = LibHelpers.forward_velocity(velocity, up_direction)
 		var _vel_length = _fwd_vel.length()
 		
+		var _dot = abs(_normal.dot(_fwd_vel.normalized()))
+		if _dot < 0.5:
+			return
+
 		if _vel_length > GlobalSettings.WALL_BOUNCE_VEL_THRESH:
 			var _reflection = velocity.bounce(_normal)
 			velocity = _reflection * GlobalSettings.WALL_BOUNCE_MULTI
