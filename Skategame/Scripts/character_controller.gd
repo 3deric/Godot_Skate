@@ -125,6 +125,10 @@ func _physics_process(delta):
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
 		return
+	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
+		if abs(Char_Input.input.y) > 0.5:
+			Char_Statemachine.set_player_state(CharStates.State.AIR)
+			return
 	Char_Statemachine.set_last_player_state()
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
 		Ingame_Ui.set_balance_view(true)
@@ -373,11 +377,21 @@ func _check_reverse_motion() -> void:
 
 func _check_bounce_path(air : bool) -> void:
 	if ray_path and !revert_path:
-		if ray_path.collider.is_in_group("wall"):
+		var wall_col = null
+		if len(shape_col) > 0:
+			for col in shape_col:
+				if col.collider.is_in_group('wall'):
+					wall_col = col
+		if wall_col:
+			var _normal = wall_col.normal
+			var _fwd_vel = LibHelpers.forward_velocity(velocity, up_direction)
+			var _vel_length = _fwd_vel.length()
+		
+		#if ray_path.collider.is_in_group("wall"):
 			if air:
 				path_vel *= -GlobalSettings.PATH_BOUNCE_MULTI
 			else: 
-				path_vel *= -1.0
+				path_vel *= -GlobalSettings.PATH_BOUNCE_MULTI
 			path_dir *= -1
 			revert_path = true
 	if !ray_path:
@@ -397,11 +411,17 @@ func _fall_check() -> void:
 			set_fall("balance issues", balance_angle)
 			return
 	if Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR):
-		if is_on_wall_only():
-			var _on_feet = LibHelpers.landed_on_feet(ray_down, up_direction, GlobalSettings.FLOOR_FALL_THRESHOLD)
-			if !_on_feet.valid:
-				set_fall("faceplant", _on_feet.dot)
-			return
+		var floor_col = null
+		if len(shape_col) > 0:
+			for col in shape_col:
+				if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
+					floor_col = col
+		if floor_col and up_direction.dot(Vector3.UP) < 0.5:
+			var _normal = floor_col.normal
+			var _dot = _normal.dot(up_direction)
+			if _dot <= 0.5:
+				set_fall("faceplant", _dot)
+				return
 	var _is_ground = Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE)
 	var _last_air = Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP)
 	if !_is_ground or !_last_air:
@@ -425,7 +445,6 @@ func _wall_bounce() -> void:
 		for col in shape_col:
 			if col.collider.is_in_group('wall'):
 				wall_col = col
-	#if ray_forward and ray_forward.collider.is_in_group('wall'):
 	if wall_col:
 		var _normal = wall_col.normal
 		var _fwd_vel = LibHelpers.forward_velocity(velocity, up_direction)
