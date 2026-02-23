@@ -217,12 +217,12 @@ func _player_state() -> void:
 			return
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(CharStates.State.PIPE):
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
-			#path = null
+			path = null
 			is_jump = false
 			return
 		if _coll_info.is_in_group('floor') and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
 			Char_Statemachine.set_player_state(CharStates.State.GROUND)
-			#path = null
+			path = null
 			is_jump = false
 			return
 
