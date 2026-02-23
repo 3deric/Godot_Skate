@@ -1,7 +1,7 @@
 class_name CharacterStatemachine
 extends Node3D
 
-const STATE_UPDATE_COOLDOWN_TIME : float = 0.15
+const STATE_UPDATE_COOLDOWN_TIME : float = 0.05
 
 @onready var Char_Tricks: CharacterTricks = $"../Char_Tricks"
 
