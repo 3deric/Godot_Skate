@@ -18,7 +18,8 @@ var hor_vel : float = 0.0
 var fall_check : float = 0.0
 var revert_path : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
-var shape_col : Array = []
+var shape_col_fwd : Array = []
+var shape_col_ground : Array = []
 var ray_forward : Dictionary = {}
 var ray_ground : Dictionary = {}
 var ray_path : Dictionary = {}
@@ -32,6 +33,7 @@ var is_jump : bool = false
 @onready var Area : Area3D = get_node('Area3D')
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
 @onready var Shape_Cast : ShapeCast3D = $ShapeCast3D
+@onready var Shape_Cast_Ground : ShapeCast3D = $ShapeCast3D_Ground
 @onready var Camera_Pos: Node3D = $"../Camera_Pos"
 @onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
@@ -52,9 +54,10 @@ var balance_dir : int = 0 #defines balance direction based on last input
 var path : Path3D = null
 var path_closed : bool = false
 var path_dir : int = 0
-var lip_start_up: Vector3 = Vector3.ZERO
-var lip_start_vel: Vector3 = Vector3.ZERO
-var lip_start_dir: Vector3 = Vector3.ZERO
+var lip_start_pos : Vector3 = Vector3.ZERO
+var lip_start_up : Vector3 = Vector3.ZERO
+var lip_start_vel : Vector3 = Vector3.ZERO
+var lip_start_dir : Vector3 = Vector3.ZERO
 var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
@@ -175,6 +178,8 @@ func _player_state() -> void:
 				can_grind = true
 			if path_dir == 0 and _lip_start.valid:
 				if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
+					var _curve = path.curve
+					lip_start_pos = _curve.sample_baked(path_offset)
 					curve_tangent = _lip_start.tan
 					lip_start_dir = _lip_start.dir
 					lip_start_vel = _lip_start.vel
@@ -243,7 +248,8 @@ func _surface_check() -> void:
 	else:
 		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + _forward_dir)
-	shape_col = Shape_Cast.collision_result
+	shape_col_fwd = Shape_Cast.collision_result
+	Shape_Cast_Ground.target_position = to_local(position - _basis_y * 1)
 	ray_forward = LibHelpers.raycast(position + _basis_y * 0.05, _forward_dir, GlobalSettings.WALL_BOUNCE_RAY_DIST, self)
 	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
 	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
@@ -351,8 +357,8 @@ func _lip_movement(delta) -> void:
 		return
 	can_lip = true
 	var _curve : Curve3D = path.curve
-	position = _curve.sample_baked(path_offset)
-	up_direction = _curve.sample_baked_up_vector(path_offset)
+	position = lip_start_pos
+	up_direction = lip_start_up
 	rotation.y = atan2(lip_start_dir.x,lip_start_dir.z)
 	_balance_logic(delta, 1)
 
@@ -388,8 +394,8 @@ func _check_reverse_motion() -> void:
 
 func _check_bounce_path() -> void:
 	var wall_col = null
-	if len(shape_col) > 0:
-		for col in shape_col:
+	if len(shape_col_fwd) > 0:
+		for col in shape_col_fwd:
 			if col.collider.is_in_group('wall'):
 				wall_col = col
 	
@@ -416,8 +422,8 @@ func _fall_check() -> void:
 			return
 	if Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR):
 		var floor_col = null
-		if len(shape_col) > 0:
-			for col in shape_col:
+		if len(shape_col_fwd) > 0:
+			for col in shape_col_fwd:
 				if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
 					floor_col = col
 		if floor_col and up_direction.dot(Vector3.UP) < 0.5:
@@ -445,8 +451,8 @@ func _wall_bounce() -> void:
 		last_on_wall = false
 		return
 	var wall_col = null
-	if len(shape_col) > 0:
-		for col in shape_col:
+	if len(shape_col_fwd) > 0:
+		for col in shape_col_fwd:
 			if col.collider.is_in_group('wall'):
 				wall_col = col
 	if wall_col:

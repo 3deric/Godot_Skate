@@ -162,7 +162,7 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 		"valid": true,
 		"tan": _tan,
 		"dir" : _dir.normalized() * -1,
-		"up": xform.basis.y,
+		"up": _curve.sample_baked_up_vector(offset),
 		"vel": vel
 	}
 
