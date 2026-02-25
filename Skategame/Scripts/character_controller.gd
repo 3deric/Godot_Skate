@@ -20,10 +20,7 @@ var revert_path : bool = false
 var anim_blend : Vector3 = Vector3.ZERO
 var shape_col_fwd : Array = []
 var shape_col_ground : Array = []
-var ray_forward : Dictionary = {}
 var ray_ground : Dictionary = {}
-var ray_path : Dictionary = {}
-var ray_down : Dictionary = {}
 var on_wall : bool = false
 var last_on_wall : bool = false
 var trick_not_finished : bool = false
@@ -33,7 +30,6 @@ var is_jump : bool = false
 @onready var Area : Area3D = get_node('Area3D')
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
 @onready var Shape_Cast : ShapeCast3D = $ShapeCast3D
-@onready var Shape_Cast_Ground : ShapeCast3D = $ShapeCast3D_Ground
 @onready var Camera_Pos: Node3D = $"../Camera_Pos"
 @onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
@@ -218,8 +214,8 @@ func _player_state() -> void:
 		var _coll_info = ray_ground.collider
 		if _coll_info.is_in_group("wall"):
 			return
-		if ray_ground.normal.dot(xform.basis.y) < 0.5:
-			return
+		#if ray_ground.normal.dot(xform.basis.y) < 0.5:
+			#return
 		if _coll_info.is_in_group('pipe') and !Char_Statemachine.is_player_state(CharStates.State.PIPE):
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
 			path = null
@@ -249,10 +245,6 @@ func _surface_check() -> void:
 		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + _forward_dir)
 	shape_col_fwd = Shape_Cast.collision_result
-	Shape_Cast_Ground.target_position = to_local(position - _basis_y * 1)
-	ray_forward = LibHelpers.raycast(position + _basis_y * 0.05, _forward_dir, GlobalSettings.WALL_BOUNCE_RAY_DIST, self)
-	ray_path = LibHelpers.raycast(position + _basis_y * 1.0, curve_tangent * path_dir, -0.25, self)
-	ray_down = LibHelpers.raycast(position + _basis_y * 0.05, Vector3.DOWN, 0.5, self)
 	if ray_ground:
 		if ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
