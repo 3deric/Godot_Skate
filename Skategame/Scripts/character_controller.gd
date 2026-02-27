@@ -249,7 +249,7 @@ func _surface_check() -> void:
 		if ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
 	if !ray_ground and is_on_floor():
-		print("is on floor!")
+		#placeholder
 		pass
 
 func _set_up_direction() -> void:
