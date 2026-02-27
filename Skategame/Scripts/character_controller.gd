@@ -248,6 +248,9 @@ func _surface_check() -> void:
 	if ray_ground:
 		if ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
+	if !ray_ground and is_on_floor():
+		print("is on floor!")
+		pass
 
 func _set_up_direction() -> void:
 	if ray_ground:	
@@ -480,7 +483,7 @@ func _handle_jump() -> void:
 		CharStates.State.GRIND:
 			velocity = xform.basis.z * abs(path_vel)
 			velocity += xform.basis.y * stats.jump_vel
-			velocity += xform.basis.x * balance_dir * GlobalSettings.JUMP_GRIND_DIR_MULTI
+			velocity += xform.basis.x * Char_Input.get_input().x * GlobalSettings.JUMP_GRIND_DIR_MULTI
 			position += xform.basis.y * 0.05
 			Char_Input.set_jump_cooldown()
 			path = null

@@ -17,4 +17,4 @@ const WALL_BOUNCE_VEL_THRESH : float = 3.0
 const WALL_BOUNCE_MULTI : float = 0.25
 const WALL_BOUNCE_OFFSET_MULTI : float = 0.05
 const PATH_BOUNCE_MULTI : float = 0.75
-const JUMP_GRIND_DIR_MULTI : float = 0.4
+const JUMP_GRIND_DIR_MULTI : float = 0.5
