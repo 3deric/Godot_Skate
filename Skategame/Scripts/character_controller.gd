@@ -99,13 +99,13 @@ func _physics_process(delta):
 		CharStates.State.AIR:
 			_air_movement(delta)
 		CharStates.State.PIPESNAP:
-			_check_bounce_path()
 			_pipe_snap_movement(delta)
+			_check_bounce_path()
 		CharStates.State.PIPESNAPAIR:
 			_pipe_snap_air_movement(delta)
 		CharStates.State.GRIND:
-			_check_bounce_path()
 			_grind_movement(delta)
+			_check_bounce_path()
 		CharStates.State.LIP:
 			_lip_movement(delta)
 	_wall_bounce()
@@ -243,7 +243,7 @@ func _surface_check() -> void:
 			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)	
 	else:
 		ray_ground = {}
-	Shape_Cast.target_position = to_local(position + _forward_dir)
+	Shape_Cast.target_position = to_local(position + _forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
 	if ray_ground:
 		if ray_ground.collider.is_in_group("wall"):
@@ -305,10 +305,6 @@ func _air_movement(_delta) -> void:
 func _pipe_snap_movement(delta) -> void: 
 	if !path:
 		return
-	#print(path)
-	#print(curve_tangent)
-	#print(path_dir)
-	#print(path_vel)
 	can_air = true
 	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
 	var _curve : Curve3D = path.curve
