@@ -238,9 +238,9 @@ func _surface_check() -> void:
 	var _shape_cast_dir = velocity * clamp(velocity.length(),0.0, GlobalSettings.WALL_BOUNCE_MULTI)
 	if Char_Input.can_jump():
 		if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 1.0, self)	
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, GlobalSettings.RAY_GROUND_DIST, self)	
 		else: 
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, 0.5, self)	
+			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, GlobalSettings.RAY_GROUND_AIR_DIST, self)	
 	else:
 		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + _forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
