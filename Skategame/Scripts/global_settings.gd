@@ -18,5 +18,5 @@ const WALL_BOUNCE_MULTI : float = 0.25
 const WALL_BOUNCE_OFFSET_MULTI : float = 0.05
 const PATH_BOUNCE_MULTI : float = 0.75
 const JUMP_GRIND_DIR_MULTI : float = 0.5
-const RAY_GROUND_DIST : float = 0.25
-const RAY_GROUND_AIR_DIST : float = 0.5
+const RAY_GROUND_DIST : float = 0.5
+const RAY_GROUND_AIR_DIST : float = 0.25
