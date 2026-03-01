@@ -1,22 +1,22 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
-[ext_resource type="Texture2D" uid="uid://c3ekhjx4j7vv6" path="res://Assets/Characters/Textures/Clothes/T_hoodie_mask.jpg" id="2_d8epe"]
-[ext_resource type="Texture2D" uid="uid://bli4vrvp2gcrm" path="res://Assets/Characters/Textures/Clothes/T_hoodie_normal.jpg" id="3_vf24t"]
-[ext_resource type="Texture2D" uid="uid://i204g3ec5k1j" path="res://Assets/Characters/Textures/Clothes/T_hoodie_orm.jpg" id="4_ukeal"]
+[ext_resource type="Texture2D" uid="uid://c34xk2tef50dq" path="res://Assets/Characters/Textures/T_Hoodie_Mask.png" id="2_po3bk"]
+[ext_resource type="Texture2D" uid="uid://g0c2r5o2d4an" path="res://Assets/Characters/Textures/T_Hoodie_Normal.png" id="3_qriye"]
+[ext_resource type="Texture2D" uid="uid://bjkpol0vv6wyi" path="res://Assets/Characters/Textures/T_Hoodie_ORM.png" id="4_fritj"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_ww255")
-shader_parameter/normalOffset = 0.003
 shader_parameter/adjustable_metal_color = false
-shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
-shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
-shader_parameter/detail_color = Color(0.752475, 0.713574, 0.723471, 1)
-shader_parameter/metal_color = Color(0.72, 0.72, 0.72, 1)
-shader_parameter/Roughness_Power = 0.545
-shader_parameter/Rim = 0.38
-shader_parameter/Rim_Tint = 0.37
-shader_parameter/mask = ExtResource("2_d8epe")
-shader_parameter/orm = ExtResource("4_ukeal")
-shader_parameter/normal = ExtResource("3_vf24t")
+shader_parameter/base_color = Color(0.20664778, 0.34896, 0.39394397, 1)
+shader_parameter/accent_color = Color(0.4509804, 0.26666668, 0.25490198, 1)
+shader_parameter/mask = ExtResource("2_po3bk")
+shader_parameter/detail_color = Color(0.6768075, 0.6740968, 0.62836975, 1)
+shader_parameter/metal_color = Color(0.53, 0.53, 0.53, 1)
+shader_parameter/orm = ExtResource("4_fritj")
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/normal = ExtResource("3_qriye")
+shader_parameter/Normal_Deptj = 1.0
+shader_parameter/Rim = 0.185
+shader_parameter/Rim_Tint = 0.39
