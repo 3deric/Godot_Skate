@@ -172,7 +172,7 @@ static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offse
 	var _flip : bool = xform.basis.y.dot(_dir) > 0
 	var _path_dir : int = LibHelpers.get_path_dir(_tan, vel, 0.1)
 	var _path_vel : float = vel.project(_tan * Vector3(1,0,1)).length() * _path_dir
-	var _stick : bool = LibHelpers.get_stick_curve(path, offset, 0.25)
+	var _stick : bool = LibHelpers.get_stick_curve(path, offset, GlobalSettings.STICK_CURVE_THRESHOLD)
 	return {
 		"valid": _stick,
 		"tan": _tan,

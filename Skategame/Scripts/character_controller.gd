@@ -188,7 +188,7 @@ func _player_state() -> void:
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
 			if path_closed: #always set stick to true when the path is closed
 				_stick = true
-			if _pipe_snap.valid and !ray_ground and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
+			if _pipe_snap.valid and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
 				curve_tangent = _pipe_snap.tan
 				path_dir = _pipe_snap.dir
 				path_vel = _pipe_snap.vel
@@ -220,6 +220,8 @@ func _player_state() -> void:
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
 			path = null
 			is_jump = false
+			return
+		if up_direction.dot(Vector3.UP) < 0.5:
 			return
 		if _coll_info.is_in_group('floor') and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
 			Char_Statemachine.set_player_state(CharStates.State.GROUND)
