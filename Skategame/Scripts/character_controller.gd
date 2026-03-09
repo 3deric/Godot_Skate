@@ -188,7 +188,7 @@ func _player_state() -> void:
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
 			if path_closed: #always set stick to true when the path is closed
 				_stick = true
-			if _pipe_snap.valid and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
+			if _pipe_snap.valid  and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
 				curve_tangent = _pipe_snap.tan
 				path_dir = _pipe_snap.dir
 				path_vel = _pipe_snap.vel
@@ -485,7 +485,7 @@ func _handle_jump() -> void:
 		CharStates.State.GRIND:
 			velocity = xform.basis.z * abs(path_vel)
 			velocity += xform.basis.y * stats.jump_vel
-			velocity += xform.basis.x * Char_Input.get_input().x * GlobalSettings.JUMP_GRIND_DIR_MULTI
+			velocity += xform.basis.x * Char_Input.get_dir_before_jump() * GlobalSettings.JUMP_GRIND_DIR_MULTI
 			position += xform.basis.y * 0.05
 			Char_Input.set_jump_cooldown()
 			path = null

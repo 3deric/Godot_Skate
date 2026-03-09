@@ -88,6 +88,14 @@ func get_input() -> Vector3:
 func get_input_jump() -> bool:
 	return input_buffer.get_last_input() == Action.JUMP and can_jump()
 	
+func get_dir_before_jump() -> int:
+	if input_buffer.get_second_last_input() == Action.LEFT:
+		return 1
+	if input_buffer.get_second_last_input() == Action.RIGHT:
+		return -1
+	else:
+		return 0
+			
 func _on_player_state_changed():
 	var current_state : CharStates.State = Char_Statemachine.player_state
 	var last_state : CharStates.State = Char_Statemachine.last_player_state
