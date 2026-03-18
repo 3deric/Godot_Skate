@@ -260,6 +260,8 @@ func _set_up_direction() -> void:
 			up_direction = ray_ground.normal
 	else:
 		up_direction = last_up_dir	
+	if !ray_ground and is_on_floor():
+		up_direction = get_floor_normal()
 
 func set_fall(_fall_reason, _fall_value) -> void:
 	Char_Tricks.set_clear_tricks()
