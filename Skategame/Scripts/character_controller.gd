@@ -136,7 +136,7 @@ func _player_state() -> void:
 			return
 		if path_closed:
 			return
-		if !LibHelpers.get_stick_curve(path,  path_offset, 0.1) and  !Char_Statemachine.is_player_state(CharStates.State.LIP):
+		if !LibHelpers.get_stick_curve(path,  path_offset, 0.05) and  !Char_Statemachine.is_player_state(CharStates.State.LIP):
 			velocity = xform.basis.z * path_vel * path_dir
 			Char_Statemachine.set_player_state(CharStates.State.AIR)
 			return
@@ -172,7 +172,7 @@ func _player_state() -> void:
 					curve_tangent = _grind_start.tan
 					path_dir = _grind_start.dir
 				can_grind = true
-			if path_dir == 0 and _lip_start.valid:
+			elif _lip_start.valid:
 				if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 					var _curve = path.curve
 					lip_start_pos = _curve.sample_baked(path_offset)

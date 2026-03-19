@@ -38,12 +38,14 @@ func _process(delta: float) -> void:
 
 func _set_vis_balance() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND):
-		var current_rotation = Char.rotation
-		Char.rotation = Vector3(current_rotation.x, current_rotation.y, -Char_Controller.balance_angle * 0.5)
+		var current_rotation  = skeleton_3d.rotation
+		skeleton_3d.rotation = Vector3(current_rotation.x, current_rotation.y, -Char_Controller.balance_angle * 0.5)
 	elif Char_Statemachine.is_player_state(CharStates.State.LIP):
-		var current_rotation = Char.rotation
-		Char.rotation = Vector3(-Char_Controller.balance_angle * 0.5, current_rotation.y, current_rotation.z)
-	
+		var current_rotation = skeleton_3d.rotation
+		skeleton_3d.rotation = Vector3(-Char_Controller.balance_angle * 0.5, current_rotation.y, current_rotation.z)
+	else:
+		skeleton_3d.rotation = Vector3(0,0,0)
+		
 func _lerp_vis_transform(_delta, _speed) -> void:
 	Char.global_transform = Char.global_transform.interpolate_with(Char_Controller.global_transform, _delta * _speed)
 	Char.global_position = Char_Controller.global_position
