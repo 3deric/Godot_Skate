@@ -173,13 +173,12 @@ func _player_state() -> void:
 					path_dir = _grind_start.dir
 				can_grind = true
 			elif _lip_start.valid:
-				if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
-					var _curve = path.curve
-					lip_start_pos = _curve.sample_baked(path_offset)
-					curve_tangent = _lip_start.tan
-					lip_start_dir = _lip_start.dir
-					lip_start_vel = _lip_start.vel
-					lip_start_up = _lip_start.up
+				var _curve = path.curve
+				lip_start_pos = _lip_start.pos
+				curve_tangent = _lip_start.tan
+				lip_start_dir = _lip_start.dir
+				lip_start_vel = _lip_start.vel
+				lip_start_up = _lip_start.up
 				can_lip = true
 			_randomize_balance()
 	if !ray_ground: #behavior while in air, or sticked to a pipe

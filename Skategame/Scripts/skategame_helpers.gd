@@ -172,7 +172,8 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 		"tan": _tan,
 		"dir" : _dir.normalized() * -1,
 		"up": _curve.sample_baked_up_vector(offset),
-		"vel": vel
+		"vel": vel,
+		"pos": _global_path_pos
 	}
 
 static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
