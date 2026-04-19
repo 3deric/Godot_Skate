@@ -1,22 +1,23 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://ciw7v74l4rt2q"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_4ojny"]
-[ext_resource type="Texture2D" uid="uid://h0if8capx127" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_mask.jpg" id="2_mrgw8"]
-[ext_resource type="Texture2D" uid="uid://bm3rolmsfaqf0" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_normal.jpg" id="3_0d06s"]
-[ext_resource type="Texture2D" uid="uid://b01dncvypiy54" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_orm.jpg" id="4_f2fhj"]
+[ext_resource type="Texture2D" uid="uid://dfat4ui17asby" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_mask.png" id="2_bwc02"]
+[ext_resource type="Texture2D" uid="uid://bkqdlqa0olarw" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_normal.png" id="3_6wj7d"]
+[ext_resource type="Texture2D" uid="uid://c611yswg5wcas" path="res://Assets/Characters/Textures/Clothes/T_shoe_flat_orm.png" id="4_keiiv"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_4ojny")
-shader_parameter/normalOffset = 0.0
 shader_parameter/adjustable_metal_color = true
-shader_parameter/base_color = Color(0.180005, 0.180005, 0.180005, 1)
+shader_parameter/base_color = Color(0.19793725, 0.19793725, 0.19793719, 1)
 shader_parameter/accent_color = Color(0.556863, 0.447059, 0.278431, 1)
-shader_parameter/detail_color = Color(1, 1, 1, 1)
+shader_parameter/mask = ExtResource("2_bwc02")
+shader_parameter/detail_color = Color(0.62152386, 0.62152386, 0.6215238, 1)
 shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/orm = ExtResource("4_keiiv")
 shader_parameter/Roughness_Power = 1.0
-shader_parameter/Rim = 0.1
+shader_parameter/backlight = Color(0, 0, 0, 1)
+shader_parameter/normal = ExtResource("3_6wj7d")
+shader_parameter/Normal_Depth = 0.5
+shader_parameter/Rim = 0.25
 shader_parameter/Rim_Tint = 0.5
-shader_parameter/mask = ExtResource("2_mrgw8")
-shader_parameter/orm = ExtResource("4_f2fhj")
-shader_parameter/normal = ExtResource("3_0d06s")

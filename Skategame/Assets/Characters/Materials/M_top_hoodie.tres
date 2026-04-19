@@ -1,9 +1,10 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://mddnxeq6hgdi"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
-[ext_resource type="Texture2D" uid="uid://c34xk2tef50dq" path="res://Assets/Characters/Textures/T_Hoodie_Mask.png" id="2_po3bk"]
-[ext_resource type="Texture2D" uid="uid://g0c2r5o2d4an" path="res://Assets/Characters/Textures/T_Hoodie_Normal.png" id="3_qriye"]
-[ext_resource type="Texture2D" uid="uid://bjkpol0vv6wyi" path="res://Assets/Characters/Textures/T_Hoodie_ORM.png" id="4_fritj"]
+[ext_resource type="Texture2D" uid="uid://dxjqrxqxbjbwm" path="res://Assets/Characters/Textures/Clothes/T_hoodie_mask.png" id="2_po3bk"]
+[ext_resource type="Texture2D" uid="uid://bk34axh0obvi8" path="res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Aluminium.png" id="2_qriye"]
+[ext_resource type="Texture2D" uid="uid://iqp6ljjojguj" path="res://Assets/Characters/Textures/Clothes/T_hoodie_normal.png" id="3_qriye"]
+[ext_resource type="Texture2D" uid="uid://wrvl7y3tlhen" path="res://Assets/Characters/Textures/Clothes/T_hoodie_orm.png" id="4_fritj"]
 
 [resource]
 render_priority = 0
@@ -15,8 +16,9 @@ shader_parameter/mask = ExtResource("2_po3bk")
 shader_parameter/detail_color = Color(0.6768075, 0.6740968, 0.62836975, 1)
 shader_parameter/metal_color = Color(0.53, 0.53, 0.53, 1)
 shader_parameter/orm = ExtResource("4_fritj")
+shader_parameter/decal = ExtResource("2_qriye")
 shader_parameter/Roughness_Power = 1.0
 shader_parameter/normal = ExtResource("3_qriye")
-shader_parameter/Normal_Deptj = 1.0
+shader_parameter/Normal_Depth = 0.1
 shader_parameter/Rim = 0.185
 shader_parameter/Rim_Tint = 0.39

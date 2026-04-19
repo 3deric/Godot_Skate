@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=34 format=3 uid="uid://bpcrq24tj5lyb"]
+[gd_resource type="VisualShader" load_steps=37 format=3 uid="uid://bpcrq24tj5lyb"]
 
 [sub_resource type="VisualShaderNodeMix" id="VisualShaderNodeMix_6v1c0"]
 default_input_values = [0, Vector3(0, 0, 0), 1, Vector3(1, 1, 1), 2, Vector3(0.5, 0.5, 0.5)]
@@ -105,9 +105,19 @@ default_value_enabled = true
 default_value = true
 
 [sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_o8po7"]
-parameter_name = "Normal_Deptj"
+parameter_name = "Normal_Depth"
 default_value_enabled = true
 default_value = 0.1
+
+[sub_resource type="VisualShaderNodeColorConstant" id="VisualShaderNodeColorConstant_o8po7"]
+constant = Color(0, 0, 0, 1)
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_o8po7"]
+parameter_name = "backlight"
+default_value = Color(0.2597059, 0.20549977, 0.14001122, 1)
+
+[sub_resource type="VisualShaderNodeVectorOp" id="VisualShaderNodeVectorOp_jsn7p"]
+operator = 2
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_77vdh"]
 parameter_name = "base_color"
@@ -143,8 +153,9 @@ uniform vec4 metal_color : source_color = vec4(0.692421, 0.704291, 0.686580, 1.0
 uniform sampler2D orm;
 uniform sampler2D decal : source_color, hint_default_transparent, repeat_disable;
 uniform float Roughness_Power = 1.0;
+uniform vec4 backlight : source_color;
 uniform sampler2D normal : hint_normal;
-uniform float Normal_Deptj = 0.10000000149012;
+uniform float Normal_Depth = 0.10000000149012;
 uniform float Rim = 0.10000000149012;
 uniform float Rim_Tint = 0.5;
 
@@ -276,6 +287,14 @@ void fragment() {
 	float n_out30p0 = pow(n_out22p0, n_out29p0);
 
 
+// ColorParameter:38
+	vec4 n_out38p0 = backlight;
+
+
+// VectorOp:39
+	vec3 n_out39p0 = n_out31p0 * vec3(n_out38p0.xyz);
+
+
 // Reroute:21
 	float n_out21p0 = n_out18p0;
 
@@ -290,7 +309,7 @@ void fragment() {
 
 
 // FloatParameter:36
-	float n_out36p0 = Normal_Deptj;
+	float n_out36p0 = Normal_Depth;
 
 
 // FloatParameter:19
@@ -305,12 +324,12 @@ void fragment() {
 	ALBEDO = n_out31p0;
 	METALLIC = n_out23p0;
 	ROUGHNESS = n_out30p0;
+	EMISSION = n_out39p0;
 	AO = n_out21p0;
 	NORMAL_MAP = vec3(n_out25p0.xyz);
 	NORMAL_MAP_DEPTH = n_out36p0;
 	RIM = n_out19p0;
 	RIM_TINT = n_out28p0;
-	BACKLIGHT = n_out31p0;
 
 
 }
@@ -381,4 +400,10 @@ nodes/fragment/35/node = SubResource("VisualShaderNodeBooleanParameter_eruiu")
 nodes/fragment/35/position = Vector2(280, 440)
 nodes/fragment/36/node = SubResource("VisualShaderNodeFloatParameter_o8po7")
 nodes/fragment/36/position = Vector2(1920, 520)
-nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 4, 0, 8, 0, 6, 0, 8, 1, 8, 0, 10, 0, 7, 0, 10, 1, 5, 0, 13, 0, 13, 0, 12, 1, 15, 0, 3, 2, 16, 0, 2, 2, 17, 0, 14, 2, 2, 0, 18, 0, 18, 0, 21, 0, 18, 1, 22, 0, 14, 0, 25, 0, 25, 0, 0, 9, 21, 0, 0, 6, 20, 0, 27, 2, 26, 0, 27, 0, 19, 0, 0, 11, 28, 0, 0, 12, 29, 0, 30, 1, 22, 0, 30, 0, 30, 0, 0, 3, 12, 0, 31, 0, 27, 0, 31, 1, 27, 4, 31, 2, 18, 2, 23, 0, 23, 0, 0, 2, 10, 0, 33, 0, 32, 0, 33, 1, 18, 2, 33, 2, 35, 0, 34, 0, 10, 0, 34, 1, 33, 0, 34, 2, 34, 0, 12, 0, 31, 0, 0, 18, 5, 1, 8, 2, 5, 2, 10, 2, 31, 0, 0, 0, 36, 0, 0, 10)
+nodes/fragment/37/node = SubResource("VisualShaderNodeColorConstant_o8po7")
+nodes/fragment/37/position = Vector2(2522.2764, -172.71046)
+nodes/fragment/38/node = SubResource("VisualShaderNodeColorParameter_o8po7")
+nodes/fragment/38/position = Vector2(1880, -540)
+nodes/fragment/39/node = SubResource("VisualShaderNodeVectorOp_jsn7p")
+nodes/fragment/39/position = Vector2(2360, -440)
+nodes/fragment/connections = PackedInt32Array(3, 0, 5, 0, 4, 0, 8, 0, 6, 0, 8, 1, 8, 0, 10, 0, 7, 0, 10, 1, 5, 0, 13, 0, 13, 0, 12, 1, 15, 0, 3, 2, 16, 0, 2, 2, 17, 0, 14, 2, 2, 0, 18, 0, 18, 0, 21, 0, 18, 1, 22, 0, 14, 0, 25, 0, 25, 0, 0, 9, 21, 0, 0, 6, 20, 0, 27, 2, 26, 0, 27, 0, 19, 0, 0, 11, 28, 0, 0, 12, 29, 0, 30, 1, 22, 0, 30, 0, 30, 0, 0, 3, 12, 0, 31, 0, 27, 0, 31, 1, 27, 4, 31, 2, 18, 2, 23, 0, 23, 0, 0, 2, 10, 0, 33, 0, 32, 0, 33, 1, 18, 2, 33, 2, 35, 0, 34, 0, 10, 0, 34, 1, 33, 0, 34, 2, 34, 0, 12, 0, 5, 1, 8, 2, 5, 2, 10, 2, 36, 0, 0, 10, 38, 0, 39, 1, 31, 0, 39, 0, 39, 0, 0, 5, 31, 0, 0, 0)

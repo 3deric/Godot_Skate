@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://bpw0oyor5nksi"]
+
+[ext_resource type="Shader" uid="uid://dscdq02ejblqs" path="res://Assets/Characters/Materials/Master/M_outline.tres" id="1_3wsg1"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_3wsg1")
+shader_parameter/normalOffset = 0.0
+shader_parameter/outline_color = Color(0.13649999, 0.15365003, 0.21, 1)

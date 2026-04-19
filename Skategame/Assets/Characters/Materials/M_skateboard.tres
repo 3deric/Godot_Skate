@@ -2,20 +2,22 @@
 
 [ext_resource type="Shader" uid="uid://cts04l1g8hx1b" path="res://Assets/Characters/Materials/Master/M_board_colorable.tres" id="1_g3po0"]
 [ext_resource type="Texture2D" uid="uid://cogy0y4u7aev" path="res://Assets/Characters/Textures/Decals/T_skateboard_deck.jpg" id="2_gjjlk"]
-[ext_resource type="Texture2D" uid="uid://ctjsaxu7m50fi" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_mask.jpg" id="3_kmsrh"]
-[ext_resource type="Texture2D" uid="uid://driym68tggm2y" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_orm.jpg" id="4_55a4h"]
-[ext_resource type="Texture2D" uid="uid://bln4x83a3eug" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_normal.jpg" id="5_o31pt"]
+[ext_resource type="Texture2D" uid="uid://ct8naqcxeenot" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_mask.png" id="3_1vr8g"]
+[ext_resource type="Texture2D" uid="uid://cdm23mdq0huey" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_normal.png" id="4_2eyhj"]
+[ext_resource type="Texture2D" uid="uid://c8fla66ur06kw" path="res://Assets/Characters/Textures/Skateboard/T_skateboard_orm.png" id="5_y4p71"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_g3po0")
-shader_parameter/accent_color = Color(0.354153, 0.974068, 0.449947, 1)
-shader_parameter/wheels_color = Color(0.758093, 0.720679, 0.470692, 1)
-shader_parameter/metal_color = Color(0.70505, 0.746521, 0.756462, 1)
-shader_parameter/Roughness_Power = 1.0
-shader_parameter/Rim = 0.5
-shader_parameter/Rim_Tint = 2.0
-shader_parameter/mask = ExtResource("3_kmsrh")
-shader_parameter/orm = ExtResource("4_55a4h")
 shader_parameter/decal = ExtResource("2_gjjlk")
-shader_parameter/normal = ExtResource("5_o31pt")
+shader_parameter/mask = ExtResource("3_1vr8g")
+shader_parameter/accent_colormix = Color(1, 0, 0, 1)
+shader_parameter/wheels_color = Color(0.80325526, 0.66332966, 0.5793322, 1)
+shader_parameter/metal_color = Color(1, 1, 1, 1)
+shader_parameter/orm = ExtResource("5_y4p71")
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/backlight = Color(0.100888, 0.093325, 0.055666, 1)
+shader_parameter/normal = ExtResource("4_2eyhj")
+shader_parameter/Normal_Depth = 0.25
+shader_parameter/Rim = 0.25
+shader_parameter/Rim_Tint = 1.0
