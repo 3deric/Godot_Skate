@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dkqctyen7gfoi"
-path.s3tc="res://.godot/imported/T_male_mask.jpg-d56cc5c041447ddbf0c9ea7ad41e41d6.s3tc.ctex"
+uid="uid://0fbo4k1rfvar"
+path.s3tc="res://.godot/imported/T_helmet_godot_color.png-4657cd804a06e089e96bc664561381ab.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Characters/Textures/Body/T_male_mask.jpg"
-dest_files=["res://.godot/imported/T_male_mask.jpg-d56cc5c041447ddbf0c9ea7ad41e41d6.s3tc.ctex"]
+source_file="res://Assets/Characters/Textures/Clothes/T_helmet_godot_color.png"
+dest_files=["res://.godot/imported/T_helmet_godot_color.png-4657cd804a06e089e96bc664561381ab.s3tc.ctex"]
 
 [params]
 

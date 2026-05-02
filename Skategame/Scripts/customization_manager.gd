@@ -17,8 +17,10 @@ var board_decals = [
 
 var top_decals = [
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_decal_captain_bavaria.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_decal_test.png")
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Pretzelman.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Aluminium.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Cassette.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Earth.png")
 	]
 
 var hair_meshes = [

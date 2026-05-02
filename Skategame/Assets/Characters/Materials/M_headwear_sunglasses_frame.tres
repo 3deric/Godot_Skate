@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" load_steps=3 format=3 uid="uid://5ulxi1b8ka3g"]
 
-[ext_resource type="Shader" uid="uid://dg5cl0tmv30qn" path="res://Assets/Characters/Materials/Master/M_colorable_prop.tres" id="1_qrdrd"]
+[ext_resource type="Shader" uid="uid://dg5cl0tmv30qn" path="res://Assets/Characters/Materials/Master/M_colorable_prop_simple.tres" id="1_qrdrd"]
 [ext_resource type="Texture2D" uid="uid://bud31h600ntmm" path="res://Assets/Characters/Textures/Clothes/T_glasses_frame_normal.png" id="2_qrdrd"]
 
 [resource]

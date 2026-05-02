@@ -3,7 +3,7 @@ extends Resource
 
 enum CharacterPart {Body, Hair, Top, Bottom, Shoes, Board}
 enum BoardDecal {Bare = 0, Style1 = 1, Style2 = 2}
-enum TopDecal {Bare = 0, Style1 = 1, Style2 = 2}
+enum TopDecal {Bare = 0, Style1 = 1, Style2 = 2, Style3 = 3, Style4 = 4}
 enum HairMesh {Bald = 0, Style1 = 1, Style2 = 2}
 enum TopMesh {Nothing = 0, Shirt = 1, Hoodie = 2}
 enum BottomMesh {Nothing = 0, Shorts = 1, Jeans = 2}

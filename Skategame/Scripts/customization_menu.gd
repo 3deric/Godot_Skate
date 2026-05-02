@@ -68,6 +68,8 @@ func _setup_options() -> void:
 	option_button_top_decal.add_item("Empty", CharacterData.TopDecal.Bare)
 	option_button_top_decal.add_item("Style 1", CharacterData.TopDecal.Style1)
 	option_button_top_decal.add_item("Style 2", CharacterData.TopDecal.Style2)
+	option_button_top_decal.add_item("Style 3", CharacterData.TopDecal.Style1)
+	option_button_top_decal.add_item("Style 4", CharacterData.TopDecal.Style2)
 	option_button_hair.clear()
 	option_button_hair.add_item("Bald", CharacterData.HairMesh.Bald)
 	option_button_hair.add_item("Style1", CharacterData.HairMesh.Style1)
