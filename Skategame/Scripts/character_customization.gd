@@ -244,15 +244,15 @@ func _update_bottom_mesh(index :int) -> void:
 func _update_shoes_mesh(index :int) -> void:
 	if index == 0:
 		shoes_mesh.hide()
-		body_mesh.set_blend_shape_value(3,0.0)
+		#body_mesh.set_blend_shape_value(3,0.0)
 	else:
 		shoes_mesh.show()
 		shoes_mesh.mesh = CustomizationManager.shoe_meshes[index -1]
-		body_mesh.set_blend_shape_value(3,1.0)
+		#body_mesh.set_blend_shape_value(3,1.0)
 		
 		
 func _update_gender(value : float) -> void:
-	body_mesh.set_blend_shape_value(0, value)
+	#body_mesh.set_blend_shape_value(0, value)
 	if value > 0.5:
 		body_mesh.set_surface_override_material(0, BODY_FEMALE)
 	else:
@@ -260,11 +260,11 @@ func _update_gender(value : float) -> void:
 	
 
 func _update_top_gender(value : float) -> void:
-	top_mesh.set_blend_shape_value(0, value)
+	pass	#top_mesh.set_blend_shape_value(0, value)
 	
 
 func _update_bottom_gender(value : float) -> void:
-	bottom_mesh.set_blend_shape_value(0, value)
+	pass	#bottom_mesh.set_blend_shape_value(0, value)
 	
 
 func _update_color(_mesh : MeshInstance3D, _param : String, _color : Color) -> void:
