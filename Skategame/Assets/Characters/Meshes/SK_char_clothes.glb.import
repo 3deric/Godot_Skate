@@ -64,6 +64,26 @@ _subresources={
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_helmet_godot.tres",
 "use_external/path": "uid://c5uudagktva2x"
 },
+"M_hair_m_messy": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_hair_messy.tres",
+"use_external/path": "uid://c30kou2tte4x3"
+},
+"M_headwear_glasses_frame": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_headwear_sunglasses_frame.tres",
+"use_external/path": "uid://5ulxi1b8ka3g"
+},
+"M_headwear_glasses_glass": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_headwear_sunglasses_glass.tres",
+"use_external/path": "uid://pu1ao2kwsj5w"
+},
+"M_outline": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_char_outline.tres",
+"use_external/path": "uid://bpw0oyor5nksi"
+},
 "M_shoes_boots": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_boots.tres",
