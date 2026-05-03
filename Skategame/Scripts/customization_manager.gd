@@ -38,14 +38,14 @@ var top_meshes = [
 	]
 
 var bottom_meshes = [
-	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res")
 	]
 
 var shoe_meshes = [
-	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res"),
-	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_boots.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/Sk_Char_clothes_shoes_boots.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
 	]
 

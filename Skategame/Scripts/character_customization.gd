@@ -5,7 +5,7 @@ extends Node3D
 @onready var top_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_top"
 @onready var bottom_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_bottom"
 @onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_shoes"
-@onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_skateboard"
+@onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_board"
 @onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
 @onready var char_skeleton: Node3D = $"../Char/Char_Skeleton"
 const BODY_MALE : Material = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")

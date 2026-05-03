@@ -84,8 +84,8 @@ func _setup_options() -> void:
 	option_button_bottom_style.add_item("Shorts", CharacterData.BottomMesh.Shorts)
 	option_button_shoes_style.clear()
 	option_button_shoes_style.add_item("Bare", CharacterData.ShoesMesh.Nothing)
-	option_button_shoes_style.add_item("Sneakers", CharacterData.ShoesMesh.Sneakers)
 	option_button_shoes_style.add_item("Shoes Flat", CharacterData.ShoesMesh.FlatShoes)
+	option_button_shoes_style.add_item("Sneakers", CharacterData.ShoesMesh.Sneakers)
 	option_button_shoes_style.add_item("Boots", CharacterData.ShoesMesh.Boots)
 	option_button_shoes_style.add_item("Flipflops", CharacterData.ShoesMesh.Flipflops)
 	color_picker_button_top_base.color = data.top_base_color

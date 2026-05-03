@@ -52,7 +52,7 @@ environment = SubResource("Environment_ufrkh")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.15465432, -0.5056797, 0.8487476, 0.5847505, 0.645597, 0.4911938, -0.79633343, 0.5722698, 0.19585201, -0.281779, 0.959275, -0.209071)
-light_energy = 0.25
+light_energy = 0.65
 shadow_enabled = true
 
 [node name="Camera3D" type="Camera3D" parent="."]
