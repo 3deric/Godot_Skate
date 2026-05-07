@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://rdwms6odwsys"
-path.s3tc="res://.godot/imported/T_hair_messy_ORM.png-6d23b9f07a127a299f3d81d4335ceba3.s3tc.ctex"
+uid="uid://bppprhsdy0ma2"
+path.s3tc="res://.godot/imported/T_hair_messy_orm.png-f4c351cc53230389976abc03054c3e4a.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://Assets/Characters/Textures/Hair/T_hair_messy_ORM.png"
-dest_files=["res://.godot/imported/T_hair_messy_ORM.png-6d23b9f07a127a299f3d81d4335ceba3.s3tc.ctex"]
+source_file="res://Assets/Characters/Textures/Hair/T_hair_messy_orm.png"
+dest_files=["res://.godot/imported/T_hair_messy_orm.png-f4c351cc53230389976abc03054c3e4a.s3tc.ctex"]
 
 [params]
 
