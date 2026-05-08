@@ -48,6 +48,11 @@ var shoe_meshes = [
 	preload ("res://Assets/Characters/Meshes/Clothes/Sk_Char_clothes_shoes_boots.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
 	]
+	
+var helmet_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_base.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_godot.res")
+	]
 
 func _ready() -> void:
 	character_data = CharacterData.new()

@@ -39,11 +39,6 @@ materials/extract_format=0
 materials/extract_path=""
 _subresources={
 "materials": {
-"Bake_Hoodie_UCU": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://Assets/Characters/Materials/M_top_hoodie.tres",
-"use_external/path": "uid://mddnxeq6hgdi"
-},
 "M_bottom_jeans": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_bottom_jeans.tres",
@@ -79,11 +74,6 @@ _subresources={
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_headwear_sunglasses_glass.tres",
 "use_external/path": "uid://pu1ao2kwsj5w"
 },
-"M_outline": {
-"use_external/enabled": true,
-"use_external/fallback_path": "res://Assets/Characters/Materials/M_char_outline.tres",
-"use_external/path": "uid://bpw0oyor5nksi"
-},
 "M_shoes_boots": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_boots.tres",
@@ -108,6 +98,11 @@ _subresources={
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_skateboard.tres",
 "use_external/path": "uid://j71olv18wya8"
+},
+"M_top_hoodie": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_top_hoodie.tres",
+"use_external/path": "uid://mddnxeq6hgdi"
 },
 "M_top_shirt": {
 "use_external/enabled": true,

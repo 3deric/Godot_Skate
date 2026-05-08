@@ -24,6 +24,7 @@ extends Control
 @onready var option_button_shoes_style: OptionButton = %OptionButton_Shoes_Style
 @onready var h_slider_size: HSlider = %HSlider_Size
 @onready var check_button_gender: CheckButton = %CheckButton_Gender
+@onready var option_button_helmet_style : OptionButton = %OptionButton_Helmet_Style
 
 
 func _ready() -> void:
@@ -56,6 +57,7 @@ func _setup_buttons() -> void:
 	color_picker_button_metal.color_changed.connect(_on_color_picker_button_metal_color_changed)
 	color_picker_button_details.color_changed.connect(_on_color_picker_button_details_color_changed)
 	check_button_gender.toggled.connect(_on_check_button_gender_toggled)
+	option_button_helmet_style.item_selected.connect(_on_option_button_helmet_style_item_selected)
 
 
 func _setup_options() -> void:
@@ -88,6 +90,10 @@ func _setup_options() -> void:
 	option_button_shoes_style.add_item("Sneakers", CharacterData.ShoesMesh.Sneakers)
 	option_button_shoes_style.add_item("Boots", CharacterData.ShoesMesh.Boots)
 	option_button_shoes_style.add_item("Flipflops", CharacterData.ShoesMesh.Flipflops)
+	option_button_helmet_style.clear()
+	option_button_helmet_style.add_item("Bare", CharacterData.HelmetMesh.Nothing)
+	option_button_helmet_style.add_item("Basic", CharacterData.HelmetMesh.Base)
+	option_button_helmet_style.add_item("Godot", CharacterData.HelmetMesh.Godot)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -111,6 +117,7 @@ func _setup_options() -> void:
 	option_button_shoes_style.selected = data.shoes_mesh
 	h_slider_size.value = data.size
 	check_button_gender.button_pressed = bool(data.gender)
+	option_button_helmet_style.selected = data.helmet_mesh
 	
 	
 func _update_ui_from_data() -> void:
@@ -138,6 +145,7 @@ func _update_ui_from_data() -> void:
 	option_button_shoes_style.selected = data.shoes_mesh
 	h_slider_size.value = data.size
 	check_button_gender.button_pressed = bool(data.gender)
+	option_button_helmet_style.selected = data.helmet_mesh
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
@@ -236,6 +244,8 @@ func _on_option_button_shoes_style_item_selected(index: int) -> void:
 	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'accent', color_picker_button_shoes_accent.color)
 	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'detail', color_picker_button_shoes_detail.color)
 
+func _on_option_button_helmet_style_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Helmet, index)
 
 func _on_h_slider_size_value_changed(value: float) -> void:
 	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'size', value)

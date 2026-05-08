@@ -266,6 +266,34 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer"]
 layout_mode = 2
 
+[node name="Label_Helmet" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Helmet"
+
+[node name="MarginContainerHelmetStyle" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Helmet" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Helmet"
+
+[node name="OptionButton_Helmet_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 2
+popup/item_0/text = "Bare"
+popup/item_0/id = 0
+popup/item_1/text = "Style 1"
+popup/item_1/id = 1
+
 [node name="Label_Top" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Top"

@@ -7,6 +7,7 @@ extends Node3D
 @onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_shoes"
 @onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_board"
 @onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
+@onready var helmet_mesh : MeshInstance3D =  $"../Char/Char_Skeleton/Skeleton3D/char_helmet"
 @onready var char_skeleton: Node3D = $"../Char/Char_Skeleton"
 const BODY_MALE : Material = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")
 const BODY_FEMALE : Material = preload("res://Assets/Characters/Materials/M_char_female_body_colorable.tres")
@@ -89,6 +90,8 @@ func _on_mesh_updated(part: CharacterData.CharacterPart, index : int) -> void:
 			_update_bottom_mesh(index)
 		CharacterData.CharacterPart.Shoes:
 			_update_shoes_mesh(index)
+		CharacterData.CharacterPart.Helmet:
+			_update_helmet_mesh(index)
 
 
 func _on_decal_updated(part: CharacterData.CharacterPart, index :int) -> void:
@@ -249,6 +252,13 @@ func _update_shoes_mesh(index :int) -> void:
 		shoes_mesh.show()
 		shoes_mesh.mesh = CustomizationManager.shoe_meshes[index -1]
 		body_mesh.set_blend_shape_value(1,1.0)
+
+func _update_helmet_mesh(index :int) -> void:
+	if index == 0:
+		helmet_mesh.hide()
+	else:
+		helmet_mesh.show()
+		helmet_mesh.mesh = CustomizationManager.helmet_meshes[index -1]
 		
 		
 func _update_gender(value : float) -> void:
