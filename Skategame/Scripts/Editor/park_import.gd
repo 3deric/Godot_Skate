@@ -10,13 +10,12 @@ func _post_import(scene):
 		if node.name.split('_')[1] == 'Col':
 			setup_static_body(node)
 			
-		#if node.name.split('_')[1] == 'Rail':
-		#	setup_rail(node)
+		if node.name.split('_')[1] == 'Rail':
+			setup_rail(node, scene)
 	return scene
 
 func setup_static_body(node : Node3D) -> void:
 	var name = node.name
-	print(name)
 	match name.split('_')[2]:
 		'Floor':
 			node.add_to_group('floor', true)
@@ -25,7 +24,7 @@ func setup_static_body(node : Node3D) -> void:
 		'Pipe':
 			node.add_to_group('pipe', true)
 			
-func setup_rail(node : Node3D) -> void:
+func setup_rail(node : Node3D, scene : Node3D) -> void:
 	var parent : Node = node.get_parent()
 	var name = node.name
 	var _csg: CSGPolygon3D = CSGPolygon3D.new()
@@ -41,30 +40,29 @@ func setup_rail(node : Node3D) -> void:
 		_curve.add_point(_pos)
 	if name.split('_')[2] == 'Closed':
 		_curve.closed = true
+		
+	# add path and csg to the scene
 	_path.curve = _curve
-	#add _csg and _path to the scene, _csg is a child of the _path
 	parent.add_child(_path)
-	#parent.get_tree().get_edited_scene_root().add_child(_path)
-	_path.set_owner(parent.get_tree().get_edited_scene_root())
-	_path.add_child(_csg)
-	_csg.set_owner(_path.get_tree().get_edited_scene_root())
-	#offset _path to the scene orgin
-	_path.global_position = Vector3.ZERO
-	_path.global_rotation = Vector3.ZERO
-	#set names for _path and _csg
+	_path.owner = scene
 	_path.name = name + "_Path"
+	_path.add_child(_csg)
+	_csg.owner = scene
 	_csg.name = name + "_CSG"
-	#change _csg mode
-	#assign _path to _csg
+
+	#offset _path to the scene orgin
+	#_path.global_position = Vector3.ZERO
+	#_path.global_rotation = Vector3.ZERO
+	
 	#center extruded _path and change thickness
 	_csg.mode = CSGPolygon3D.MODE_PATH
 	_csg.path_interval = PATH_INTERVAL
-	_csg.path_node = _path.get_path()
+	_csg.path_node = _csg.get_path_to(_path)
 	_csg.polygon = PackedVector2Array([
 		Vector2(-OFFSET/2, -OFFSET/2),
 		Vector2(-OFFSET/2, OFFSET/2),
 		Vector2(OFFSET/2, OFFSET/2),
-		   Vector2(OFFSET/2, -OFFSET/2),
+		Vector2(OFFSET/2, -OFFSET/2),
 		])
 	#add _csg to rampRail group
 	_csg.add_to_group('rampRail', true)
@@ -77,4 +75,4 @@ func setup_rail(node : Node3D) -> void:
 	_csg.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
 	#set material
 	_csg.material = load('res://Assets/Materials/M_path.tres')
-	_csg.set_script(load('res://Scripts/Editor/rail_init.gd'))
+	#_csg.set_script(load('res://Scripts/Editor/rail_init.gd'))
