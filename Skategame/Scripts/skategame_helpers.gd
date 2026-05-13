@@ -24,10 +24,19 @@ static func horizontal_velocity(_vel : Vector3) -> Vector3:
 static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
 	if !_path:
 		return Vector3.ZERO
-	var _lastOffset : float = _offset + 0.01
+	var _lastOffset : float
+	var _lastCurvePos : Vector3
 	var _curvePos : Vector3 = _path.curve.sample_baked(_offset, true)
-	var _lastCurvePos : Vector3 = _path.curve.sample_baked(_lastOffset, true)
-	var _tangent : Vector3 = (_curvePos - _lastCurvePos).normalized()
+	var _curveLength : float = _path.curve.get_baked_length()
+	var _tangent : Vector3
+	if _offset + 0.025 >= _curveLength:
+		_lastOffset = _offset - 0.025 
+		_lastCurvePos = _path.curve.sample_baked(_lastOffset, true)
+		_tangent = (_lastCurvePos - _curvePos).normalized()
+	else:
+		_lastOffset = _offset + 0.025
+		_lastCurvePos = _path.curve.sample_baked(_lastOffset, true)
+		_tangent = (_curvePos - _lastCurvePos).normalized()
 	return _tangent
 		
 static func get_path_dir(_tangent: Vector3, _vel: Vector3, _treshold): #direction along curve based on start pos
@@ -162,8 +171,9 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 		"valid": true,
 		"tan": _tan,
 		"dir" : _dir.normalized() * -1,
-		"up": xform.basis.y,
-		"vel": vel
+		"up": _curve.sample_baked_up_vector(offset),
+		"vel": vel,
+		"pos": _global_path_pos
 	}
 
 static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offset: float) -> Dictionary:
@@ -172,7 +182,7 @@ static func start_pipesnap(xform: Transform3D, vel: Vector3, path: Path3D, offse
 	var _flip : bool = xform.basis.y.dot(_dir) > 0
 	var _path_dir : int = LibHelpers.get_path_dir(_tan, vel, 0.1)
 	var _path_vel : float = vel.project(_tan * Vector3(1,0,1)).length() * _path_dir
-	var _stick : bool = LibHelpers.get_stick_curve(path, offset, 0.25)
+	var _stick : bool = LibHelpers.get_stick_curve(path, offset, GlobalSettings.STICK_CURVE_THRESHOLD)
 	return {
 		"valid": _stick,
 		"tan": _tan,

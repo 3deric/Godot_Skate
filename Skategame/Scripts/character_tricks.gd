@@ -2,7 +2,7 @@ class_name CharacterTricks
 extends Node3D
 
 const COMBO_COOLDOWN_TIME : float = 0.5
-const ROT_ROUNDING : float = 45
+const ROT_ROUNDING : float = 15
 
 var available_grind_tricks: Array[Trick] = [
 	Backside.new(),
