@@ -92,7 +92,7 @@ func _setup_options() -> void:
 	option_button_shoes_style.add_item("Boots", CharacterData.ShoesMesh.Boots)
 	option_button_shoes_style.add_item("Flipflops", CharacterData.ShoesMesh.Flipflops)
 	option_button_helmet_style.clear()
-	option_button_helmet_style.add_item("Bare", CharacterData.HelmetMesh.Nothing)
+	option_button_helmet_style.add_item("No Helmet", CharacterData.HelmetMesh.Nothing)
 	option_button_helmet_style.add_item("Basic", CharacterData.HelmetMesh.Base)
 	option_button_helmet_style.add_item("Godot", CharacterData.HelmetMesh.Godot)
 	option_button_glasses_style.clear()

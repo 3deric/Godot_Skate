@@ -125,6 +125,10 @@ func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
 			character_data.bottom_mesh = index
 		CharacterData.CharacterPart.Shoes:
 			character_data.shoes_mesh = index
+		CharacterData.CharacterPart.Helmet:
+			character_data.helmet_mesh = index
+		CharacterData.CharacterPart.Glasses:
+			character_data.glasses_mesh
 	mesh_updated.emit(part, index)
 	#customization_updated.emit()
 	
