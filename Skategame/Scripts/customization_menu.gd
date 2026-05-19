@@ -25,7 +25,7 @@ extends Control
 @onready var h_slider_size: HSlider = %HSlider_Size
 @onready var check_button_gender: CheckButton = %CheckButton_Gender
 @onready var option_button_helmet_style : OptionButton = %OptionButton_Helmet_Style
-
+@onready var option_button_glasses_style : OptionButton = %OptionButton_Glasses_Style
 
 func _ready() -> void:
 	_setup_buttons()
@@ -58,6 +58,7 @@ func _setup_buttons() -> void:
 	color_picker_button_details.color_changed.connect(_on_color_picker_button_details_color_changed)
 	check_button_gender.toggled.connect(_on_check_button_gender_toggled)
 	option_button_helmet_style.item_selected.connect(_on_option_button_helmet_style_item_selected)
+	option_button_glasses_style.item_selected.connect(_on_option_button_glasses_style_item_selected)
 
 
 func _setup_options() -> void:
@@ -94,6 +95,9 @@ func _setup_options() -> void:
 	option_button_helmet_style.add_item("Bare", CharacterData.HelmetMesh.Nothing)
 	option_button_helmet_style.add_item("Basic", CharacterData.HelmetMesh.Base)
 	option_button_helmet_style.add_item("Godot", CharacterData.HelmetMesh.Godot)
+	option_button_glasses_style.clear()
+	option_button_glasses_style.add_item("No Glasses", CharacterData.GlassesMesh.Nothing)
+	option_button_glasses_style.add_item("Sunglasses", CharacterData.GlassesMesh.Sunglasses)
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -146,6 +150,7 @@ func _update_ui_from_data() -> void:
 	h_slider_size.value = data.size
 	check_button_gender.button_pressed = bool(data.gender)
 	option_button_helmet_style.selected = data.helmet_mesh
+	option_button_glasses_style.selected = data.glasses_mesh
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
@@ -247,6 +252,9 @@ func _on_option_button_shoes_style_item_selected(index: int) -> void:
 func _on_option_button_helmet_style_item_selected(index: int) -> void:
 	CustomizationManager.update_mesh(CharacterData.CharacterPart.Helmet, index)
 
+func _on_option_button_glasses_style_item_selected(index: int) -> void:
+	CustomizationManager.update_mesh(CharacterData.CharacterPart.Glasses, index)
+	
 func _on_h_slider_size_value_changed(value: float) -> void:
 	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'size', value)
 

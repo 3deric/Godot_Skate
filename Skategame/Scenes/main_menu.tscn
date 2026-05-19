@@ -30,6 +30,7 @@ size_flags_horizontal = 8
 
 [node name="PanelMain" type="Panel" parent="MarginContainer/Container"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -76,7 +77,6 @@ text = "Customization"
 
 [node name="PanelCustomization" type="Panel" parent="MarginContainer/Container"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 0
 offset_right = 500.0
 offset_bottom = 670.0
@@ -99,9 +99,10 @@ text = "Back"
 [node name="TabContainerCustomization" type="TabContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-current_tab = 0
+current_tab = 1
 
 [node name="Body" type="TabBar" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -247,7 +248,6 @@ size_flags_horizontal = 10
 text = "Colour"
 
 [node name="Clothes" type="TabBar" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -266,30 +266,52 @@ theme_override_constants/margin_bottom = 20
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer"]
 layout_mode = 2
 
-[node name="Label_Helmet" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
+[node name="Label_Accesoires" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
-text = "Helmet"
+text = "Accesoires"
 
-[node name="MarginContainerHelmetStyle" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
+[node name="MarginContainerGlasses" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerGlasses"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Helmet" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle/HBoxContainer"]
+[node name="Glasses" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerGlasses/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Glasses"
+
+[node name="OptionButton_Glasses_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerGlasses/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+selected = 0
+item_count = 1
+popup/item_0/text = "No Glasses"
+popup/item_0/id = 0
+
+[node name="MarginContainerHelmet" type="MarginContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmet"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Helmet" type="Label" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmet/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
 text = "Helmet"
 
-[node name="OptionButton_Helmet_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmetStyle/HBoxContainer"]
+[node name="OptionButton_Helmet_Style" type="OptionButton" parent="MarginContainer/Container/PanelCustomization/VBoxContainer/TabContainerCustomization/Clothes/MarginContainer/VBoxContainer/MarginContainerHelmet/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 selected = 0
 item_count = 2
-popup/item_0/text = "Bare"
+popup/item_0/text = "No Helmet"
 popup/item_0/id = 0
 popup/item_1/text = "Style 1"
 popup/item_1/id = 1

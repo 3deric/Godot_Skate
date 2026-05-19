@@ -1,7 +1,7 @@
 class_name CharacterData 
 extends Resource
 
-enum CharacterPart {Body, Hair, Top, Bottom, Shoes, Board, Helmet}
+enum CharacterPart {Body, Hair, Top, Bottom, Shoes, Board, Helmet, Glasses}
 enum BoardDecal {Bare = 0, Style1 = 1, Style2 = 2}
 enum TopDecal {Bare = 0, Style1 = 1, Style2 = 2, Style3 = 3, Style4 = 4}
 enum HairMesh {Bald = 0, Style1 = 1, Style2 = 2}
@@ -9,6 +9,7 @@ enum TopMesh {Nothing = 0, Shirt = 1, Hoodie = 2}
 enum BottomMesh {Nothing = 0, Shorts = 1, Jeans = 2}
 enum ShoesMesh {Nothing = 0, Sneakers = 1, FlatShoes = 2, Boots = 3, Flipflops =4}
 enum HelmetMesh {Nothing =0, Base = 1, Godot = 2}
+enum GlassesMesh {Nothing =0, Sunglasses = 1}
 
 @export var top_base_color: Color = Color("5d7937")
 @export var top_accent_color: Color = Color("5d7937")
@@ -33,4 +34,5 @@ enum HelmetMesh {Nothing =0, Base = 1, Godot = 2}
 @export var bottom_mesh : int = 1
 @export var shoes_mesh : int = 1
 @export var helmet_mesh : int = 0
+@export var glasses_mesh : int = 0
 @export var gender : float = 0
