@@ -6,10 +6,10 @@ extends Node3D
 @onready var physical_bone_def_board: PhysicalBone3D = $"../Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D/Physical Bone DEF-board"
 var active : bool = false
 
-func _process(delta: float) -> void:
-	_debug_ragdoll()
-		
-		
+#func _process(delta: float) -> void:
+	#_debug_ragdoll()
+		#
+		#
 func _debug_ragdoll() -> void:
 	if Input.is_action_just_pressed("ui_accept") and !active:
 		active = true
