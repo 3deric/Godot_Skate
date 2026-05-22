@@ -367,11 +367,11 @@ func _randomize_balance() -> void:
 
 func _balance_logic(delta: float, axis : int) -> void:
 	if axis == 0:
-		if(Char_Input.get_input().x != 0):
-			_set_balance_dir(int(Char_Input.get_input().x))
+		if(Char_Input.get_input().x > 0.6 or Char_Input.get_input().x < -0.6):
+			_set_balance_dir(round(Char_Input.get_input().x))
 	else:
-		if(Char_Input.get_input().y != 0):
-			_set_balance_dir(int(-Char_Input.get_input().y))
+		if(Char_Input.get_input().y > 0.6 or Char_Input.get_input().y < - 0.6):
+			_set_balance_dir(round(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)	
