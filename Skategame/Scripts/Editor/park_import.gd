@@ -68,6 +68,8 @@ func setup_rail(node : Node3D, scene : Node3D) -> void:
 	_csg.add_to_group('rampRail', true)
 	#enable collision
 	_csg.use_collision = true
+	# ignore the transform of the parent
+	_csg.top_level = true
 	#set collision layer
 	_csg.set_collision_layer_value(1,false)
 	_csg.set_collision_layer_value(4,true)
