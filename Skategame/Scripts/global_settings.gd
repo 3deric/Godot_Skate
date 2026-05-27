@@ -21,3 +21,4 @@ const JUMP_GRIND_DIR_MULTI : float = 0.5
 const RAY_GROUND_DIST : float = 0.5
 const RAY_GROUND_AIR_DIST : float = 0.25
 const STICK_CURVE_THRESHOLD : float = 0.05
+const TANGENT_LERP_SPD : float = 10.0
