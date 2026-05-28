@@ -44,30 +44,60 @@ _subresources={
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_bottom_jeans.tres",
 "use_external/path": "uid://bglopq75lqird"
 },
-"M_btm_shorts": {
+"M_bottom_shorts": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_bottom_shorts.tres",
 "use_external/path": "uid://b85tjjbupm2v4"
 },
-"M_flipflops": {
+"M_char_helmet_base": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_flipflops.tres",
-"use_external/path": "uid://vui0cuh6mltw"
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_helmet_base.tres",
+"use_external/path": "uid://d30oskqk08j78"
 },
-"M_shoe_boots": {
+"M_char_helmet_godot": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_helmet_godot.tres",
+"use_external/path": "uid://c5uudagktva2x"
+},
+"M_hair_m_messy": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_hair_messy.tres",
+"use_external/path": "uid://c30kou2tte4x3"
+},
+"M_headwear_glasses_frame": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_headwear_sunglasses_frame.tres",
+"use_external/path": "uid://5ulxi1b8ka3g"
+},
+"M_headwear_glasses_glass": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_headwear_sunglasses_glass.tres",
+"use_external/path": "uid://pu1ao2kwsj5w"
+},
+"M_shoes_boots": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_boots.tres",
 "use_external/path": "uid://ctn383vwbhgiy"
 },
-"M_shoe_flat": {
+"M_shoes_flat": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_flat.tres",
 "use_external/path": "uid://ciw7v74l4rt2q"
 },
-"M_shoe_sneakers": {
+"M_shoes_flipflops": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_flipflops.tres",
+"use_external/path": "uid://vui0cuh6mltw"
+},
+"M_shoes_sneaker": {
 "use_external/enabled": true,
 "use_external/fallback_path": "res://Assets/Characters/Materials/M_shoe_sneakers.tres",
 "use_external/path": "uid://y3h168m6edo"
+},
+"M_skateboard_base": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Assets/Characters/Materials/M_skateboard.tres",
+"use_external/path": "uid://j71olv18wya8"
 },
 "M_top_hoodie": {
 "use_external/enabled": true,
@@ -81,82 +111,128 @@ _subresources={
 }
 },
 "meshes": {
-"SK_char_clothes_bottom_jeans": {
+"SK_char_clothes_Char_Bottom_Jeans_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res",
 "save_to_file/path": "uid://b3621qs5rtb12"
 },
-"SK_char_clothes_bottom_shorts": {
+"SK_char_clothes_Char_Bottom_Shorts_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res",
 "save_to_file/path": "uid://iewaau7mjqda"
 },
-"SK_char_clothes_shoes_boots": {
+"SK_char_clothes_Char_Hair_F_Ponytail_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
-"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_boots.res",
-"save_to_file/path": "uid://50ilrvc33u0y"
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res",
+"save_to_file/path": "uid://bvmi2ciykwj20"
 },
-"SK_char_clothes_shoes_flat": {
+"SK_char_clothes_Char_Hair_M_Messy_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Hair/SK_char_hair_m_messy.res",
+"save_to_file/path": "uid://cvvmnvae64onp"
+},
+"SK_char_clothes_Char_Headwear_Sunglasses_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_headwear_sunglasses.res",
+"save_to_file/path": "uid://di30yonrkv3wc"
+},
+"SK_char_clothes_Char_Helmet_Base_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_helmet_base.res",
+"save_to_file/path": "uid://cy7rfr2plf84k"
+},
+"SK_char_clothes_Char_Helmet_Godot_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_helmet_godot.res",
+"save_to_file/path": "uid://w5j5mor8iunj"
+},
+"SK_char_clothes_Char_Shoes_Boots_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/Sk_Char_clothes_shoes_boots.res",
+"save_to_file/path": "uid://b2eqyjjt78amo"
+},
+"SK_char_clothes_Char_Shoes_Flat_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res",
 "save_to_file/path": "uid://l2wy6hoyfskc"
 },
-"SK_char_clothes_shoes_flipflops": {
+"SK_char_clothes_Char_Shoes_Flipflops_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res",
 "save_to_file/path": "uid://bs7f206sh6e3i"
 },
-"SK_char_clothes_shoes_sneakers": {
+"SK_char_clothes_Char_Shoes_Sneaker_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res",
 "save_to_file/path": "uid://chik7dwtixg7f"
 },
-"SK_char_clothes_top_hoodie": {
+"SK_char_clothes_Char_Skateboard_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
+"save_to_file/enabled": true,
+"save_to_file/fallback_path": "res://Assets/Characters/Meshes/Sk_char_skateboard.res",
+"save_to_file/path": "uid://c785c7i5s3qsa"
+},
+"SK_char_clothes_Char_Top_Hoodie_Mesh": {
+"generate/lightmap_uv": 0,
+"generate/lods": 0,
+"generate/shadow_meshes": 0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_hoodie.res",
 "save_to_file/path": "uid://kthaleb4qc78"
 },
-"SK_char_clothes_top_shirt": {
+"SK_char_clothes_Char_Top_Shirt_Mesh": {
 "generate/lightmap_uv": 0,
 "generate/lods": 0,
 "generate/shadow_meshes": 0,
-"lods/normal_merge_angle": 60.0,
-"lods/normal_split_angle": 25.0,
+"lods/normal_merge_angle": 20.0,
 "save_to_file/enabled": true,
 "save_to_file/fallback_path": "res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_shirt.res",
 "save_to_file/path": "uid://bsyx3b86l6ffq"

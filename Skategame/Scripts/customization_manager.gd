@@ -17,8 +17,10 @@ var board_decals = [
 
 var top_decals = [
 	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_decal_captain_bavaria.png"),
-	preload ("res://Assets/Characters/Textures/Decals/T_decal_test.png")
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Pretzelman.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Aluminium.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Cassette.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Earth.png")
 	]
 
 var hair_meshes = [
@@ -36,16 +38,25 @@ var top_meshes = [
 	]
 
 var bottom_meshes = [
-	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res")
 	]
 
 var shoe_meshes = [
-	preload("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res"),
-	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_boots.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/Sk_Char_clothes_shoes_boots.res"),
 	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
 	]
+	
+var helmet_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_base.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_godot.res")
+	]
+	
+var glasses_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_headwear_sunglasses.res")
+]
 
 func _ready() -> void:
 	character_data = CharacterData.new()
@@ -114,6 +125,10 @@ func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
 			character_data.bottom_mesh = index
 		CharacterData.CharacterPart.Shoes:
 			character_data.shoes_mesh = index
+		CharacterData.CharacterPart.Helmet:
+			character_data.helmet_mesh = index
+		CharacterData.CharacterPart.Glasses:
+			character_data.glasses_mesh
 	mesh_updated.emit(part, index)
 	#customization_updated.emit()
 	

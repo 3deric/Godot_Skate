@@ -1,0 +1,26 @@
+[gd_resource type="ShaderMaterial" load_steps=7 format=3 uid="uid://c5uudagktva2x"]
+
+[ext_resource type="Shader" uid="uid://cmudb4s41glga" path="res://Assets/Characters/Materials/Master/M_colorable_prop.tres" id="1_jhyf2"]
+[ext_resource type="Texture2D" uid="uid://dj5pcy7yadb6h" path="res://Assets/Characters/Textures/Decals/T_decal_empty.png" id="2_n43w0"]
+[ext_resource type="Texture2D" uid="uid://0fbo4k1rfvar" path="res://Assets/Characters/Textures/Clothes/T_helmet_godot_color.png" id="2_pbq6r"]
+[ext_resource type="Texture2D" uid="uid://d2uqa4c7b6iwt" path="res://Assets/Characters/Textures/Clothes/T_helmet_godot_mask.png" id="3_jhyf2"]
+[ext_resource type="Texture2D" uid="uid://n7bjxuefcelo" path="res://Assets/Characters/Textures/Clothes/T_helmet_godot_normal.png" id="4_pbq6r"]
+[ext_resource type="Texture2D" uid="uid://b2emi01qv31ll" path="res://Assets/Characters/Textures/Clothes/T_helmet_godot_orm.png" id="5_2pjfh"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_jhyf2")
+shader_parameter/adjustable_metal_color = false
+shader_parameter/base_color = ExtResource("2_pbq6r")
+shader_parameter/accent_color = Color(0.32025132, 0.48147064, 0.7100249, 1)
+shader_parameter/mask = ExtResource("3_jhyf2")
+shader_parameter/detail_color = Color(0.32, 0.32, 0.32, 1)
+shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/orm = ExtResource("5_2pjfh")
+shader_parameter/decal = ExtResource("2_n43w0")
+shader_parameter/Roughness_Power = 0.98
+shader_parameter/backlight = Color(0, 0, 0, 1)
+shader_parameter/normal = ExtResource("4_pbq6r")
+shader_parameter/Normal_Depth = 1.0
+shader_parameter/Rim = 0.2
+shader_parameter/Rim_Tint = 0.0
