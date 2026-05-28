@@ -21,6 +21,14 @@ static func forward_velocity(_vel : Vector3, _up_direction: Vector3) -> Vector3:
 static func horizontal_velocity(_vel : Vector3) -> Vector3:
 	return _vel.slide(Vector3.UP)
 	
+static func get_path_position(_path: Path3D, _offset : float):
+	var _curve : Curve3D = _path.curve
+	return _path.global_transform * _curve.sample_baked(_offset, true)
+	
+static func get_path_upvector(_path: Path3D, _offset: float):
+	var _curve : Curve3D = _path.curve
+	return _curve.sample_baked_up_vector(_offset)
+
 static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve tangent
 	if !_path:
 		return Vector3.ZERO
@@ -37,7 +45,8 @@ static func get_path_tangent(_path: Path3D, _offset: float): #returns the curve 
 		_lastOffset = _offset + 0.025
 		_lastCurvePos = _path.curve.sample_baked(_lastOffset, true)
 		_tangent = (_curvePos - _lastCurvePos).normalized()
-	return _tangent
+	var _local_tangent = (_tangent * Vector3(1,0,1)).normalized()
+	return (_path.global_transform.basis * _local_tangent).normalized()
 		
 static func get_path_dir(_tangent: Vector3, _vel: Vector3, _treshold): #direction along curve based on start pos
 	var _pathDir : float = _tangent.dot(_vel.normalized())
@@ -154,8 +163,7 @@ static func start_lip(xform: Transform3D, vel: Vector3, path: Path3D, offset: fl
 	var _tan : Vector3 = LibHelpers.get_path_tangent(path, offset)
 	var _path_global_transform = path.global_transform
 	var _curve = path.curve
-	var _local_path_pos = _curve.sample_baked(offset, true)
-	var _global_path_pos = _path_global_transform * _local_path_pos
+	var _global_path_pos = LibHelpers.get_path_position(path, offset)
 	var _to_player = (xform.origin - _global_path_pos)
 	var _to_player_horizontal = _to_player.slide(Vector3.UP).normalized()
 	var _perp = _tan.cross(Vector3.UP).normalized()

@@ -313,12 +313,11 @@ func _pipe_snap_movement(delta) -> void:
 		return
 	can_air = true
 	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
-	var _curve : Curve3D = path.curve
-	curve_snap = _curve.sample_baked(path_offset, true)
+	curve_snap = LibHelpers.get_path_position(path, path_offset)
 	path_offset += path_vel * delta
 	if path_closed:
 		path_offset = LibHelpers.wrap_curve(path, path_offset)
-	curve_tangent = (LibHelpers.get_path_tangent(path, path_offset) * Vector3(1,0,1)).normalized()
+	curve_tangent = lerp(curve_tangent, LibHelpers.get_path_tangent(path, path_offset), delta * GlobalSettings.TANGENT_LERP_SPD)
 	up_direction = LibHelpers.pipe_snap_up_dir(curve_tangent, last_up_dir, pipe_snap_flip)
 	position = Vector3(curve_snap.x, position.y, curve_snap.z) + up_direction * GlobalSettings.PIPESNAP_OFFSET
 	velocity.y -= GlobalSettings.GRAVITY * delta
@@ -332,14 +331,13 @@ func _pipe_snap_air_movement(delta) -> void:
 func _grind_movement(delta) -> void: 	
 	if !path:
 		return
-	var _curve : Curve3D = path.curve
-	curve_snap = _curve.sample_baked(path_offset, true)
+	curve_snap = LibHelpers.get_path_position(path, path_offset)
 	path_offset += path_vel * delta
 	if path_closed:
 		path_offset = LibHelpers.wrap_curve(path, path_offset)
-	curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
+	curve_tangent = lerp(curve_tangent, LibHelpers.get_path_tangent(path, path_offset), delta * GlobalSettings.TANGENT_LERP_SPD)
 	position = curve_snap
-	up_direction =  _curve.sample_baked_up_vector(path_offset)
+	up_direction =  LibHelpers.get_path_upvector(path, path_offset)
 	var _target = global_position + curve_tangent * path_dir
 	if _target != position:
 		look_at(_target, up_direction)
