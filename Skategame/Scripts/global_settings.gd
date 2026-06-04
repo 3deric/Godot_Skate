@@ -5,6 +5,7 @@ const GRAVITY : float = 15.0
 const BALANCE_MULTI : float = 0.75
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
+const INTERP_SPEED : float = 15.0
 const SHAPE_CAST_OFFSET_MAX : float = 0.25
 const SHAPE_CAST_OFFSET_MULTIPLIER : float = 0.5
 const FLOOR_FALL_THRESHOLD : float = 0.5

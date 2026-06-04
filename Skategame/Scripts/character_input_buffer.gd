@@ -1,6 +1,6 @@
 class_name InputBuffer
 
-const MAX_SIZE : int = 8
+const MAX_SIZE : int = 4
 const COOLDOWN : float = 0.5
 var buffer: Array[int] = []
 var cooldown : float = 0

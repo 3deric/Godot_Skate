@@ -3,17 +3,14 @@ extends Node3D
 
 #controls the animtree of the Char_Controller
 @onready var anim_tree: AnimationTree = %AnimationTree
-@onready var Char_Controller: CharacterController = $".."
 @onready var Char : Node3D = %Char
 @onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
-@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 @onready var Char_Input : CharacterInput = $"../Char_Input" 
 @onready var Char_Init : CharacterInit = $"../.."
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
-var INTERP_SPEED : float = 15.0 #interpolation speed of the visual character
 
 var trick_anim : bool = false #false if first trick animation is used, true if second
 var trick0 : AnimationNode
@@ -31,38 +28,33 @@ func _ready() -> void:
 	else:
 		Char.top_level = true
 
-func _process(delta: float) -> void:
-	_animation_handler(delta)
-	_lerp_vis_transform(delta, INTERP_SPEED)
-	_set_vis_balance()
-
-func _set_vis_balance() -> void:
-	if Char_Statemachine.is_player_state(CharStates.State.GRIND):
+func set_vis_balance(state : CharStates.State, balance_angle : float) -> void:
+	if state == CharStates.State.GRIND:
 		var current_rotation  = skeleton_3d.rotation
-		skeleton_3d.rotation = Vector3(current_rotation.x, current_rotation.y, -Char_Controller.balance_angle * 0.5)
-	elif Char_Statemachine.is_player_state(CharStates.State.LIP):
+		skeleton_3d.rotation = Vector3(current_rotation.x, current_rotation.y, -balance_angle * 0.5)
+	elif state == CharStates.State.LIP:
 		var current_rotation = skeleton_3d.rotation
-		skeleton_3d.rotation = Vector3(-Char_Controller.balance_angle * 0.5, current_rotation.y, current_rotation.z)
+		skeleton_3d.rotation = Vector3(-balance_angle * 0.5, current_rotation.y, current_rotation.z)
 	else:
 		skeleton_3d.rotation = Vector3(0,0,0)
 		
-func _lerp_vis_transform(_delta, _speed) -> void:
-	Char.global_transform = Char.global_transform.interpolate_with(Char_Controller.global_transform, _delta * _speed)
-	Char.global_position = Char_Controller.global_position
+func set_vis_transform(char_controller : CharacterController, _delta, _speed) -> void:
+	Char.global_transform = Char.global_transform.interpolate_with(char_controller.global_transform, _delta * _speed)
+	Char.global_position = char_controller.global_position
 
-func reset_vis_transform() -> void:
-	Char.global_transform = Char_Controller.global_transform
+func reset_vis_transform(char_controller : CharacterController) -> void:
+	Char.global_transform = char_controller.global_transform
 
-func _animation_handler(delta) -> void:
+func animation_handler(char_controller: CharacterController, state : CharStates.State, delta) -> void:
 	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input().x, Char_Input.get_input().y), delta * ANIM_INTERP_SPEED)
-	match Char_Statemachine.player_state:
+	match state:
 		CharStates.State.FALL:
 			anim_tree.set('parameters/conditions/is_riding', false)
 			anim_tree.set('parameters/conditions/is_stopped', true)
 			anim_tree.set('parameters/conditions/is_trick0', false)
 			anim_tree.set('parameters/conditions/is_trick1', false)	
 		CharStates.State.GROUND, CharStates.State.PIPE:	
-			if Char_Controller.velocity.length() > 0.05:
+			if char_controller.velocity.length() > 0.05:
 				anim_tree.set('parameters/conditions/is_riding', true)
 				anim_tree.set('parameters/conditions/is_stopped', false)
 			else:

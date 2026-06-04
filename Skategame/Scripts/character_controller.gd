@@ -74,6 +74,9 @@ func get_can_lip() -> bool:
 	
 func get_can_air() -> bool:
 	return can_air
+	
+func _process(delta: float) -> void:
+	Char_Animation.set_vis_transform(self, delta, GlobalSettings.INTERP_SPEED)
 
 func _physics_process(delta):
 	if !Char_Init.is_playing:
@@ -90,6 +93,7 @@ func _physics_process(delta):
 	_surface_check()
 	_player_state()
 	_fall_check()
+	Char_Animation.animation_handler(self, Char_Statemachine.get_player_state(), delta)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:
 			return
@@ -105,8 +109,10 @@ func _physics_process(delta):
 			_pipe_snap_air_movement(delta)
 		CharStates.State.GRIND:
 			_grind_movement(delta)
+			Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 			_check_bounce_path()
 		CharStates.State.LIP:
+			Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 			_lip_movement(delta)
 	_wall_bounce()
 	if Char_Input.get_input_jump():
@@ -273,7 +279,7 @@ func _reset_player(_pos, _rot) -> void:
 	Ingame_Ui.set_fail_view(false)
 	Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
-	Char_Animation.reset_vis_transform()
+	Char_Animation.reset_vis_transform(self)
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	last_vel = Vector3.ZERO
