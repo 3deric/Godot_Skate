@@ -94,6 +94,7 @@ func _physics_process(delta):
 	_player_state()
 	_fall_check()
 	Char_Animation.animation_handler(self, Char_Statemachine.get_player_state(), delta)
+	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:
 			return
@@ -108,11 +109,9 @@ func _physics_process(delta):
 		CharStates.State.PIPESNAPAIR:
 			_pipe_snap_air_movement(delta)
 		CharStates.State.GRIND:
-			_grind_movement(delta)
-			Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
+			_grind_movement(delta)		
 			_check_bounce_path()
 		CharStates.State.LIP:
-			Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 			_lip_movement(delta)
 	_wall_bounce()
 	if Char_Input.get_input_jump():

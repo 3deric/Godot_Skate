@@ -1,10 +1,11 @@
-[gd_scene load_steps=39 format=4 uid="uid://bxeywehmeblyi"]
+[gd_scene load_steps=40 format=4 uid="uid://bxeywehmeblyi"]
 
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_7gtpe"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="5_cljkk"]
 [ext_resource type="Material" uid="uid://1ccrgh68ww8p" path="res://Assets/Materials/M_default_orange.tres" id="6_aovfd"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="6_q52lx"]
 [ext_resource type="Script" uid="uid://fo6j44olrayn" path="res://Scripts/Editor/rail_init.gd" id="7_0t1eh"]
+[ext_resource type="PackedScene" uid="uid://ccv8vscxca55a" path="res://Assets/Environment/test_pipe.glb" id="7_epc26"]
 [ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="7_v2d4r"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_agarl"]
@@ -480,3 +481,9 @@ path_u_distance = 1.0
 path_joined = false
 material = ExtResource("6_q52lx")
 script = ExtResource("7_0t1eh")
+
+[node name="test_pipe" parent="." instance=ExtResource("7_epc26")]
+transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, 11.444146, 0.03676212, -7.8969355)
+
+[node name="test_pipe2" parent="." instance=ExtResource("7_epc26")]
+transform = Transform3D(-0.9959191, 0, 0.090250224, 0, 1, 0, -0.090250224, 0, -0.9959191, 4.071018, 0.03676021, -16.298286)

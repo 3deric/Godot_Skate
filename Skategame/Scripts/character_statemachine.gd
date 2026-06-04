@@ -18,11 +18,11 @@ func set_player_state(new_state : CharStates.State) -> bool:
 		return false
 	if player_state != new_state:
 		player_state = new_state
-		if player_state != CharStates.State.PIPESNAPAIR:
+		_debug_player_state()
+		if not (player_state == CharStates.State.PIPESNAPAIR or (player_state == CharStates.State.AIR and last_player_state == CharStates.State.PIPESNAPAIR)):
 			Char_Tricks.set_state_changed()
-			_debug_player_state()
 			_set_state_cooldown()
-			return true
+		return true
 	return false
 	
 func set_last_player_state() -> void:
