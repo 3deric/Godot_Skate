@@ -23,7 +23,6 @@ var shape_col_ground : Array = []
 var ray_ground : Dictionary = {}
 var on_wall : bool = false
 var last_on_wall : bool = false
-var trick_not_finished : bool = false
 var is_jump : bool = false
 
 #global object references
@@ -37,6 +36,7 @@ var is_jump : bool = false
 @onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input 
+@onready var Char_Fallcheck : CharacterFallcheck = $Char_Fallcheck
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 @onready var Char_Init : CharacterInit = $".."
 
@@ -264,7 +264,6 @@ func _set_up_direction() -> void:
 
 func set_fall(_fall_reason, _fall_value) -> void:
 	Char_Tricks.set_clear_tricks()
-	print(_fall_reason + ": " + str(_fall_value)+ "last velocity: " + str(last_vel.length()))
 	Char_Ragdoll.set_start_simulation(last_vel)
 	Char_Statemachine.set_player_state(CharStates.State.FALL)
 	Ingame_Ui.set_fail_view(true)
@@ -399,41 +398,35 @@ func _check_bounce_path() -> void:
 	if !wall_col:
 		revert_path = false
 
-func _fall_check() -> void:
+func _fall_check() -> void: #to do, try to move the fall checks to the corresponding states!
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
-	if trick_not_finished:
-		set_fall("trick not finished", Char_Tricks.current_trick_duration)
-		trick_not_finished = false
-		return
-	if global_position.y < - 100:
-		set_fall("out of bounds!", position)
+	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
+		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP) and Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
+			return # dont fall when the player is in air from pipesnap
+		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR) and Char_Statemachine.is_player_state(CharStates.State.AIR):	
+			return # dont fall when the player is in air from pipesnapair
+		if Char_Tricks.get_trick_active():
+			set_fall("trick not finished", Char_Tricks.current_trick_duration)
+			return
+	if Char_Fallcheck.get_out_of_bounds(position):
+			set_fall("out of bounds!", position)
+			return
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
-		if (balance_angle > PI /4 or balance_angle < -PI /4):
+		if Char_Fallcheck.get_balance_issues(balance_angle):
 			set_fall("balance issues", balance_angle)
 			return
 	if Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR):
-		var floor_col = null
-		if len(shape_col_fwd) > 0:
-			for col in shape_col_fwd:
-				if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
-					floor_col = col
-		if floor_col and up_direction.dot(Vector3.UP) < 0.5:
-			var _normal = floor_col.normal
-			var _dot = _normal.dot(up_direction)
-			if _dot <= 0.5:
-				set_fall("faceplant", _dot)
-				return
+		if Char_Fallcheck.get_faceplant(shape_col_fwd, up_direction):
+			set_fall("faceplant", up_direction)
+			return
 	var _is_ground = Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE)
 	var _last_air = Char_Statemachine.is_last_player_state(CharStates.State.AIR) or Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP)
 	if !_is_ground or !_last_air:
 		return
-	var _fwd_vel : Vector3 = LibHelpers.forward_velocity(velocity, up_direction)
-	if _fwd_vel.length() <= GlobalSettings.PERPENDICULAR_FALL_THRESHOLD:
+	if Char_Fallcheck.get_landed_perpendicular(xform, velocity, up_direction):
+		set_fall("perpendicular", velocity.dot(xform.basis.z))
 		return
-	var _perp : Dictionary = LibHelpers.landed_perpendicular(_fwd_vel, xform.basis.z, GlobalSettings.FLOOR_FALL_THRESHOLD)
-	if !_perp.valid:
-		set_fall("perpendicular", _perp.dot)
 
 func _wall_bounce() -> void:
 	if not (Char_Statemachine.is_player_state(CharStates.State.AIR) or

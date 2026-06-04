@@ -143,9 +143,10 @@ func set_state_changed() -> void:
 	if Char_Statemachine.get_player_state() == CharStates.State.FALL:
 		return
 	if is_trick_active:
-		if !can_trick:
-			Char.trick_not_finished = true
 		_end_trick()
+		
+func get_trick_active() -> bool:
+	return is_trick_active
 		
 func get_trick_duration() -> float:
 	return current_trick_duration
