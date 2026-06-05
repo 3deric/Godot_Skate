@@ -65,6 +65,7 @@ func init_player():
 	else:
 		Ingame_Ui.set_fail_view(false)
 		Ingame_Ui.set_balance_view(false)
+	Char_Animation.init(Char_Init.is_playing)
 		
 func get_can_grind() -> bool:
 	return can_grind
@@ -93,7 +94,7 @@ func _physics_process(delta):
 	_surface_check()
 	_player_state()
 	_fall_check()
-	Char_Animation.animation_handler(self, Char_Statemachine.get_player_state(), delta)
+	Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
 	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 	match Char_Statemachine.player_state:
 		CharStates.State.FALL:

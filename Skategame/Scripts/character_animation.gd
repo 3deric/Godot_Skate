@@ -6,8 +6,6 @@ extends Node3D
 @onready var Char : Node3D = %Char
 @onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
 @onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
-@onready var Char_Input : CharacterInput = $"../Char_Input" 
-@onready var Char_Init : CharacterInit = $"../.."
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states
@@ -17,13 +15,13 @@ var trick0 : AnimationNode
 var trick1 : AnimationNode
 
 
-func _ready() -> void:
+func init(is_playing : bool) -> void:
 	skeleton_3d.show_rest_only = false
 	body_mesh.set_blend_shape_value(2,0.3) # smile
 	body_mesh.set_blend_shape_value(3,0) # blink
 	trick0 = anim_tree.tree_root.get_node("Trick0")
 	trick1 = anim_tree.tree_root.get_node("Trick1")
-	if !Char_Init.is_playing:
+	if !is_playing:
 		anim_tree.set('parameters/conditions/is_setup', true)
 	else:
 		Char.top_level = true
@@ -45,8 +43,8 @@ func set_vis_transform(char_controller : CharacterController, _delta, _speed) ->
 func reset_vis_transform(char_controller : CharacterController) -> void:
 	Char.global_transform = char_controller.global_transform
 
-func animation_handler(char_controller: CharacterController, state : CharStates.State, delta) -> void:
-	anim_blend = anim_blend.lerp(Vector2(Char_Input.get_input().x, Char_Input.get_input().y), delta * ANIM_INTERP_SPEED)
+func animation_handler(char_controller: CharacterController, input : Vector3, state : CharStates.State, delta) -> void:
+	anim_blend = anim_blend.lerp(Vector2(input.x, input.y), delta * ANIM_INTERP_SPEED)
 	match state:
 		CharStates.State.FALL:
 			anim_tree.set('parameters/conditions/is_riding', false)

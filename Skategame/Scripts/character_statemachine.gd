@@ -20,7 +20,7 @@ func set_player_state(new_state : CharStates.State) -> bool:
 		player_state = new_state
 		_debug_player_state()
 		if not (player_state == CharStates.State.PIPESNAPAIR or (player_state == CharStates.State.AIR and last_player_state == CharStates.State.PIPESNAPAIR)):
-			Char_Tricks.set_state_changed()
+			Char_Tricks.set_state_changed() # i dont like the reference to Char Tricks from this class, but its easier to execute it from here then the main controller
 			_set_state_cooldown()
 		return true
 	return false
