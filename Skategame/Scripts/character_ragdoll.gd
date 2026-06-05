@@ -8,8 +8,8 @@ var active : bool = false
 
 #func _process(delta: float) -> void:
 	#_debug_ragdoll()
-		#
-		#
+		
+		
 func _debug_ragdoll() -> void:
 	if Input.is_action_just_pressed("ui_accept") and !active:
 		active = true

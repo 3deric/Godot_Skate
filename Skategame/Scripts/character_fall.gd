@@ -2,8 +2,8 @@ class_name CharacterFallcheck
 extends Node3D
 
 func get_out_of_bounds(position : Vector3) -> bool:
-	if global_position.y < - 100:
-		print("Fall Out of Bounds: " + str(global_position.y))
+	if position.y < - 100:
+		print("Fall Out of Bounds: " + str(position.y))
 		return true
 	return false
 	
