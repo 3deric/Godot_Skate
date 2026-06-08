@@ -24,6 +24,7 @@ var ray_ground : Dictionary = {}
 var on_wall : bool = false
 var last_on_wall : bool = false
 var is_jump : bool = false
+var standing_timer : float = GlobalSettings.STANDING_TIMER
 
 #global object references
 @onready var Area : Area3D = get_node('Area3D')
@@ -101,6 +102,7 @@ func _physics_process(delta):
 			return
 		CharStates.State.GROUND, CharStates.State.PIPE:
 			_check_reverse_motion()
+			_standing_timer(delta)
 			_ground_movement(delta)
 		CharStates.State.AIR:
 			_air_movement(delta)
@@ -120,6 +122,8 @@ func _physics_process(delta):
 			_handle_jump()
 	global_transform = LibHelpers.align(global_transform, up_direction)
 	last_up_dir = up_direction
+	if velocity.length_squared() < 10 and last_vel.length_squared() > 25:
+		print(velocity.length_squared(), "  ",last_vel.length_squared())
 	last_vel = velocity
 	_set_up_direction()
 	if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
@@ -280,6 +284,7 @@ func _reset_player(_pos, _rot) -> void:
 	Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
 	Char_Animation.reset_vis_transform(self)
+	standing_timer = GlobalSettings.STANDING_TIMER
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	last_vel = Vector3.ZERO
@@ -388,7 +393,13 @@ func _check_reverse_motion() -> void:
 	var revertCheck : float = velocity.normalized().dot(xform.basis.z)
 	if revertCheck < 0:
 		pass #add revert function
-
+		
+func _standing_timer(_delta : float) -> void:
+	if velocity.length_squared() < GlobalSettings.STANDING_TIMER_MIN_SPEED:
+		standing_timer -= _delta
+	else: 
+		standing_timer = GlobalSettings.STANDING_TIMER
+		
 func _check_bounce_path() -> void:
 	var wall_col = null
 	if len(shape_col_fwd) > 0:
@@ -404,9 +415,18 @@ func _check_bounce_path() -> void:
 	if !wall_col:
 		revert_path = false
 
-func _fall_check() -> void: #to do, try to move the fall checks to the corresponding states!
+func _fall_check() -> void: #to do, try to move the fall achecks to the corresponding states!
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
+	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
+		#if Char_Fallcheck.get_decelleration(velocity, last_vel):
+			#set_fall("Sudde stop", last_vel.length_squared())
+			#return
+		if standing_timer > 0:
+			return
+		if Char_Fallcheck.get_stand_perpendicular(up_direction):
+			set_fall("balance issues", up_direction.dot(Vector3.UP))
+			return
 	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
 		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP) and Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			return # dont fall when the player is in air from pipesnap
