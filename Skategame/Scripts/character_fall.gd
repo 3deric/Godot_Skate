@@ -37,16 +37,16 @@ func get_landed_perpendicular(xform, velocity : Vector3, up_direction : Vector3)
 		return true
 	return false
 	
-func get_stand_perpendicular(up_direction : Vector3) -> bool:
-	var _dot = up_direction.dot(Vector3.UP)
-	if _dot < 0.85:
-		print("Fall Perpendicular Stand ", _dot)
-		return true
-	return false
-	
-func get_decelleration(velocity : Vector3, last_vel: Vector3) -> bool:
-	if last_vel.length_squared() > 1 and velocity.length_squared() < 0.5:
-		print(last_vel.length_squared())
-		print("Sudden stop", last_vel.length_squared())
-		return true
-	return false
+#func get_stand_perpendicular(up_direction : Vector3) -> bool:
+	#var _dot = up_direction.dot(Vector3.UP)
+	#if _dot < 0.85:
+		#print("Fall Perpendicular Stand ", _dot)
+		#return true
+	#return false
+	#
+#func get_decelleration(velocity : Vector3, last_vel: Vector3) -> bool:
+	#if last_vel.length_squared() > 1 and velocity.length_squared() < 0.5:
+		#print(last_vel.length_squared())
+		#print("Sudden stop", last_vel.length_squared())
+		#return true
+	#return false

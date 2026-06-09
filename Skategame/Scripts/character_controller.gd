@@ -418,15 +418,15 @@ func _check_bounce_path() -> void:
 func _fall_check() -> void: #to do, try to move the fall achecks to the corresponding states!
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
-	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
+	#if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
 		#if Char_Fallcheck.get_decelleration(velocity, last_vel):
 			#set_fall("Sudde stop", last_vel.length_squared())
+			##return
+		#if standing_timer > 0:
 			#return
-		if standing_timer > 0:
-			return
-		if Char_Fallcheck.get_stand_perpendicular(up_direction):
-			set_fall("balance issues", up_direction.dot(Vector3.UP))
-			return
+		#if Char_Fallcheck.get_stand_perpendicular(up_direction):
+			#set_fall("balance issues", up_direction.dot(Vector3.UP))
+			#return
 	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
 		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP) and Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			return # dont fall when the player is in air from pipesnap
