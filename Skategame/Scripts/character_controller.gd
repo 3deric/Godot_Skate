@@ -237,29 +237,31 @@ func _player_state() -> void:
 			return
 
 func _surface_check() -> void:
-	var _basis_y : Vector3 = xform.basis.y
-	var _basis_z : Vector3 = xform.basis.z
-	var _forward_dir : Vector3 = Vector3.ZERO
-	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
-		_forward_dir = curve_tangent * -path_dir * clamp(velocity.length(),0.0, 0.25)
+	var speed : float = velocity.length()
+	var basis_y : Vector3 = xform.basis.y
+	var forward_dir : Vector3 = Vector3.ZERO
+	
+	var is_grind := Char_Statemachine.is_player_state(CharStates.State.GRIND)
+	var is_pipe_snap := Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
+	var is_ground := Char_Statemachine.is_player_state(CharStates.State.GROUND)
+	var is_pipe := Char_Statemachine.is_player_state(CharStates.State.PIPE)
+
+	var move_clamp : float = min(speed, 0.25)
+
+	if is_grind or is_pipe_snap:
+		forward_dir = curve_tangent * -path_dir * move_clamp
 	else:
-		_forward_dir = 	LibHelpers.horizontal_velocity(velocity).normalized() * clamp(velocity.length(),0.0, 0.25)
-	var _shape_cast_dir = velocity * clamp(velocity.length(),0.0, GlobalSettings.WALL_BOUNCE_MULTI)
+		forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * move_clamp
+	
 	if Char_Input.can_jump():
-		if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, GlobalSettings.RAY_GROUND_DIST, self)	
-		else: 
-			ray_ground = LibHelpers.raycast(position + _basis_y * 0.05, -_basis_y, GlobalSettings.RAY_GROUND_AIR_DIST, self)	
+		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
+		ray_ground = LibHelpers.raycast(position + basis_y * 0.05, -basis.y, ray_dist, self)
+		if ray_ground and ray_ground.collider.is_in_group("wall"):
+			ray_ground = {}
 	else:
 		ray_ground = {}
-	Shape_Cast.target_position = to_local(position + _forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
+	Shape_Cast.target_position = to_local(position + forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
-	if ray_ground:
-		if ray_ground.collider.is_in_group("wall"):
-			ray_ground = {}
-	if !ray_ground and is_on_floor():
-		#placeholder
-		pass
 
 func _set_up_direction() -> void:
 	if ray_ground:	
