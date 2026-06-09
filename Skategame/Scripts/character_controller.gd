@@ -94,7 +94,7 @@ func _physics_process(delta):
 	xform = global_transform
 	_surface_check()
 	_player_state()
-	_fall_check()
+	_fall_check(delta)
 	Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
 	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 	match Char_Statemachine.player_state:
@@ -122,8 +122,6 @@ func _physics_process(delta):
 			_handle_jump()
 	global_transform = LibHelpers.align(global_transform, up_direction)
 	last_up_dir = up_direction
-	if velocity.length_squared() < 10 and last_vel.length_squared() > 25:
-		print(velocity.length_squared(), "  ",last_vel.length_squared())
 	last_vel = velocity
 	_set_up_direction()
 	if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
@@ -415,13 +413,14 @@ func _check_bounce_path() -> void:
 	if !wall_col:
 		revert_path = false
 
-func _fall_check() -> void: #to do, try to move the fall achecks to the corresponding states!
+func _fall_check(delta) -> void: #to do, try to move the fall achecks to the corresponding states!
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		return
-	#if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
-		#if Char_Fallcheck.get_decelleration(velocity, last_vel):
-			#set_fall("Sudde stop", last_vel.length_squared())
-			##return
+	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
+		if Char_Statemachine.is_last_player_state(CharStates.State.GROUND) or Char_Statemachine.is_last_player_state(CharStates.State.PIPE):
+			if Char_Fallcheck.get_decelleration(LibHelpers.forward_velocity(velocity, up_direction), LibHelpers.forward_velocity(last_vel, up_direction), delta):
+				set_fall("Sudden stop", last_vel.length_squared())
+				return
 		#if standing_timer > 0:
 			#return
 		#if Char_Fallcheck.get_stand_perpendicular(up_direction):
