@@ -130,6 +130,7 @@ func _physics_process(delta):
 	if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
 		apply_floor_snap()
 		
+		
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
 		return
@@ -256,11 +257,17 @@ func _surface_check() -> void:
 	
 	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
+		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
+		
 		Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist)
 		shape_col_ground = Shape_Cast_Ground.collision_result
 		ray_ground = LibHelpers.raycast(position + basis_y * 0.05, -basis.y, ray_dist, self)
 		if ray_ground and ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
+		if shape_col_ground:
+			if shape_col_ground[0].normal.dot(up_direction) < 0.75:
+				print(shape_col_ground[0].normal)
+				shape_col_ground = []
 	else:
 		shape_col_ground = []
 		ray_ground = {}
