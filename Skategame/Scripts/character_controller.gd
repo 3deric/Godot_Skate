@@ -243,10 +243,10 @@ func _surface_check() -> void:
 	var basis_y : Vector3 = xform.basis.y
 	var forward_dir : Vector3 = Vector3.ZERO
 	
-	var is_grind := Char_Statemachine.is_player_state(CharStates.State.GRIND)
-	var is_pipe_snap := Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
-	var is_ground := Char_Statemachine.is_player_state(CharStates.State.GROUND)
-	var is_pipe := Char_Statemachine.is_player_state(CharStates.State.PIPE)
+	var is_grind : bool = Char_Statemachine.is_player_state(CharStates.State.GRIND)
+	var is_pipe_snap : bool = Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
+	var is_ground : bool = Char_Statemachine.is_player_state(CharStates.State.GROUND)
+	var is_pipe : bool = Char_Statemachine.is_player_state(CharStates.State.PIPE)
 
 	var move_clamp : float = min(speed, 0.25)
 
@@ -265,9 +265,13 @@ func _surface_check() -> void:
 		if ray_ground and ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
 		if shape_col_ground:
-			if shape_col_ground[0].normal.dot(up_direction) < 0.75:
-				print(shape_col_ground[0].normal)
+			var _col_normal = shape_col_ground[0].normal
+			var _dot = _col_normal.dot(up_direction)
+			if shape_col_ground[0].collider.is_in_group("wall") or _dot < GlobalSettings.SHAPE_COL_DOT:
 				shape_col_ground = []
+
+
+	
 	else:
 		shape_col_ground = []
 		ray_ground = {}
