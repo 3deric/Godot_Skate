@@ -215,10 +215,10 @@ func _player_state() -> void:
 					velocity += Vector3.UP * stats.jump_vel * 0.25
 					return
 			return
-	if Char_Statemachine.is_player_state(CharStates.State.AIR):
-		if is_on_floor() and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
-			Char_Statemachine.set_player_state(CharStates.State.GROUND)
-			is_jump = false
+	#if Char_Statemachine.is_player_state(CharStates.State.AIR):
+		#if is_on_floor() and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
+			#Char_Statemachine.set_player_state(CharStates.State.GROUND)
+			#is_jump = false
 	if shape_col_ground:
 		var _coll_info = shape_col_ground[0].collider
 		if _coll_info.is_in_group("wall"):
@@ -280,8 +280,8 @@ func _set_up_direction() -> void:
 			up_direction = shape_col_ground[0].normal
 	else:
 		up_direction = last_up_dir	
-	if !shape_col_ground and is_on_floor():
-		up_direction = get_floor_normal()
+	#if !shape_col_ground and is_on_floor():
+		#up_direction = get_floor_normal()
 
 func set_fall(_fall_reason, _fall_value) -> void:
 	Char_Tricks.set_clear_tricks()
