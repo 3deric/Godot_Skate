@@ -1,24 +1,9 @@
-[gd_scene load_steps=145 format=4 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=142 format=4 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_4bqnf"]
 [ext_resource type="PackedScene" uid="uid://1up2mjm8l6ew" path="res://Assets/Debug/Warehouse.glb" id="4_6c36q"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="5_onqqn"]
 [ext_resource type="Script" uid="uid://fo6j44olrayn" path="res://Scripts/Editor/rail_init.gd" id="6_ci0fc"]
-[ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="7_ftd8s"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_agarl"]
-panorama = ExtResource("7_ftd8s")
-
-[sub_resource type="Sky" id="Sky_33a2s"]
-sky_material = SubResource("PanoramaSkyMaterial_agarl")
-
-[sub_resource type="Environment" id="Environment_t5anl"]
-background_mode = 2
-background_energy_multiplier = 0.75
-sky = SubResource("Sky_33a2s")
-tonemap_mode = 3
-glow_enabled = true
-glow_bloom = 0.15
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukahv"]
 resource_name = "M_Col"
@@ -1542,27 +1527,15 @@ shadow_mesh = SubResource("ArrayMesh_lrrsn")
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_oqmk0"]
 data = PackedVector3Array(-6.3223996, 0.46719998, -9.6601, -6.3651, 0.46719998, -9.714499, -6.3122, 0.46719998, -9.6785, -6.3122, 0.46719998, -9.6785, -6.3651, 0.46719998, -9.714499, -5.1793, 0.46719998, -11.1296, -6.3122, 0.46719998, -9.6785, -5.1793, 0.46719998, -11.1296, -5.1303, 0.46719998, -11.0886, -6.3223996, 0.46719998, -9.6601, -6.3826, 0.46719998, -9.6818, -6.3651, 0.46719998, -9.714499, -6.3264, 0.46719998, -9.639299, -6.3826, 0.46719998, -9.6818, -6.3223996, 0.46719998, -9.6601, -6.3264, 0.46719998, -9.639299, -6.3901, 0.46719998, -9.6456995, -6.3826, 0.46719998, -9.6818, -6.3262, 0.46719998, -7.8417997, -6.3901, 0.46719998, -9.6456995, -6.3264, 0.46719998, -9.639299, -6.3262, 0.46719998, -7.8417997, -6.3901997, 0.46719998, -7.8417997, -6.3901, 0.46719998, -9.6456995, -6.3262, 0.46719998, -6.041, -6.3901997, 0.46719998, -7.8417997, -6.3262, 0.46719998, -7.8417997, -6.3262, 0.46719998, -6.041, -6.3901997, 0.46719998, -6.041, -6.3901997, 0.46719998, -7.8417997, -6.3262, 0.46719998, -4.2402997, -6.3901997, 0.46719998, -6.041, -6.3262, 0.46719998, -6.041, -6.3262, 0.46719998, -4.2402997, -6.3901997, 0.46719998, -4.2402997, -6.3901997, 0.46719998, -6.041, -6.3262, 0.46719998, -2.4396, -6.3901997, 0.46719998, -4.2402997, -6.3262, 0.46719998, -4.2402997, -6.3262, 0.46719998, -2.4396, -6.3901997, 0.46719998, -2.4396, -6.3901997, 0.46719998, -4.2402997, -6.3262, 0.46719998, -0.6389, -6.3901997, 0.46719998, -2.4396, -6.3262, 0.46719998, -2.4396, -6.3262, 0.46719998, -0.6389, -6.3901997, 0.46719998, -0.6389, -6.3901997, 0.46719998, -2.4396)
 
-[node name="Level" type="Node3D"]
+[sub_resource type="Environment" id="Environment_rsyfn"]
+ambient_light_source = 2
+ambient_light_color = Color(0.7058824, 0.7058824, 0.7058824, 1)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
-light_color = Color(0.87, 0.71543, 0.6438, 1)
-light_energy = 1.762
-shadow_enabled = true
-shadow_opacity = 0.59
-shadow_blur = 6.306
+[node name="Level" type="Node3D"]
 
 [node name="player_character" parent="." instance=ExtResource("3_4bqnf")]
 transform = Transform3D(0.26979405, 0, 0.9629178, 0, 1, 0, -0.9629178, 0, 0.26979405, -2.384499, 4.970946, 17.680273)
 is_playing = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_t5anl")
-
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.722135, 0.138408, 0.677764, 0.58475, 0.645598, 0.491193, -0.369577, 0.75103, -0.547143, -0.281779, 0.959275, -0.209071)
-light_energy = 0.5
-shadow_enabled = true
 
 [node name="Warehouse" parent="." instance=ExtResource("4_6c36q")]
 
@@ -2369,3 +2342,11 @@ mesh = SubResource("ArrayMesh_ilv34")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Warehouse/WarehouseRailA_Col_Floor_col_mesh/WarehouseRailA_Col_Floor_col_mesh_col"]
 shape = SubResource("ConcavePolygonShape3D_oqmk0")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_rsyfn")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.5098907, -0.55968267, 0.6532738, 0.41627026, 0.50404674, 0.7567404, -0.75281477, 0.657794, -0.024030402, -0.281779, 0.959275, -0.209071)
+shadow_enabled = true
+directional_shadow_mode = 0

@@ -30,6 +30,7 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Area : Area3D = get_node('Area3D')
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
 @onready var Shape_Cast : ShapeCast3D = $ShapeCast3D
+@onready var Shape_Cast_Ground : ShapeCast3D = $ShapeCast3DGround
 @onready var Camera_Pos: Node3D = $"../Camera_Pos"
 @onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
 @onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
@@ -129,6 +130,7 @@ func _physics_process(delta):
 	if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
 		apply_floor_snap()
 		
+		
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
 		return
@@ -189,7 +191,7 @@ func _player_state() -> void:
 				lip_start_up = _lip_start.up
 				can_lip = true
 			_randomize_balance()
-	if !ray_ground: #behavior while in air, or sticked to a pipe
+	if !shape_col_ground: #behavior while in air, or sticked to a pipe
 		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input().y == 0 and path:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
@@ -213,12 +215,12 @@ func _player_state() -> void:
 					velocity += Vector3.UP * stats.jump_vel * 0.25
 					return
 			return
-	if Char_Statemachine.is_player_state(CharStates.State.AIR):
-		if is_on_floor() and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
-			Char_Statemachine.set_player_state(CharStates.State.GROUND)
-			is_jump = false
-	if ray_ground:
-		var _coll_info = ray_ground.collider
+	#if Char_Statemachine.is_player_state(CharStates.State.AIR):
+		#if is_on_floor() and !Char_Statemachine.is_player_state(CharStates.State.GROUND):
+			#Char_Statemachine.set_player_state(CharStates.State.GROUND)
+			#is_jump = false
+	if shape_col_ground:
+		var _coll_info = shape_col_ground[0].collider
 		if _coll_info.is_in_group("wall"):
 			return
 		#if ray_ground.normal.dot(xform.basis.y) < 0.5:
@@ -241,10 +243,10 @@ func _surface_check() -> void:
 	var basis_y : Vector3 = xform.basis.y
 	var forward_dir : Vector3 = Vector3.ZERO
 	
-	var is_grind := Char_Statemachine.is_player_state(CharStates.State.GRIND)
-	var is_pipe_snap := Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
-	var is_ground := Char_Statemachine.is_player_state(CharStates.State.GROUND)
-	var is_pipe := Char_Statemachine.is_player_state(CharStates.State.PIPE)
+	var is_grind : bool = Char_Statemachine.is_player_state(CharStates.State.GRIND)
+	var is_pipe_snap : bool = Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
+	var is_ground : bool = Char_Statemachine.is_player_state(CharStates.State.GROUND)
+	var is_pipe : bool = Char_Statemachine.is_player_state(CharStates.State.PIPE)
 
 	var move_clamp : float = min(speed, 0.25)
 
@@ -255,22 +257,35 @@ func _surface_check() -> void:
 	
 	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
+		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
+		
+		Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist)
+		shape_col_ground = Shape_Cast_Ground.collision_result
 		ray_ground = LibHelpers.raycast(position + basis_y * 0.05, -basis.y, ray_dist, self)
 		if ray_ground and ray_ground.collider.is_in_group("wall"):
 			ray_ground = {}
+		if shape_col_ground:
+			var _col_normal = shape_col_ground[0].normal
+			var _dot = _col_normal.dot(up_direction)
+			if shape_col_ground[0].collider.is_in_group("wall") or _dot < GlobalSettings.SHAPE_COL_DOT:
+				shape_col_ground = []
+
+
+	
 	else:
+		shape_col_ground = []
 		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
 
 func _set_up_direction() -> void:
-	if ray_ground:	
-		if !ray_ground.collider.is_in_group("wall"):
-			up_direction = ray_ground.normal
+	if shape_col_ground:
+		if !shape_col_ground[0].collider.is_in_group("wall"):
+			up_direction = shape_col_ground[0].normal
 	else:
 		up_direction = last_up_dir	
-	if !ray_ground and is_on_floor():
-		up_direction = get_floor_normal()
+	#if !shape_col_ground and is_on_floor():
+		#up_direction = get_floor_normal()
 
 func set_fall(_fall_reason, _fall_value) -> void:
 	Char_Tricks.set_clear_tricks()
