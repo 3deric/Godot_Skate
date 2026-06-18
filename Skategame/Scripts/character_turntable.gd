@@ -3,12 +3,12 @@ extends Node3D
 
 @onready var Char_Controller: CharacterController = $".."
 @onready var Char_Input: CharacterInput = $"../Char_Input"
-@onready var Player_Character: CharacterInit = $"../.."
+@onready var Player_Scene : Player = $"../.."
 
 const ROT : float= 2.0
 
 func _physics_process(delta: float) -> void:
-	if !Player_Character.get_is_playing():
+	if !Player_Scene.get_is_playing():
 		_rotate(delta)
 
 func _rotate(_delta) -> void:

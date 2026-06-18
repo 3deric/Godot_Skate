@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Skategame"
-run/main_scene="res://Scenes/asset_shading.tscn"
+run/main_scene="uid://c64uo125g4ixe"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 run/max_fps=60
 config/icon="res://icon.svg"

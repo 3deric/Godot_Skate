@@ -2,7 +2,7 @@ class_name CharacterInput
 extends Node3D
 
 @onready var Char_Controller : CharacterController = $".."
-@onready var Char_Init : CharacterInit = $"../.."
+@onready var Player_Scene : Player = $"../.."
 @onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 @onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 

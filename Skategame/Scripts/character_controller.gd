@@ -40,7 +40,7 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Input : CharacterInput = $Char_Input 
 @onready var Char_Fallcheck : CharacterFallcheck = $Char_Fallcheck
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
-@onready var Char_Init : CharacterInit = $".."
+@onready var Player_Scene : Player = $".."
 
 #grind and lip trick variables
 var can_air : bool = false
@@ -60,14 +60,14 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func init_player():
-	if Char_Init.is_playing:
+	if Player_Scene.is_playing:
 		top_level = true
-		_reset_player(Char_Init.get_start_position(), Char_Init.get_start_rotation())
-		Camera_Pos.global_position = Char_Init.get_start_position()
+		_reset_player(Player_Scene.get_start_position(), Player_Scene.get_start_rotation())
+		Camera_Pos.global_position = Player_Scene.get_start_position()
 	else:
 		Ingame_Ui.set_fail_view(false)
 		Ingame_Ui.set_balance_view(false)
-	Char_Animation.init(Char_Init.is_playing)
+	Char_Animation.init(Player_Scene.is_playing)
 		
 func get_can_grind() -> bool:
 	return can_grind
@@ -82,7 +82,7 @@ func _process(delta: float) -> void:
 	Char_Animation.set_vis_transform(self, delta, GlobalSettings.INTERP_SPEED)
 
 func _physics_process(delta):
-	if !Char_Init.is_playing:
+	if !Player_Scene.is_playing:
 		return
 	can_air = false
 	can_grind = false

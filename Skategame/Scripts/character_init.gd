@@ -1,4 +1,4 @@
-class_name CharacterInit
+class_name Player
 extends Node3D
 
 @export var is_playing : bool = false
