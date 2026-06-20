@@ -254,6 +254,12 @@ func _surface_check() -> void:
 	else:
 		forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * move_clamp
 	
+	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
+		if global_position.y > curve_snap.y and Shape_Cast_Ground.enabled == true:
+			Shape_Cast_Ground.enabled = false
+		elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
+			Shape_Cast_Ground.enabled = true
+	
 	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
 		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
@@ -333,9 +339,9 @@ func _air_movement(_delta) -> void:
 func _pipe_snap_movement(delta) -> void: 
 	if !path:
 		return
+	curve_snap = LibHelpers.get_path_position(path, path_offset)
 	can_air = true
 	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
-	curve_snap = LibHelpers.get_path_position(path, path_offset)
 	path_offset += path_vel * delta
 	if path_closed:
 		path_offset = LibHelpers.wrap_curve(path, path_offset)

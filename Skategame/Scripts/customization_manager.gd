@@ -1,5 +1,5 @@
 #set as global variable in project settings and therefore doesnt need a custom class_name
-extends Node3D
+extends Node
 
 signal color_updated(part: CharacterData.CharacterPart, sub: String, color: Color)
 signal decal_updated(part: CharacterData.CharacterPart, index: int)
