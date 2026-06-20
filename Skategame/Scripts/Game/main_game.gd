@@ -68,4 +68,4 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 	#_setup_level_camera()
 
 func _place_player_at_level_spawn() -> void:
-	player.global_transform = _current_level.get_player_spawn()
+	player.init(_current_level.get_player_spawn())

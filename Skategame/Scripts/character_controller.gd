@@ -6,8 +6,7 @@ extends CharacterBody3D
 
 #global movement variables
 var xform = null
-var last_ground_pos : Vector3 = Vector3.ZERO
-var last_ground_rot : Vector3 = Vector3.ZERO 
+var last_ground_transform : Transform3D
 var fall_timer : float = 0.0
 var last_up_dir : Vector3 = Vector3.ZERO
 var pipe_snap_flip : bool = false
@@ -59,11 +58,11 @@ var lip_start_dir : Vector3 = Vector3.ZERO
 var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
-func init_player():
+func init_player(_transform : Transform3D):
 	if Player_Scene.is_playing:
 		top_level = true
-		_reset_player(Player_Scene.get_start_position(), Player_Scene.get_start_rotation())
-		Camera_Pos.global_position = Player_Scene.get_start_position()
+		_reset_player(_transform)
+		Camera_Pos.global_position = _transform.origin
 	else:
 		Ingame_Ui.set_fail_view(false)
 		Ingame_Ui.set_balance_view(false)
@@ -91,7 +90,7 @@ func _physics_process(delta):
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		fall_timer -= delta
 		if Char_Input.get_input().y and fall_timer < 0.1:
-			_reset_player(last_ground_pos, last_ground_rot)
+			_reset_player(last_ground_transform)
 	xform = global_transform
 	_surface_check()
 	_player_state()
@@ -294,7 +293,7 @@ func set_fall(_fall_reason, _fall_value) -> void:
 	Ingame_Ui.set_fail_view(true)
 	fall_timer = GlobalSettings.FALL_TIMER
 	
-func _reset_player(_pos, _rot) -> void:
+func _reset_player(_transform : Transform3D) -> void:
 	Ingame_Ui.set_fail_view(false)
 	Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
@@ -303,17 +302,15 @@ func _reset_player(_pos, _rot) -> void:
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO
 	last_vel = Vector3.ZERO
-	global_position = _pos
-	global_rotation = _rot
-	Camera_Pos.global_position = _pos
+	global_transform = _transform
+	Camera_Pos.global_position = _transform.origin
 	balance_angle = 0.0
 	Char_Statemachine.reset_player_state()
 	Char_Input.reset()
 
 func _ground_movement(delta) -> void: 	
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) and path == null:
-		last_ground_pos = global_position
-		last_ground_rot = global_rotation
+		last_ground_transform = global_transform
 	if Char_Input.get_input().y < 0:
 		velocity *= GlobalSettings.GROUND_SLOWDOWN
 		global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_kickturn * delta)
