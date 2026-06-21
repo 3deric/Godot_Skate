@@ -62,12 +62,12 @@ func _process(delta: float) -> void:
 	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
 		if Char_Statemachine.set_player_state(CharStates.State.GRIND):
 			_start_trick(available_grind_tricks)	
-			Char.is_jump = false
+			Char.start_grind()
 			performed_olli = false
 		return
 	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
 		if Char_Statemachine.set_player_state(CharStates.State.LIP):
-			Char.is_jump = false
+			Char.start_lip()
 			_start_trick(available_lip_tricks)
 			performed_olli = false
 		return

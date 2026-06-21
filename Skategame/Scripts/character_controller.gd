@@ -127,8 +127,7 @@ func _physics_process(delta):
 	if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
 		move_and_slide()
 	if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
-		apply_floor_snap()
-		
+		apply_floor_snap()		
 		
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
@@ -155,11 +154,12 @@ func _player_state() -> void:
 		
 	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 		if global_position.y < curve_snap.y:
-			Shape_Cast_Ground.enabled = true
+			_reset_shapecast(true)
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
 			return
 		if !LibHelpers.get_stick_curve(path,  path_offset, 0.1) and !path_closed:
 			Char_Statemachine.set_player_state(CharStates.State.PIPESNAPAIR)
+			shape_col_ground = []
 			var newUpDir : Vector3 = Vector3.UP.cross(curve_tangent)
 			if pipe_snap_flip:
 				newUpDir*=-1
@@ -167,7 +167,7 @@ func _player_state() -> void:
 				up_direction = (newUpDir + last_up_dir)/2
 			else:
 				up_direction = last_up_dir
-			Shape_Cast_Ground.enabled = true
+			_reset_shapecast(true)
 			return
 	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)	
 	if _closest_path != null:
@@ -195,8 +195,9 @@ func _player_state() -> void:
 				lip_start_up = _lip_start.up
 				can_lip = true
 			_randomize_balance()
-	if !shape_col_ground: #behavior while in air, or sticked to a pipe
-		if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input().y == 0 and path:
+	
+	if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input().y == 0 and path:
+		if global_position.y >LibHelpers.get_path_position(path, path_offset).y:
 			var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 			var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
 			if path_closed: #always set stick to true when the path is closed
@@ -207,9 +208,10 @@ func _player_state() -> void:
 				path_vel = _pipe_snap.vel
 				pipe_snap_flip = _pipe_snap.flip
 				Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
-				Shape_Cast_Ground.enabled = false
+				_reset_shapecast(false)
 				shape_col_ground = []
-				return			
+				return		
+	if !shape_col_ground: #behavior while in air, or sticked to a pipe	
 		if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP) and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			Char_Statemachine.set_player_state(CharStates.State.AIR)
 			if Char_Statemachine.is_last_player_state(CharStates.State.PIPE):
@@ -263,9 +265,9 @@ func _surface_check() -> void:
 	
 	#if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 		#if global_position.y > curve_snap.y and Shape_Cast_Ground.enabled == true:
-			#Shape_Cast_Ground.enabled = false
+			#_reset_shapecast(false)
 		#elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
-			#Shape_Cast_Ground.enabled = true
+			#_reset_shapecast(true)
 			
 	if Char_Input.can_jump() and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
@@ -280,10 +282,7 @@ func _surface_check() -> void:
 			var _col_normal = shape_col_ground[0].normal
 			var _dot = _col_normal.dot(up_direction)
 			if shape_col_ground[0].collider.is_in_group("wall") or _dot < GlobalSettings.SHAPE_COL_DOT:
-				shape_col_ground = []
-
-
-	
+				shape_col_ground = []	
 	else:
 		shape_col_ground = []
 		ray_ground = {}
@@ -541,3 +540,17 @@ func _handle_jump() -> void:
 			velocity = xform.basis.z * 0.15 + Vector3.UP * stats.jump_vel * 0.25
 			Char_Input.set_jump_cooldown()
 			path = null
+
+func start_grind() -> void:
+	is_jump = false
+	_reset_shapecast(true)
+	
+func start_lip() -> void:
+	is_jump = false
+	_reset_shapecast(true)
+	
+func _reset_shapecast(enabled : bool) -> void:
+	Shape_Cast_Ground.enabled = enabled
+	#Shape_Cast_Ground.target_position = to_local(Shape_Cast_Ground.position)# reset shapecast target
+	#shape_col_ground = []
+	
