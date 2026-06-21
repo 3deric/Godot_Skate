@@ -154,6 +154,10 @@ func _player_state() -> void:
 		Ingame_Ui.set_balance_view(false)
 		
 	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
+		if global_position.y < curve_snap.y:
+			Shape_Cast_Ground.enabled = true
+			Char_Statemachine.set_player_state(CharStates.State.PIPE)
+			return
 		if !LibHelpers.get_stick_curve(path,  path_offset, 0.1) and !path_closed:
 			Char_Statemachine.set_player_state(CharStates.State.PIPESNAPAIR)
 			var newUpDir : Vector3 = Vector3.UP.cross(curve_tangent)
@@ -163,6 +167,7 @@ func _player_state() -> void:
 				up_direction = (newUpDir + last_up_dir)/2
 			else:
 				up_direction = last_up_dir
+			Shape_Cast_Ground.enabled = true
 			return
 	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)	
 	if _closest_path != null:
@@ -202,6 +207,8 @@ func _player_state() -> void:
 				path_vel = _pipe_snap.vel
 				pipe_snap_flip = _pipe_snap.flip
 				Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
+				Shape_Cast_Ground.enabled = false
+				shape_col_ground = []
 				return			
 		if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP) and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			Char_Statemachine.set_player_state(CharStates.State.AIR)
@@ -254,13 +261,13 @@ func _surface_check() -> void:
 	else:
 		forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * move_clamp
 	
-	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
-		if global_position.y > curve_snap.y and Shape_Cast_Ground.enabled == true:
-			Shape_Cast_Ground.enabled = false
-		elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
-			Shape_Cast_Ground.enabled = true
-	
-	if Char_Input.can_jump():
+	#if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
+		#if global_position.y > curve_snap.y and Shape_Cast_Ground.enabled == true:
+			#Shape_Cast_Ground.enabled = false
+		#elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
+			#Shape_Cast_Ground.enabled = true
+			
+	if Char_Input.can_jump() and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
 		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
 		
