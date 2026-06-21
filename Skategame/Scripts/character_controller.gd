@@ -159,7 +159,6 @@ func _player_state() -> void:
 			return
 		if !LibHelpers.get_stick_curve(path,  path_offset, 0.1) and !path_closed:
 			Char_Statemachine.set_player_state(CharStates.State.PIPESNAPAIR)
-			shape_col_ground = []
 			var newUpDir : Vector3 = Vector3.UP.cross(curve_tangent)
 			if pipe_snap_flip:
 				newUpDir*=-1
@@ -550,7 +549,4 @@ func start_lip() -> void:
 	_reset_shapecast(true)
 	
 func _reset_shapecast(enabled : bool) -> void:
-	Shape_Cast_Ground.enabled = enabled
-	#Shape_Cast_Ground.target_position = to_local(Shape_Cast_Ground.position)# reset shapecast target
-	#shape_col_ground = []
-	
+	Shape_Cast_Ground.collide_with_bodies = enabled
