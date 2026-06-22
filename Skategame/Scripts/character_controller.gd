@@ -516,9 +516,28 @@ func _wall_bounce() -> void:
 func _handle_jump() -> void:
 	is_jump = true
 	match Char_Statemachine.player_state:
-		CharStates.State.GROUND, CharStates.State.PIPE:
+		CharStates.State.GROUND:
 			velocity += Vector3.UP * stats.jump_vel
 			Char_Input.set_jump_cooldown()
+		
+		CharStates.State.PIPE:
+			velocity += Vector3.UP * stats.jump_vel
+			Char_Input.set_jump_cooldown()
+			
+			if path:
+				var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
+				var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
+				if path_closed: #always set stick to true when the path is closed
+					_stick = true
+				if _pipe_snap.valid  and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
+					curve_tangent = _pipe_snap.tan
+					path_dir = _pipe_snap.dir
+					path_vel = _pipe_snap.vel
+					pipe_snap_flip = _pipe_snap.flip
+					Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
+					_reset_shapecast(false)
+					shape_col_ground = []
+					return		
 		
 		CharStates.State.PIPE:
 			velocity += xform.basis.z * stats.jump_vel * 0.15 - up_direction.slide(Vector3.UP) * 0.5
