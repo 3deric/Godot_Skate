@@ -1,8 +1,9 @@
-[gd_scene load_steps=144 format=4 uid="uid://duaw5sk1sesed"]
+[gd_scene load_steps=145 format=4 uid="uid://duaw5sk1sesed"]
 
 [ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scenes/base_level.gd" id="1_7w7ni"]
 [ext_resource type="PackedScene" uid="uid://1up2mjm8l6ew" path="res://Assets/Debug/Warehouse.glb" id="4_6c36q"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="5_onqqn"]
+[ext_resource type="PackedScene" uid="uid://dda2xkip8mqg7" path="res://Assets/Props/Cone/prop_cone.tscn" id="6_btda1"]
 [ext_resource type="Script" uid="uid://fo6j44olrayn" path="res://Scripts/Editor/rail_init.gd" id="6_ci0fc"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukahv"]
@@ -2361,3 +2362,105 @@ environment = SubResource("Environment_7w7ni")
 
 [node name="Player_Spawn" type="Node3D" parent="."]
 transform = Transform3D(0.31488708, 0, 0.94912916, 0, 1, 0, -0.94912916, 0, 0.31488708, -1.4520545, 4.9864664, 18.850063)
+
+[node name="PropCone" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1322355, 4.9474998, 16.415808)
+
+[node name="PropCone2" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.0151756, 4.9474998, 17.6722)
+
+[node name="PropCone3" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.67440486, 4.9474998, 17.601517)
+
+[node name="PropCone4" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.689, 0, -0.72476137, 0, 1, 0, 0.72476137, 0, 0.689, 2.2421372, 6.2231655, 12.122969)
+
+[node name="PropCone5" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.362553, 4.726417, 10.439462)
+
+[node name="PropCone6" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.9838545, 3.918215, 8.743764)
+
+[node name="PropCone7" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 7.561904, 2.7566, -5.725951)
+
+[node name="PropCone8" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 8.043694, 2.7566, -5.725951)
+
+[node name="PropCone9" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 8.57892, 2.7566, -5.725951)
+
+[node name="PropCone10" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 9.268473, 2.7566, -5.725951)
+
+[node name="PropCone11" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 9.890582, 2.7566, -5.725951)
+
+[node name="PropCone12" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 10.488571, 2.7566, -5.725951)
+
+[node name="PropCone13" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 11.286163, 2.7566, -5.725951)
+
+[node name="PropCone14" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 7.561904, 2.7566, -4.038326)
+
+[node name="PropCone15" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 8.043694, 2.7566, -4.038326)
+
+[node name="PropCone16" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 8.57892, 2.7566, -4.038326)
+
+[node name="PropCone17" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 9.268473, 2.7566, -4.038326)
+
+[node name="PropCone18" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 9.890582, 2.7566, -4.038326)
+
+[node name="PropCone19" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 10.488571, 2.7566, -4.038326)
+
+[node name="PropCone20" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.9179486, 0, 0.39669934, 0, 1, 0, -0.39669934, 0, 0.9179486, 11.286163, 2.7566, -4.038326)
+
+[node name="PropCone21" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 7.87259, 6.370834, -4.744128)
+
+[node name="PropCone22" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 8.268389, 6.0961256, -4.744128)
+
+[node name="PropCone23" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 8.708087, 5.7909484, -4.744128)
+
+[node name="PropCone24" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 9.274567, 5.397777, -4.744128)
+
+[node name="PropCone25" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 9.78564, 5.043061, -4.744128)
+
+[node name="PropCone26" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 10.276898, 4.702098, -4.744128)
+
+[node name="PropCone27" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.75411093, 0.57018316, 0.3258955, -0.5233988, 0.8215176, -0.22619128, -0.39669934, 0, 0.9179486, 10.932135, 4.247324, -4.744128)
+
+[node name="PropCone28" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 7.682993, 5.1219, -4.744128)
+
+[node name="PropCone29" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 8.1312685, 4.945347, -4.744128)
+
+[node name="PropCone30" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 8.629263, 4.749212, -4.744128)
+
+[node name="PropCone31" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 9.270848, 4.496524, -4.744128)
+
+[node name="PropCone32" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 9.849681, 4.26855, -4.744128)
+
+[node name="PropCone33" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 10.406072, 4.0494156, -4.744128)
+
+[node name="PropCone34" parent="." instance=ExtResource("6_btda1")]
+transform = Transform3D(0.8540932, 0.36645252, 0.36910367, -0.3363845, 0.9304368, -0.14537148, -0.39669934, -1.2241566e-08, 0.9179486, 11.148181, 3.7571359, -4.744128)

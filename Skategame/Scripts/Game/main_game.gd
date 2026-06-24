@@ -7,6 +7,7 @@ extends Node
 const PLAYER_SCENE_UID : 	String = "uid://d2nejhxrsjjgk"
 const LEVEL_MENU_UID : 		String = "uid://4dexi0qui2ct"
 const LEVEL_1_UID : 		String = "uid://bxeywehmeblyi"
+const LEVEL_2_UID : 		String = "uid://duaw5sk1sesed"
 
 var player : Player = null
 var _current_level : BaseLevel = null
@@ -24,7 +25,7 @@ var _current_level : BaseLevel = null
 
 func _ready() -> void:
 	_init_player()
-	load_level(LEVEL_1_UID)
+	load_level(LEVEL_2_UID)
 
 func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
