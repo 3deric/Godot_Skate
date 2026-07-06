@@ -12,6 +12,11 @@ const LEVEL_2_UID : 		String = "uid://duaw5sk1sesed"
 var player : Player = null
 var _current_level : BaseLevel = null
 
+# ui ressources
+const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
+
+var _main_menu : MainMenu = null
+
 # Game world root nodes
 @onready var level_root: Node3D = $World/LevelRoot
 @onready var entity_root: Node3D = $World/EntityRoot
@@ -25,7 +30,7 @@ var _current_level : BaseLevel = null
 
 func _ready() -> void:
 	_init_player()
-	load_level(LEVEL_2_UID)
+	load_level(LEVEL_MENU_UID)
 
 func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
@@ -39,6 +44,19 @@ func _init_player() -> void:
 		return
 		
 	entity_root.add_child(player)
+	
+	var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
+	if menu_scene == null:
+		push_error("Could not load menu scene: " + MAIN_MENU_UID)
+		return
+		
+	_main_menu = menu_scene.instantiate() as MainMenu
+	if _main_menu == null:
+		push_error("Loaded menu scene does not extend Control or DNE: " + MAIN_MENU_UID)
+		return
+	
+	hud_root.add_child(_main_menu)
+	_main_menu.init(self)
 		
 func load_level(level_scene : String) -> void:
 	_deferred_load_level(level_scene)
@@ -70,3 +88,4 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 
 func _place_player_at_level_spawn() -> void:
 	player.init(_current_level.get_player_spawn())
+	player.set_is_playing(false)

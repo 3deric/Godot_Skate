@@ -5,6 +5,9 @@ extends Node3D
 var start_transform : Transform3D
 @onready var Char_Controller : CharacterController = $Character
 
+func set_is_playing(playing : bool) -> void:
+	is_playing = playing
+
 func get_is_playing() -> bool:
 	return is_playing
 	

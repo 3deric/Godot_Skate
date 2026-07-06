@@ -1,3 +1,4 @@
+class_name  MainMenu
 extends Control
 
 
@@ -11,7 +12,10 @@ extends Control
 @onready var button_back_options: Button = %ButtonBackOptions
 @onready var button_back_customization: Button = %ButtonBackCustomization
 
-func _ready() -> void:
+var main_game : MainGame = null
+
+func init(main : MainGame) -> void:
+	main_game = main
 	_setup_buttons()
 
 
@@ -24,10 +28,10 @@ func _setup_buttons() -> void:
 	button_back_customization.button_down.connect(_on_button_back_customization_pressed)
 
 func _on_button_start_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/test_level.tscn")
+	main_game.load_level(main_game.LEVEL_1_UID)
 
 func _on_button_start_2_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/bowlpark.tscn")
+	main_game.load_level(main_game.LEVEL_2_UID)
 
 func _on_button_options_pressed() -> void:
 	panel_main.visible = false

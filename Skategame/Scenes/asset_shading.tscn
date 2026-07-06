@@ -1,8 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://4dexi0qui2ct"]
+[gd_scene load_steps=11 format=3 uid="uid://4dexi0qui2ct"]
 
 [ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scenes/base_level.gd" id="1_c836w"]
-[ext_resource type="PackedScene" uid="uid://ydofbmuhla2w" path="res://Scenes/main_menu.tscn" id="1_p8ut7"]
-[ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_3wad2"]
 [ext_resource type="PackedScene" uid="uid://dvi8ijm8ik3gr" path="res://Assets/Environment/SM_Cyclorama.glb" id="5_s73hg"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="6_hadjq"]
 
@@ -34,13 +32,11 @@ roughness = 0.07
 [node name="AssetShading" type="Node3D"]
 script = ExtResource("1_c836w")
 
-[node name="Player_Spawn" type="Node3D" parent="."]
+[node name="Player_Spawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0, 0.62)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_kwaqs")
-
-[node name="MainMenu" parent="." instance=ExtResource("1_p8ut7")]
 
 [node name="sphere_matte" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 1.3735797, 1.20687, -0.256)
@@ -63,9 +59,6 @@ directional_shadow_mode = 1
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 1.0658141e-14, 0, 1, 0, -1.0658141e-14, 0, 1, 0.5252905, 0.872, 6.1043043)
 fov = 20.0
-
-[node name="Player_Character" parent="." instance=ExtResource("3_3wad2")]
-transform = Transform3D(0.9955373, 0, 0.09436897, 0, 1, 0, -0.09436897, 0, 0.9955373, 0.155, 0, 0.62)
 
 [node name="SM_Cyclorama" parent="." instance=ExtResource("5_s73hg")]
 transform = Transform3D(1, 0, 1.0658141e-14, 0, 1, 0, -1.0658141e-14, 0, 1, 0.647921, 0, 0)

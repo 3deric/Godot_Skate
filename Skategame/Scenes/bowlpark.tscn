@@ -326,7 +326,7 @@ tonemap_mode = 2
 [node name="Level" type="Node3D"]
 script = ExtResource("1_epc26")
 
-[node name="Player_Spawn" type="Node3D" parent="."]
+[node name="Player_Spawn" type="Marker3D" parent="."]
 transform = Transform3D(0.7145948, 0, 0.69953865, 0, 1, 0, -0.69953865, 0, 0.7145948, -1.4520545, 0, -3.0474653)
 
 [node name="Bowlpark" type="Node3D" parent="."]
