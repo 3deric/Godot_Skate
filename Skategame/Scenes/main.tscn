@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://6sh54e51ice" path="res://Scripts/Game/main_game.gd" id="1_jjgbg"]
 
 [node name="Main" type="Node"]
+process_mode = 3
 script = ExtResource("1_jjgbg")
 
 [node name="Systems" type="Node" parent="."]
@@ -34,10 +35,13 @@ layer = 20
 
 [node name="PauseRoot" type="Control" parent="PauseLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="TransitionLayer" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -45,17 +49,24 @@ layer = 100
 
 [node name="TransitionRoot" type="Control" parent="TransitionLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
 [node name="DebugLayer" type="CanvasLayer" parent="."]
+process_mode = 3
 layer = 128
 
 [node name="DebugRoot" type="Control" parent="DebugLayer"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-metadata/_edit_use_anchors_ = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2

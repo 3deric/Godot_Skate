@@ -14,8 +14,10 @@ var _current_level : BaseLevel = null
 
 # ui ressources
 const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
+const PAUSE_MENU_UID : 		String = "uid://3yuf44frpj4c"
 
 var _main_menu : MainMenu = null
+var _pause_menu : PauseMenu = null
 
 # Game world root nodes
 @onready var level_root: Node3D = $World/LevelRoot
@@ -30,7 +32,7 @@ var _main_menu : MainMenu = null
 
 func _ready() -> void:
 	_init_player()
-	load_level(LEVEL_MENU_UID)
+	load_level(LEVEL_1_UID)
 
 func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
@@ -45,18 +47,31 @@ func _init_player() -> void:
 		
 	entity_root.add_child(player)
 	
-	var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
-	if menu_scene == null:
-		push_error("Could not load menu scene: " + MAIN_MENU_UID)
+	#var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
+	#if menu_scene == null:
+		#push_error("Could not load menu scene: " + MAIN_MENU_UID)
+		#return
+		#
+	#_main_menu = menu_scene.instantiate() as MainMenu
+	#if _main_menu == null:
+		#push_error("Loaded menu scene does not extend Control or DNE: " + MAIN_MENU_UID)
+		#return
+	#
+	#hud_root.add_child(_main_menu)
+	#_main_menu.init(self)
+	
+	var pause_scene : PackedScene = ResourceLoader.load(PAUSE_MENU_UID) as PackedScene
+	if pause_scene == null:
+		push_error("Could not load pause scene: " + PAUSE_MENU_UID)
 		return
 		
-	_main_menu = menu_scene.instantiate() as MainMenu
-	if _main_menu == null:
-		push_error("Loaded menu scene does not extend Control or DNE: " + MAIN_MENU_UID)
+	_pause_menu = pause_scene.instantiate() as PauseMenu
+	if _pause_menu == null:
+		push_error("Loaded pause scene does not extend Control or DNE: " + PAUSE_MENU_UID)
 		return
 	
-	hud_root.add_child(_main_menu)
-	_main_menu.init(self)
+	pause_root.add_child(_pause_menu)
+	_pause_menu.init()
 		
 func load_level(level_scene : String) -> void:
 	_deferred_load_level(level_scene)
@@ -88,4 +103,8 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 
 func _place_player_at_level_spawn() -> void:
 	player.init(_current_level.get_player_spawn())
-	player.set_is_playing(false)
+	player.set_is_playing(true)
+
+func _process(delta: float) -> void:
+	if Input.is_action_just_released('Esc'):
+		_pause_menu.set_pause()
