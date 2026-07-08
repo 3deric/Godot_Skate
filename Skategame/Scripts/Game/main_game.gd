@@ -15,9 +15,11 @@ var _current_level : BaseLevel = null
 # ui ressources
 const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
 const PAUSE_MENU_UID : 		String = "uid://3yuf44frpj4c"
+const DEBUG_MENU_UID : 		String = "uid://1l4k8vpth51o"
 
 var _main_menu : MainMenu = null
 var _pause_menu : PauseMenu = null
+var _debug_menu : DebugMenu = null
 
 # Game world root nodes
 @onready var level_root: Node3D = $World/LevelRoot
@@ -72,6 +74,19 @@ func _init_player() -> void:
 	
 	pause_root.add_child(_pause_menu)
 	_pause_menu.init()
+	
+	var debug_scene : PackedScene = ResourceLoader.load(DEBUG_MENU_UID) as PackedScene
+	if debug_scene == null:
+		push_error("Could not load debug scene: " + DEBUG_MENU_UID)
+		return
+		
+	_debug_menu = debug_scene.instantiate() as DebugMenu
+	if _debug_menu == null:
+		push_error("Loaded debug scene does not extend Control or DNE: " + DEBUG_MENU_UID)
+		return
+	
+	debug_root.add_child(_debug_menu)
+	_debug_menu.init()
 		
 func load_level(level_scene : String) -> void:
 	_deferred_load_level(level_scene)

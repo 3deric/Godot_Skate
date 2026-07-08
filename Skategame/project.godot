@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="Skategame"
+config/version="0.1.0"
 run/main_scene="uid://c64uo125g4ixe"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 run/max_fps=60
@@ -28,7 +29,7 @@ gdscript/warnings/inferred_declaration=1
 [display]
 
 window/stretch/mode="viewport"
-window/vsync/vsync_mode=0
+window/vsync/vsync_mode=2
 
 [dotnet]
 
