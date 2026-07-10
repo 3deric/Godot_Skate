@@ -44,8 +44,8 @@ points = PackedVector3Array(0.14870259, 0.018796528, 0.17397453, -0.14873666, 0.
 [node name="PropCone" type="Node3D"]
 
 [node name="cone-rigid" type="RigidBody3D" parent="."]
-collision_layer = 256
-collision_mask = 257
+collision_layer = 4
+collision_mask = 5
 
 [node name="cone-rigid" type="MeshInstance3D" parent="cone-rigid"]
 material_override = ExtResource("1_h33af")
