@@ -1,6 +1,6 @@
 [gd_scene load_steps=40 format=4 uid="uid://bxeywehmeblyi"]
 
-[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scenes/base_level.gd" id="1_epc26"]
+[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scripts/Game/base_level.gd" id="1_epc26"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="5_cljkk"]
 [ext_resource type="Material" uid="uid://1ccrgh68ww8p" path="res://Assets/Materials/M_default_orange.tres" id="6_aovfd"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="6_q52lx"]

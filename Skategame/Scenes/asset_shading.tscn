@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=3 uid="uid://4dexi0qui2ct"]
 
-[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scenes/base_level.gd" id="1_c836w"]
+[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scripts/Game/base_level.gd" id="1_c836w"]
 [ext_resource type="PackedScene" uid="uid://dvi8ijm8ik3gr" path="res://Assets/Environment/SM_Cyclorama.glb" id="5_s73hg"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="6_hadjq"]
 

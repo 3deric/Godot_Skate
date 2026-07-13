@@ -3,34 +3,47 @@ extends Node
 # main entry point for the game
 # based on https://www.youtube.com/watch?v=V4SO7foDoW4&list=WL&index=1
 
+enum GameState {
+	SPLASH, 
+	MAIN_MENU,
+	LEVEL_LOAD,
+	LEVEL_START,
+	LEVEL_PLAY,
+	LEVEL_END,
+	LEVEL_PAUSED,
+	QUIT
+	}
+
 # player and level resources
 const PLAYER_SCENE_UID : 	String = "uid://d2nejhxrsjjgk"
 const LEVEL_MENU_UID : 		String = "uid://4dexi0qui2ct"
 const LEVEL_1_UID : 		String = "uid://bxeywehmeblyi"
 const LEVEL_2_UID : 		String = "uid://duaw5sk1sesed"
 
-var player : Player = null
-var _current_level : BaseLevel = null
-
 # ui ressources
 const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
 const PAUSE_MENU_UID : 		String = "uid://3yuf44frpj4c"
 const DEBUG_MENU_UID : 		String = "uid://1l4k8vpth51o"
 
-var _main_menu : MainMenu = null
-var _pause_menu : PauseMenu = null
-var _debug_menu : DebugMenu = null
+var _main_menu : 			MainMenu = null
+var _pause_menu : 			PauseMenu = null
+var _debug_menu : 			DebugMenu = null
 
 # Game world root nodes
-@onready var level_root: Node3D = $World/LevelRoot
-@onready var entity_root: Node3D = $World/EntityRoot
-@onready var effect_root: Node3D = $World/EffectRoot
+@onready var level_root: 	Node3D = $World/LevelRoot
+@onready var entity_root: 	Node3D = $World/EntityRoot
+@onready var effect_root: 	Node3D = $World/EffectRoot
 
 # UI Root nodes
-@onready var hud_root: Control = $HudLayer/HudRoot
-@onready var pause_root: Control = $PauseLayer/PauseRoot
-@onready var transition_root: Control = $TransitionLayer/TransitionRoot
-@onready var debug_root: Control = $DebugLayer/DebugRoot
+@onready var hud_root: 		Control = $HudLayer/HudRoot
+@onready var pause_root: 	Control = $PauseLayer/PauseRoot
+@onready var transition_root:Control = $TransitionLayer/TransitionRoot
+@onready var debug_root: 	Control = $DebugLayer/DebugRoot
+
+# Game Variables
+var player : 				Player = null
+var _current_level : 		BaseLevel = null
+var game_state : 			GameState = GameState.SPLASH
 
 func _ready() -> void:
 	_init_player()
@@ -123,3 +136,6 @@ func _place_player_at_level_spawn() -> void:
 func _process(delta: float) -> void:
 	if Input.is_action_just_released('Esc'):
 		_pause_menu.set_pause()
+		
+func _debug_player_state() -> void:
+	print(GameState.find_key(game_state))
