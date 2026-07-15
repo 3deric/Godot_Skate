@@ -16,6 +16,7 @@ var trick1 : AnimationNode
 
 
 func init(is_playing : bool) -> void:
+	reset()
 	skeleton_3d.show_rest_only = false
 	body_mesh.set_blend_shape_value(2,0.3) # smile
 	body_mesh.set_blend_shape_value(3,0) # blink
@@ -25,6 +26,13 @@ func init(is_playing : bool) -> void:
 		anim_tree.set('parameters/conditions/is_setup', true)
 	else:
 		Char.top_level = true
+		
+func reset():
+	anim_tree.set('parameters/conditions/is_setup', false)
+	anim_tree.set('parameters/conditions/is_riding', false)
+	anim_tree.set('parameters/conditions/is_stopped', false)
+	anim_tree.set('parameters/conditions/is_trick0', false)
+	anim_tree.set('parameters/conditions/is_trick1', false)	
 
 func set_vis_balance(state : CharStates.State, balance_angle : float) -> void:
 	if state == CharStates.State.GRIND:

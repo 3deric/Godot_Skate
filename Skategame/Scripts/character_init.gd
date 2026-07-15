@@ -14,6 +14,7 @@ func get_is_playing() -> bool:
 func get_start_transform() -> Transform3D:
 	return start_transform
 	
-func init(_transform : Transform3D) -> void:
+func init(_transform : Transform3D, _is_playing : bool) -> void:
 	start_transform = _transform
-	Char_Controller.init_player(start_transform)
+	is_playing = _is_playing
+	Char_Controller.init_player(start_transform, _is_playing)

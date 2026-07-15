@@ -1,6 +1,8 @@
 class_name IngameOverlay
 extends Control
 
+@onready var player_character: Player = $"../.."
+
 const TRICK_LABEL_COOLDOWN_TIME : float = 2.0
 
 var trick_label_cooldown : float = 0.0
@@ -68,6 +70,8 @@ func _create_input_buffer_vis() -> void:
 		input_images.append(tex_rect)
 	
 func update_input_buffer_vis(_buffer : Array[int]) -> void:
+	if !player_character.get_is_playing():
+		return
 	for i : int in range(input_images.size()):
 		if i < _buffer.size():
 			input_images[i].texture = image_map[_buffer[i]]

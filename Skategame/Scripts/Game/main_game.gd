@@ -6,11 +6,7 @@ extends Node
 enum GameState {
 	SPLASH, 
 	MAIN_MENU,
-	LEVEL_LOAD,
-	LEVEL_START,
-	LEVEL_PLAY,
-	LEVEL_END,
-	LEVEL_PAUSED,
+	LEVEL,
 	QUIT
 	}
 
@@ -47,7 +43,16 @@ var game_state : 			GameState = GameState.SPLASH
 
 func _ready() -> void:
 	_init_player()
+	_init_interface()
+	load_level(LEVEL_MENU_UID)
+	set_game_state(GameState.MAIN_MENU)
+	# test to simulate level changes
+	await get_tree().create_timer(2).timeout
 	load_level(LEVEL_1_UID)
+	await get_tree().create_timer(2).timeout
+	load_level(LEVEL_2_UID)
+	await get_tree().create_timer(2).timeout
+	load_level(LEVEL_MENU_UID)
 
 func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
@@ -61,7 +66,9 @@ func _init_player() -> void:
 		return
 		
 	entity_root.add_child(player)
+	player.init(player.global_transform, false)
 	
+func _init_interface() -> void:
 	#var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
 	#if menu_scene == null:
 		#push_error("Could not load menu scene: " + MAIN_MENU_UID)
@@ -105,6 +112,9 @@ func load_level(level_scene : String) -> void:
 	_deferred_load_level(level_scene)
 	
 func _deferred_load_level(level_scene_uid : String) -> void:
+	if player != null:
+		player.set_is_playing(false)
+		
 	if _current_level != null:
 		_current_level.queue_free()
 		_current_level = null
@@ -130,12 +140,15 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 	#_setup_level_camera()
 
 func _place_player_at_level_spawn() -> void:
-	player.init(_current_level.get_player_spawn())
-	player.set_is_playing(true)
+	player.init(_current_level.get_player_spawn(), _current_level.get_is_playing())
 
 func _process(delta: float) -> void:
 	if Input.is_action_just_released('Esc'):
 		_pause_menu.set_pause()
 		
-func _debug_player_state() -> void:
+func set_game_state(next : GameState) -> void:
+	game_state = next
+	_debug_game_state()	
+		
+func _debug_game_state() -> void:
 	print(GameState.find_key(game_state))

@@ -20,14 +20,16 @@ func _debug_ragdoll() -> void:
 	
 
 func set_start_simulation(_impulse) -> void:
-	print("start ragdoll physics")
-	physical_bone_simulator_3d.active = true
-	physical_bone_simulator_3d.physical_bones_start_simulation()
-	#physical_bone_def_hips.apply_central_impulse(_impulse)
-	#physical_bone_def_board.apply_central_impulse(_impulse)
+	if !physical_bone_simulator_3d.active:
+		print("start ragdoll physics")
+		physical_bone_simulator_3d.active = true
+		physical_bone_simulator_3d.physical_bones_start_simulation()
+		#physical_bone_def_hips.apply_central_impulse(_impulse)
+		#physical_bone_def_board.apply_central_impulse(_impulse)
 	
 	
 func set_end_simulation() -> void:
-	print("end ragdoll physics")
-	physical_bone_simulator_3d.active = false
-	physical_bone_simulator_3d.physical_bones_stop_simulation()
+	if physical_bone_simulator_3d.active:
+		print("end ragdoll physics")
+		physical_bone_simulator_3d.active = false
+		physical_bone_simulator_3d.physical_bones_stop_simulation()
