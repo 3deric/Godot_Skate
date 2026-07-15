@@ -49,10 +49,11 @@ func _ready() -> void:
 	# test to simulate level changes
 	await get_tree().create_timer(2).timeout
 	load_level(LEVEL_1_UID)
-	await get_tree().create_timer(2).timeout
-	load_level(LEVEL_2_UID)
-	await get_tree().create_timer(2).timeout
-	load_level(LEVEL_MENU_UID)
+	set_game_state(GameState.LEVEL)
+	#await get_tree().create_timer(2).timeout
+	#load_level(LEVEL_2_UID)
+	#await get_tree().create_timer(2).timeout
+	#load_level(LEVEL_MENU_UID)
 
 func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
@@ -148,6 +149,7 @@ func _process(delta: float) -> void:
 		
 func set_game_state(next : GameState) -> void:
 	game_state = next
+	# todo, add switch to enable or disable menus based on the state
 	_debug_game_state()	
 		
 func _debug_game_state() -> void:
