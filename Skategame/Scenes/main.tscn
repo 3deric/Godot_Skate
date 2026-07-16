@@ -1,12 +1,33 @@
-[gd_scene load_steps=2 format=3 uid="uid://c64uo125g4ixe"]
+[gd_scene load_steps=7 format=3 uid="uid://c64uo125g4ixe"]
 
 [ext_resource type="Script" uid="uid://6sh54e51ice" path="res://Scripts/Game/main_game.gd" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://cf8u014jv4ue8" path="res://Scripts/Game/game_statemachine.gd" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://bckowe7gm0ids" path="res://Scripts/Game/Game_States/Game_Splash.gd" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://cbvgileg605mf" path="res://Scripts/Game/Game_States/Game_Bootup.gd" id="3_21xkr"]
+[ext_resource type="Script" uid="uid://cun8em0lnbss7" path="res://Scripts/Game/Game_States/Game_Menu.gd" id="5_6bp64"]
+[ext_resource type="Script" uid="uid://boq4o7gek4jdn" path="res://Scripts/Game/Game_States/Game_Level.gd" id="6_344ge"]
 
 [node name="Main" type="Node"]
 process_mode = 3
 script = ExtResource("1_jjgbg")
 
 [node name="Systems" type="Node" parent="."]
+
+[node name="Game_Statemachine" type="Node" parent="Systems" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_bo1nx")
+initial_state = NodePath("Game_Splash")
+
+[node name="Game_Bootup" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("3_21xkr")
+
+[node name="Game_Splash" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("3_8gbba")
+
+[node name="Game_Menu" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("5_6bp64")
+
+[node name="Game_Level" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("6_344ge")
 
 [node name="World" type="Node3D" parent="."]
 process_mode = 1

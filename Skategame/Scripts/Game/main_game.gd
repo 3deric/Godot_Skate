@@ -3,12 +3,12 @@ extends Node
 # main entry point for the game
 # based on https://www.youtube.com/watch?v=V4SO7foDoW4&list=WL&index=1
 
-enum GameState {
-	SPLASH, 
-	MAIN_MENU,
-	LEVEL,
-	QUIT
-	}
+#enum GameState {
+	#SPLASH, 
+	#MAIN_MENU,
+	#LEVEL,
+	#QUIT
+	#}
 
 # player and level resources
 const PLAYER_SCENE_UID : 	String = "uid://d2nejhxrsjjgk"
@@ -39,17 +39,17 @@ var _debug_menu : 			DebugMenu = null
 # Game Variables
 var player : 				Player = null
 var _current_level : 		BaseLevel = null
-var game_state : 			GameState = GameState.SPLASH
+#var game_state : 			GameState = GameState.SPLASH
 
 func _ready() -> void:
 	_init_player()
 	_init_interface()
 	load_level(LEVEL_MENU_UID)
-	set_game_state(GameState.MAIN_MENU)
+	#set_game_state(GameState.MAIN_MENU)
 	# test to simulate level changes
 	await get_tree().create_timer(2).timeout
 	load_level(LEVEL_1_UID)
-	set_game_state(GameState.LEVEL)
+	#set_game_state(GameState.LEVEL)
 	#await get_tree().create_timer(2).timeout
 	#load_level(LEVEL_2_UID)
 	#await get_tree().create_timer(2).timeout
@@ -147,10 +147,10 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_released('Esc'):
 		_pause_menu.set_pause()
 		
-func set_game_state(next : GameState) -> void:
-	game_state = next
-	# todo, add switch to enable or disable menus based on the state
-	_debug_game_state()	
-		
-func _debug_game_state() -> void:
-	print(GameState.find_key(game_state))
+#func set_game_state(next : GameState) -> void:
+	#game_state = next
+	## todo, add switch to enable or disable menus based on the state
+	#_debug_game_state()	
+		#
+#func _debug_game_state() -> void:
+	#print(GameState.find_key(game_state))
