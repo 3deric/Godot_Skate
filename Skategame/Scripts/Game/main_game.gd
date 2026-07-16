@@ -3,15 +3,9 @@ extends Node
 # main entry point for the game
 # based on https://www.youtube.com/watch?v=V4SO7foDoW4&list=WL&index=1
 
-#enum GameState {
-	#SPLASH, 
-	#MAIN_MENU,
-	#LEVEL,
-	#QUIT
-	#}
-
 # player and level resources
 const PLAYER_SCENE_UID : 	String = "uid://d2nejhxrsjjgk"
+const LEVEL_SPLASH_UID : 	String = "uid://dri5ttie2jgqo"
 const LEVEL_MENU_UID : 		String = "uid://4dexi0qui2ct"
 const LEVEL_1_UID : 		String = "uid://bxeywehmeblyi"
 const LEVEL_2_UID : 		String = "uid://duaw5sk1sesed"
@@ -24,6 +18,9 @@ const DEBUG_MENU_UID : 		String = "uid://1l4k8vpth51o"
 var _main_menu : 			MainMenu = null
 var _pause_menu : 			PauseMenu = null
 var _debug_menu : 			DebugMenu = null
+
+# Game state machine
+@onready var game_statemachine: Node = $Systems/Game_Statemachine
 
 # Game world root nodes
 @onready var level_root: 	Node3D = $World/LevelRoot
@@ -39,23 +36,11 @@ var _debug_menu : 			DebugMenu = null
 # Game Variables
 var player : 				Player = null
 var _current_level : 		BaseLevel = null
-#var game_state : 			GameState = GameState.SPLASH
 
 func _ready() -> void:
-	_init_player()
-	_init_interface()
-	load_level(LEVEL_MENU_UID)
-	#set_game_state(GameState.MAIN_MENU)
-	# test to simulate level changes
-	await get_tree().create_timer(2).timeout
-	load_level(LEVEL_1_UID)
-	#set_game_state(GameState.LEVEL)
-	#await get_tree().create_timer(2).timeout
-	#load_level(LEVEL_2_UID)
-	#await get_tree().create_timer(2).timeout
-	#load_level(LEVEL_MENU_UID)
-
-func _init_player() -> void:
+	game_statemachine.init()
+	
+func init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
 	if player_scene == null:
 		push_error("Could not load player scene: " + PLAYER_SCENE_UID)
@@ -65,9 +50,9 @@ func _init_player() -> void:
 	if player == null:
 		push_error("Loaded player scene does not extend Player or DNE: " + PLAYER_SCENE_UID)
 		return
-		
 	entity_root.add_child(player)
 	player.init(player.global_transform, false)
+	print("Initialized Player")
 	
 func _init_interface() -> void:
 	#var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
@@ -137,15 +122,15 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 	level_root.add_child(_current_level)
 	
 	await get_tree().process_frame
-	_place_player_at_level_spawn()
+	#_place_player_at_level_spawn()
 	#_setup_level_camera()
 
-func _place_player_at_level_spawn() -> void:
-	player.init(_current_level.get_player_spawn(), _current_level.get_is_playing())
+#func _place_player_at_level_spawn() -> void:
+#	player.init(_current_level.get_player_spawn(), _current_level.get_is_playing())
 
-func _process(delta: float) -> void:
-	if Input.is_action_just_released('Esc'):
-		_pause_menu.set_pause()
+#func _process(delta: float) -> void:
+	#if Input.is_action_just_released('Esc'):
+		#_pause_menu.set_pause()
 		
 #func set_game_state(next : GameState) -> void:
 	#game_state = next

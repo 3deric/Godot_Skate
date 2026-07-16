@@ -1,19 +1,23 @@
 extends Node
 
 @export var initial_state : GameState
+@onready var main : MainGame = $"../.."
 
 var current_state : GameState
 var states : Dictionary = {}
 
-func _ready():
+func init():
 	for child in get_children():
 		if child is GameState:
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(on_child_transition)
+			child.init(main)
 			
 	if initial_state:
 		initial_state.enter()
 		current_state = initial_state
+	print("Transitioning to State: " + current_state.name)
+
 			
 func _process(delta) -> void:
 	if current_state:

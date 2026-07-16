@@ -5,7 +5,9 @@ extends Node3D
 @export var _is_playing : bool = true
 
 func get_player_spawn() -> Transform3D:
-	return _player_spawn.global_transform
+	if _player_spawn != null:
+		return _player_spawn.global_transform
+	return global_transform
 	
 func get_is_playing() -> bool:
 	return _is_playing
