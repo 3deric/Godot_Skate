@@ -15,8 +15,8 @@ const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
 const PAUSE_MENU_UID : 		String = "uid://3yuf44frpj4c"
 const DEBUG_MENU_UID : 		String = "uid://1l4k8vpth51o"
 
-var _main_menu : 			MainMenu = null
-var _pause_menu : 			PauseMenu = null
+var main_menu : 			MainMenu = null
+var pause_menu : 			PauseMenu = null
 var _debug_menu : 			DebugMenu = null
 
 # Game state machine
@@ -36,11 +36,15 @@ var _debug_menu : 			DebugMenu = null
 # Game Variables
 var player : 				Player = null
 var _current_level : 		BaseLevel = null
+var selected_level_uid :	String
 
 func _ready() -> void:
+	selected_level_uid = LEVEL_SPLASH_UID
+	_init_player()
+	_init_interface()
 	game_statemachine.init()
 	
-func init_player() -> void:
+func _init_player() -> void:
 	var player_scene : PackedScene = ResourceLoader.load(PLAYER_SCENE_UID) as PackedScene
 	if player_scene == null:
 		push_error("Could not load player scene: " + PLAYER_SCENE_UID)
@@ -55,31 +59,31 @@ func init_player() -> void:
 	print("Initialized Player")
 	
 func _init_interface() -> void:
-	#var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
-	#if menu_scene == null:
-		#push_error("Could not load menu scene: " + MAIN_MENU_UID)
-		#return
-		#
-	#_main_menu = menu_scene.instantiate() as MainMenu
-	#if _main_menu == null:
-		#push_error("Loaded menu scene does not extend Control or DNE: " + MAIN_MENU_UID)
-		#return
-	#
-	#hud_root.add_child(_main_menu)
-	#_main_menu.init(self)
+	var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
+	if menu_scene == null:
+		push_error("Could not load menu scene: " + MAIN_MENU_UID)
+		return
+		
+	main_menu = menu_scene.instantiate() as MainMenu
+	if main_menu == null:
+		push_error("Loaded menu scene does not extend Control or DNE: " + MAIN_MENU_UID)
+		return
+	
+	hud_root.add_child(main_menu)
+	main_menu.init(self)
 	
 	var pause_scene : PackedScene = ResourceLoader.load(PAUSE_MENU_UID) as PackedScene
 	if pause_scene == null:
 		push_error("Could not load pause scene: " + PAUSE_MENU_UID)
 		return
 		
-	_pause_menu = pause_scene.instantiate() as PauseMenu
-	if _pause_menu == null:
+	pause_menu = pause_scene.instantiate() as PauseMenu
+	if pause_menu == null:
 		push_error("Loaded pause scene does not extend Control or DNE: " + PAUSE_MENU_UID)
 		return
 	
-	pause_root.add_child(_pause_menu)
-	_pause_menu.init()
+	pause_root.add_child(pause_menu)
+	pause_menu.init()
 	
 	var debug_scene : PackedScene = ResourceLoader.load(DEBUG_MENU_UID) as PackedScene
 	if debug_scene == null:

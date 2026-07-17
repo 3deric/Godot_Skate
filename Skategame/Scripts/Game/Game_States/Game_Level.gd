@@ -2,7 +2,7 @@ class_name GameLevel
 extends GameState
 
 func enter():
-	# load level
+	main_game.load_level(main_game.LEVEL_1_UID)
 	# place player at level spawn
 	pass
 	

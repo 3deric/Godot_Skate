@@ -17,7 +17,10 @@ var main_game : MainGame = null
 func init(main : MainGame) -> void:
 	main_game = main
 	_setup_buttons()
+	set_visibility(false)
 
+func set_visibility(_vis : bool):
+	self.visible = _vis
 
 func _setup_buttons() -> void:
 	button_start.button_down.connect(_on_button_start_pressed)

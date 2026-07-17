@@ -29,6 +29,18 @@ script = ExtResource("5_6bp64")
 [node name="Game_Level" type="Node" parent="Systems/Game_Statemachine"]
 script = ExtResource("6_344ge")
 
+[node name="Level_Statemachine" type="Node" parent="Systems"]
+
+[node name="Level_None" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Start" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Play" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Pause" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_End" type="Node" parent="Systems/Level_Statemachine"]
+
 [node name="World" type="Node3D" parent="."]
 process_mode = 1
 
