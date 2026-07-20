@@ -58,15 +58,15 @@ var lip_start_dir : Vector3 = Vector3.ZERO
 var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
-func init_player(_transform : Transform3D):
-	if Player_Scene.is_playing:
+func init_player(_transform : Transform3D, _is_playing : bool):
+	if _is_playing:
 		top_level = true
-		_reset_player(_transform)
-		Camera_Pos.global_position = _transform.origin
 	else:
 		Ingame_Ui.set_fail_view(false)
 		Ingame_Ui.set_balance_view(false)
-	Char_Animation.init(Player_Scene.is_playing)
+	_reset_player(_transform)
+	Camera_Pos.global_position = _transform.origin
+	Char_Animation.init(_is_playing)
 		
 func get_can_grind() -> bool:
 	return can_grind

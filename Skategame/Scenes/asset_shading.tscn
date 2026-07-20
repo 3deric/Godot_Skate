@@ -29,8 +29,10 @@ roughness = 0.07
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_lui4q"]
 
-[node name="AssetShading" type="Node3D"]
+[node name="AssetShading" type="Node3D" node_paths=PackedStringArray("_player_spawn")]
 script = ExtResource("1_c836w")
+_player_spawn = NodePath("Player_Spawn")
+_is_playing = false
 
 [node name="Player_Spawn" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.155, 0, 0.62)
@@ -58,6 +60,7 @@ directional_shadow_mode = 1
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 1.0658141e-14, 0, 1, 0, -1.0658141e-14, 0, 1, 0.5252905, 0.872, 6.1043043)
+current = true
 fov = 20.0
 
 [node name="SM_Cyclorama" parent="." instance=ExtResource("5_s73hg")]
