@@ -40,6 +40,7 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Fallcheck : CharacterFallcheck = $Char_Fallcheck
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 @onready var Player_Scene : Player = $".."
+@onready var char_states: PlayerStatemachine = $Char_States
 
 #grind and lip trick variables
 var can_air : bool = false
@@ -59,14 +60,16 @@ var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
 func init_player(_transform : Transform3D, _is_playing : bool):
-	if _is_playing:
-		top_level = true
-	else:
-		Ingame_Ui.set_fail_view(false)
-		Ingame_Ui.set_balance_view(false)
-	_reset_player(_transform)
-	Camera_Pos.global_position = _transform.origin
-	Char_Animation.init(_is_playing)
+	char_states.init()
+	#if _is_playing:
+		#top_level = true
+	#else:
+		#Ingame_Ui.set_fail_view(false)
+		#Ingame_Ui.set_balance_view(false)
+	#_reset_player(_transform)
+	#Camera_Pos.global_position = _transform.origin
+	#Char_Animation.init(_is_playing)
+	
 		
 func get_can_grind() -> bool:
 	return can_grind
@@ -81,53 +84,54 @@ func _process(delta: float) -> void:
 	Char_Animation.set_vis_transform(self, delta, GlobalSettings.INTERP_SPEED)
 
 func _physics_process(delta):
-	if !Player_Scene.is_playing:
-		return
-	can_air = false
-	can_grind = false
-	can_lip = false
-	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
-	if Char_Statemachine.is_player_state(CharStates.State.FALL):
-		fall_timer -= delta
-		if Char_Input.get_input().y and fall_timer < 0.1:
-			_reset_player(last_ground_transform)
+	#if !Player_Scene.is_playing:
+		#return
+	#can_air = false
+	#can_grind = false
+	#can_lip = false
+	#Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
+	#if Char_Statemachine.is_player_state(CharStates.State.FALL):
+		#fall_timer -= delta
+		#if Char_Input.get_input().y and fall_timer < 0.1:
+			#_reset_player(last_ground_transform)
 	xform = global_transform
-	_surface_check()
-	_player_state()
-	_fall_check(delta)
-	Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
-	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
-	match Char_Statemachine.player_state:
-		CharStates.State.FALL:
-			return
-		CharStates.State.GROUND, CharStates.State.PIPE:
-			_check_reverse_motion()
-			_standing_timer(delta)
-			_ground_movement(delta)
-		CharStates.State.AIR:
-			_air_movement(delta)
-		CharStates.State.PIPESNAP:
-			_pipe_snap_movement(delta)
-			_check_bounce_path()
-		CharStates.State.PIPESNAPAIR:
-			_pipe_snap_air_movement(delta)
-		CharStates.State.GRIND:
-			_grind_movement(delta)		
-			_check_bounce_path()
-		CharStates.State.LIP:
-			_lip_movement(delta)
-	_wall_bounce()
-	if Char_Input.get_input_jump():
-		if !is_jump:
-			_handle_jump()
-	global_transform = LibHelpers.align(global_transform, up_direction)
-	last_up_dir = up_direction
-	last_vel = velocity
-	_set_up_direction()
-	if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
-		move_and_slide()
-	if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
-		apply_floor_snap()		
+	#_surface_check()
+	#_player_state()
+	#_fall_check(delta)
+	#Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
+	#Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
+	#match Char_Statemachine.player_state:
+		#CharStates.State.FALL:
+			#return
+		#CharStates.State.GROUND, CharStates.State.PIPE:
+			#_check_reverse_motion()
+			#_standing_timer(delta)
+			#_ground_movement(delta)
+		#CharStates.State.AIR:
+			#_air_movement(delta)
+		#CharStates.State.PIPESNAP:
+			#_pipe_snap_movement(delta)
+			#_check_bounce_path()
+		#CharStates.State.PIPESNAPAIR:
+			#_pipe_snap_air_movement(delta)
+		#CharStates.State.GRIND:
+			#_grind_movement(delta)		
+			#_check_bounce_path()
+		#CharStates.State.LIP:
+			#_lip_movement(delta)
+	#_wall_bounce()
+	#if Char_Input.get_input_jump():
+		#if !is_jump:
+			#_handle_jump()
+	#global_transform = LibHelpers.align(global_transform, up_direction)
+	#last_up_dir = up_direction
+	#last_vel = velocity
+	#_set_up_direction()
+	#if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
+		#move_and_slide()
+	#if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
+		#apply_floor_snap()		
+	move_and_slide()
 		
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
