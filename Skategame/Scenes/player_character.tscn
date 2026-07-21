@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=81 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" uid="uid://cplfljpkpqfeq" path="res://Scripts/character_init.gd" id="1_4pbxa"]
 [ext_resource type="Script" uid="uid://mb0rtkjq1w6v" path="res://Scripts/character_controller.gd" id="1_5mxk1"]
@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://cjdpaxthe6v0o" path="res://Scripts/character_turntable.gd" id="10_ews8v"]
 [ext_resource type="Script" uid="uid://dbprb7pdhqv2u" path="res://Scripts/Player/player_statemachine.gd" id="10_w6p7y"]
 [ext_resource type="Script" uid="uid://sxi0w2r15ml8" path="res://Scripts/Player/Player_States/player_air.gd" id="11_e05f7"]
+[ext_resource type="Script" uid="uid://d1ic5rnxeguo6" path="res://Scripts/Player/Player_States/player_none.gd" id="12_e05f7"]
 [ext_resource type="Script" uid="uid://0jarjmpf6we3" path="res://Scripts/Player/Player_States/player_grind.gd" id="12_j5y83"]
 [ext_resource type="Script" uid="uid://b7qjhj7vjo4u4" path="res://Scripts/character_fall.gd" id="13_6m2el"]
 [ext_resource type="Script" uid="uid://u7ano4ot16nx" path="res://Scripts/Player/Player_States/player_ground.gd" id="13_ck4qn"]
@@ -2043,6 +2044,9 @@ initial_state = NodePath("Player_Setup")
 
 [node name="Player_Air" type="Node" parent="Character/Char_States"]
 script = ExtResource("11_e05f7")
+
+[node name="Player_None" type="Node" parent="Character/Char_States"]
+script = ExtResource("12_e05f7")
 
 [node name="Player_Grind" type="Node" parent="Character/Char_States"]
 script = ExtResource("12_j5y83")

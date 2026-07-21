@@ -98,8 +98,8 @@ func _physics_process(delta):
 	#_surface_check()
 	#_player_state()
 	#_fall_check(delta)
-	#Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
-	#Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
+	Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
+	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
 	#match Char_Statemachine.player_state:
 		#CharStates.State.FALL:
 			#return

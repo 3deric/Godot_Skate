@@ -18,8 +18,8 @@ var trick1 : AnimationNode
 func init(is_playing : bool) -> void:
 	reset()
 	skeleton_3d.show_rest_only = false
-	#var playback : AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
-	#playback.start("Start")
+	var playback : AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
+	playback.start("Start")
 	body_mesh.set_blend_shape_value(2,0.3) # smile
 	body_mesh.set_blend_shape_value(3,0) # blink
 	trick0 = anim_tree.tree_root.get_node("Trick0")

@@ -28,7 +28,7 @@ func _physics_process(delta: float) -> void:
 	if current_state:
 		current_state.physics_update(delta)
 
-func on_child_transition(state : GameState, new_state_name : String):
+func on_child_transition(state : PlayerState, new_state_name : String):
 	if state != current_state:
 		return	
 	var new_state = states.get(new_state_name.to_lower())
@@ -39,3 +39,13 @@ func on_child_transition(state : GameState, new_state_name : String):
 	new_state.enter()
 	current_state = new_state
 	print("Transitioning to State: " + new_state.name)
+	
+func set_force_state(new_state_name : String):
+	var new_state = states.get(new_state_name.to_lower())
+	if current_state:
+		current_state.exit()
+	new_state.enter()
+	current_state = new_state
+	print("Transitioning to State: " + new_state.name)
+	
+	#on_child_transition()

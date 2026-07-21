@@ -1,10 +1,14 @@
 extends PlayerState
 
-func enter():
+func enter() -> void:
 	_reset_player()
 	
-func exit():
+func exit() -> void:
 	pass
+
+func update(delta : float):
+	if Input.is_action_just_released("Jump"):
+		transitioned.emit(self, "Player_Ground")
 
 func _reset_player() -> void:
 	var _transform = char_ctrl.last_ground_transform
@@ -12,6 +16,7 @@ func _reset_player() -> void:
 	char_ctrl.Ingame_Ui.set_balance_view(false)
 	char_ctrl.Char_Ragdoll.set_end_simulation()
 	char_ctrl.Char_Animation.reset_vis_transform(char_ctrl)
+	char_ctrl.Char_Animation.init(true)
 	char_ctrl.standing_timer = GlobalSettings.STANDING_TIMER
 	char_ctrl.up_direction = Vector3.UP
 	char_ctrl.velocity = Vector3.ZERO
