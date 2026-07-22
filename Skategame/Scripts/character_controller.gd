@@ -8,7 +8,7 @@ extends CharacterBody3D
 var xform = null
 var last_ground_transform : Transform3D
 var fall_timer : float = 0.0
-var last_up_dir : Vector3 = Vector3.ZERO
+var last_up_dir : Vector3 = Vector3.UP
 var pipe_snap_flip : bool = false
 var path_offset : float = 0.0
 var path_vel : float = 0.0
@@ -36,7 +36,7 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Statemachine : CharacterStatemachine = $Char_Statemachine
 @onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
-@onready var Char_Input : CharacterInput = $Char_Input 
+@onready var Char_Input : CharacterInput = $Char_Input
 @onready var Char_Fallcheck : CharacterFallcheck = $Char_Fallcheck
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 @onready var Player_Scene : Player = $".."
@@ -89,7 +89,7 @@ func _physics_process(delta):
 	#can_air = false
 	#can_grind = false
 	#can_lip = false
-	#Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
+	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	#if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		#fall_timer -= delta
 		#if Char_Input.get_input().y and fall_timer < 0.1:
@@ -123,15 +123,11 @@ func _physics_process(delta):
 	#if Char_Input.get_input_jump():
 		#if !is_jump:
 			#_handle_jump()
-	#global_transform = LibHelpers.align(global_transform, up_direction)
-	#last_up_dir = up_direction
-	#last_vel = velocity
-	#_set_up_direction()
+	#set_up_direction()
 	#if !Char_Statemachine.is_player_state(CharStates.State.GRIND) or !Char_Statemachine.is_player_state(CharStates.State.LIP):
 		#move_and_slide()
 	#if Char_Input.can_jump() and Char_Statemachine.is_player_state(CharStates.State.GROUND):
 		#apply_floor_snap()		
-	move_and_slide()
 		
 func _player_state() -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.FALL):	#dont change the state if fallen
@@ -172,7 +168,7 @@ func _player_state() -> void:
 				up_direction = last_up_dir
 			_reset_shapecast(true)
 			return
-	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)	
+	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)
 	if _closest_path != null:
 		if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 			path = _closest_path
@@ -213,8 +209,8 @@ func _player_state() -> void:
 				Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
 				_reset_shapecast(false)
 				shape_col_ground = []
-				return		
-	if !shape_col_ground: #behavior while in air, or sticked to a pipe	
+				return
+	if !shape_col_ground: #behavior while in air, or sticked to a pipe
 		if !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP) and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			Char_Statemachine.set_player_state(CharStates.State.AIR)
 			if Char_Statemachine.is_last_player_state(CharStates.State.PIPE):
@@ -249,7 +245,7 @@ func _player_state() -> void:
 			is_jump = false
 			return
 
-func _surface_check() -> void:
+func surface_check() -> void:
 	var speed : float = velocity.length()
 	var basis_y : Vector3 = xform.basis.y
 	var forward_dir : Vector3 = Vector3.ZERO
@@ -272,7 +268,7 @@ func _surface_check() -> void:
 		#elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
 			#_reset_shapecast(true)
 			
-	if Char_Input.can_jump() and !Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
+	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
 		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
 		
@@ -285,21 +281,19 @@ func _surface_check() -> void:
 			var _col_normal = shape_col_ground[0].normal
 			var _dot = _col_normal.dot(up_direction)
 			if shape_col_ground[0].collider.is_in_group("wall") or _dot < GlobalSettings.SHAPE_COL_DOT:
-				shape_col_ground = []	
+				shape_col_ground = []
 	else:
 		shape_col_ground = []
 		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
 
-func _set_up_direction() -> void:
+func set_char_up_direction() -> void:
 	if shape_col_ground:
 		if !shape_col_ground[0].collider.is_in_group("wall"):
 			up_direction = shape_col_ground[0].normal
 	else:
-		up_direction = last_up_dir	
-	#if !shape_col_ground and is_on_floor():
-		#up_direction = get_floor_normal()
+		up_direction = last_up_dir
 
 func set_fall(_fall_reason, _fall_value) -> void:
 	Char_Tricks.set_clear_tricks()
@@ -323,7 +317,7 @@ func _reset_player(_transform : Transform3D) -> void:
 	Char_Statemachine.reset_player_state()
 	Char_Input.reset()
 
-func _ground_movement(delta) -> void: 	
+func _ground_movement(delta) -> void:
 	if Char_Statemachine.is_player_state(CharStates.State.GROUND) and path == null:
 		last_ground_transform = global_transform
 	if Char_Input.get_input().y < 0:
@@ -338,14 +332,14 @@ func _ground_movement(delta) -> void:
 	velocity.y -= GlobalSettings.GRAVITY * delta
 	velocity = LibHelpers.kill_orthogonal_velocity(xform, velocity)
 
-func _air_movement(_delta) -> void: 	
+func _air_movement(_delta) -> void:
 	can_air = true
 	var _rot_delta = Char_Input.get_input().x * stats.rot_jump * _delta
 	global_rotate(xform.basis.y, _rot_delta)
 	velocity.y -= GlobalSettings.GRAVITY * _delta
 	up_direction = lerp(up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
 	
-func _pipe_snap_movement(delta) -> void: 
+func _pipe_snap_movement(delta) -> void:
 	if !path:
 		return
 	curve_snap = LibHelpers.get_path_position(path, path_offset)
@@ -365,7 +359,7 @@ func _pipe_snap_air_movement(delta) -> void:
 	global_rotate(xform.basis.y, Char_Input.get_input().x * stats.rot_jump * delta)
 	velocity.y -= GlobalSettings.GRAVITY * delta
 
-func _grind_movement(delta) -> void: 	
+func _grind_movement(delta) -> void:
 	if !path:
 		return
 	curve_snap = LibHelpers.get_path_position(path, path_offset)
@@ -409,7 +403,7 @@ func _balance_logic(delta: float, axis : int) -> void:
 			_set_balance_dir(round(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
-	Ingame_Ui.set_balance_value(-balance_angle)	
+	Ingame_Ui.set_balance_value(-balance_angle)
 	
 func _set_balance_dir(_dir: int) -> void:
 	balance_dir = _dir
@@ -424,7 +418,7 @@ func _check_reverse_motion() -> void:
 func _standing_timer(_delta : float) -> void:
 	if velocity.length_squared() < GlobalSettings.STANDING_TIMER_MIN_SPEED:
 		standing_timer -= _delta
-	else: 
+	else:
 		standing_timer = GlobalSettings.STANDING_TIMER
 		
 func _check_bounce_path() -> void:
@@ -458,14 +452,14 @@ func _fall_check(delta) -> void: #to do, try to move the fall achecks to the cor
 	if Char_Statemachine.get_player_state() != Char_Statemachine.get_last_player_state():
 		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAP) and Char_Statemachine.is_player_state(CharStates.State.PIPESNAPAIR):
 			return # dont fall when the player is in air from pipesnap
-		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR) and Char_Statemachine.is_player_state(CharStates.State.AIR):	
+		if Char_Statemachine.is_last_player_state(CharStates.State.PIPESNAPAIR) and Char_Statemachine.is_player_state(CharStates.State.AIR):
 			return # dont fall when the player is in air from pipesnapair
 		if Char_Tricks.get_trick_active():
 			set_fall("trick not finished", Char_Tricks.current_trick_duration)
 			return
 	if Char_Fallcheck.get_out_of_bounds(position):
-			set_fall("out of bounds!", position)
-			return
+		set_fall("out of bounds!", position)
+		return
 	if Char_Statemachine.is_player_state(CharStates.State.GRIND) or Char_Statemachine.is_player_state(CharStates.State.LIP):
 		if Char_Fallcheck.get_balance_issues(balance_angle):
 			set_fall("balance issues", balance_angle)
@@ -515,7 +509,7 @@ func _wall_bounce() -> void:
 			on_wall = false
 	else:
 		on_wall = false
-	last_on_wall = on_wall		
+	last_on_wall = on_wall
 
 func _handle_jump() -> void:
 	is_jump = true
@@ -541,7 +535,7 @@ func _handle_jump() -> void:
 					Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
 					_reset_shapecast(false)
 					shape_col_ground = []
-					return		
+					return
 		
 		CharStates.State.PIPE:
 			velocity += xform.basis.z * stats.jump_vel * 0.15 - up_direction.slide(Vector3.UP) * 0.5

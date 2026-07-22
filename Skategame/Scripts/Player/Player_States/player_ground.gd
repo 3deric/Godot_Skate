@@ -1,11 +1,23 @@
 extends PlayerState
 
 func physics_update(_delta : float):
+	char_ctrl.surface_check()
 	_ground_movement(_delta)
+	char_ctrl.last_up_dir = char_ctrl.up_direction
+	char_ctrl.last_vel = char_ctrl.velocity
+	
+	_handle_jump()	
+	
+	char_ctrl.set_char_up_direction()
+	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
+	char_ctrl.move_and_slide()
+	if char_ctrl.Char_Input.can_jump():
+		char_ctrl.apply_floor_snap()
+	
+	char_ctrl.Char_Animation.animation_handler_ground_pipe(char_ctrl.velocity, char_ctrl.Char_Input.get_input())
 
 func _ground_movement(_delta) -> void: 	
-	if char_ctrl.path == null:
-		char_ctrl.last_ground_transform = char_ctrl.global_transform
+	char_ctrl.last_ground_transform = char_ctrl.global_transform
 	if char_ctrl.Char_Input.get_input().y < 0:
 		char_ctrl.velocity *= GlobalSettings.GROUND_SLOWDOWN
 		char_ctrl.global_rotate(char_ctrl.xform.basis.y, char_ctrl.Char_Input.get_input().x * char_ctrl.stats.rot_kickturn * _delta)
@@ -17,3 +29,10 @@ func _ground_movement(_delta) -> void:
 		char_ctrl.velocity += char_ctrl.xform.basis.z * char_ctrl.Char_Input.get_input().z * char_ctrl.stats.acc
 	char_ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	char_ctrl.velocity = LibHelpers.kill_orthogonal_velocity(char_ctrl.xform, char_ctrl.velocity)
+
+func _handle_jump() -> void:
+	if char_ctrl.Char_Input.get_input_jump():
+		char_ctrl.velocity += Vector3.UP * char_ctrl.stats.jump_vel
+		char_ctrl.Char_Input.set_jump_cooldown()
+		
+		transitioned.emit(self, "Player_Air")

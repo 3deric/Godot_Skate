@@ -17,7 +17,7 @@ func init():
 	if initial_state:
 		initial_state.enter()
 		current_state = initial_state
-	print("Transitioning to State: " + current_state.name)
+	print("Transitioning to Player State: " + current_state.name)
 
 			
 func _process(delta) -> void:

@@ -82,6 +82,17 @@ func animation_handler(char_controller: CharacterController, input : Vector3, st
 			anim_tree.set('parameters/conditions/is_stopped', false)
 			anim_tree.set('parameters/Lip/blend_position', anim_blend)
 
+func animation_handler_ground_pipe(_velocity : Vector3, input : Vector3):
+	if _velocity.length() > 0.05:
+		anim_tree.set('parameters/conditions/is_riding', true)
+		anim_tree.set('parameters/conditions/is_stopped', false)
+	else:
+		anim_tree.set('parameters/conditions/is_riding', false)
+		anim_tree.set('parameters/conditions/is_stopped', true)
+	anim_tree.set('parameters/conditions/is_trick0', false)
+	anim_tree.set('parameters/conditions/is_trick1', false)
+	anim_tree.set('parameters/Ground/blend_position', anim_blend)
+
 func set_trick_animation(animation: String) -> void:
 	anim_tree.set('parameters/conditions/is_riding', false)
 	anim_tree.set('parameters/conditions/is_stopped', false)
