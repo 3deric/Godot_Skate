@@ -1,10 +1,18 @@
 extends PlayerState
 
+func enter() -> void:
+	pass
+	
+func exit() -> void:
+	pass
+
 func physics_update(_delta : float):
-	char_ctrl.surface_check()
-	_ground_movement(_delta)
-	char_ctrl.last_up_dir = char_ctrl.up_direction
-	char_ctrl.last_vel = char_ctrl.velocity
+	char_ctrl.surface_check() 					# collision check
+	char_ctrl.set_path()						# get path for grinding and pipesnap
+	_ground_movement(_delta)					# execute ground motion
+	char_ctrl.set_previous_values()
+	
+	_ground_check()
 	
 	_handle_jump()	
 	
@@ -35,4 +43,15 @@ func _handle_jump() -> void:
 		char_ctrl.velocity += Vector3.UP * char_ctrl.stats.jump_vel
 		char_ctrl.Char_Input.set_jump_cooldown()
 		
+		transitioned.emit(self, "Player_Air")
+		
+func _ground_check() -> void:
+	if char_ctrl.shape_col_ground:
+		var _coll_info = char_ctrl.shape_col_ground[0].collider
+		#if _coll_info.is_in_group("wall"):
+			#return
+		if _coll_info.is_in_group('pipe'):
+			transitioned.emit(self, "Player_Pipe")
+			return
+	else:
 		transitioned.emit(self, "Player_Air")

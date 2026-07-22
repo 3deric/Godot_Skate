@@ -86,7 +86,10 @@ func get_input() -> Vector3:
 	return input
 	
 func get_input_jump() -> bool:
-	return input_buffer.get_last_input() == Action.JUMP and can_jump()
+	if input_buffer.get_last_input() == Action.JUMP and can_jump():
+		input_buffer.buffer.clear()
+		return true
+	return false
 	
 func get_dir_before_jump() -> int:
 	if input_buffer.get_second_last_input() == Action.LEFT:

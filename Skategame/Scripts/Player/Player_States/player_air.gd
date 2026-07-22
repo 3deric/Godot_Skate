@@ -11,8 +11,7 @@ func physics_update(_delta : float):
 	
 	_air_movement(_delta)
 	
-	char_ctrl.last_up_dir = char_ctrl.up_direction
-	char_ctrl.last_vel = char_ctrl.velocity
+	char_ctrl.set_previous_values()
 	
 	_ground_check()
 	

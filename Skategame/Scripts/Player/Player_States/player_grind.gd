@@ -8,6 +8,11 @@ func exit():
 	
 func physics_update(_delta : float):
 	_grind_movement(_delta)
+	char_ctrl.last_up_dir = char_ctrl.up_direction
+	char_ctrl.last_vel = char_ctrl.velocity
+	_handle_jump()	
+	char_ctrl.set_char_up_direction()
+	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
 
 func _grind_movement(_delta) -> void: 	
 	char_ctrl.curve_snap = LibHelpers.get_path_position(char_ctrl.path, char_ctrl.path_offset)
@@ -22,3 +27,6 @@ func _grind_movement(_delta) -> void:
 		char_ctrl.look_at(_target, char_ctrl.up_direction)
 	char_ctrl.velocity = char_ctrl.xform.basis.z * char_ctrl.path_vel * char_ctrl.path_dir
 	char_ctrl._balance_logic(_delta, 0)
+	
+func _handle_jump() -> void:
+	pass

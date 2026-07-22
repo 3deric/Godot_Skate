@@ -154,7 +154,7 @@ func _player_state() -> void:
 		
 	if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
 		if global_position.y < curve_snap.y:
-			_reset_shapecast(true)
+			reset_shapecast(true)
 			Char_Statemachine.set_player_state(CharStates.State.PIPE)
 			return
 		if !LibHelpers.get_stick_curve(path,  path_offset, 0.1) and !path_closed:
@@ -166,7 +166,7 @@ func _player_state() -> void:
 				up_direction = (newUpDir + last_up_dir)/2
 			else:
 				up_direction = last_up_dir
-			_reset_shapecast(true)
+			reset_shapecast(true)
 			return
 	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)
 	if _closest_path != null:
@@ -207,7 +207,7 @@ func _player_state() -> void:
 				path_vel = _pipe_snap.vel
 				pipe_snap_flip = _pipe_snap.flip
 				Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
-				_reset_shapecast(false)
+				reset_shapecast(false)
 				shape_col_ground = []
 				return
 	if !shape_col_ground: #behavior while in air, or sticked to a pipe
@@ -249,34 +249,19 @@ func surface_check() -> void:
 	var speed : float = velocity.length()
 	var basis_y : Vector3 = xform.basis.y
 	var forward_dir : Vector3 = Vector3.ZERO
-	
-	var is_grind : bool = Char_Statemachine.is_player_state(CharStates.State.GRIND)
-	var is_pipe_snap : bool = Char_Statemachine.is_player_state(CharStates.State.PIPESNAP)
-	var is_ground : bool = Char_Statemachine.is_player_state(CharStates.State.GROUND)
-	var is_pipe : bool = Char_Statemachine.is_player_state(CharStates.State.PIPE)
 
 	var move_clamp : float = min(speed, 0.25)
 
-	if is_grind or is_pipe_snap:
+	if can_grind:
 		forward_dir = curve_tangent * -path_dir * move_clamp
 	else:
 		forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * move_clamp
-	
-	#if Char_Statemachine.is_player_state(CharStates.State.PIPESNAP):
-		#if global_position.y > curve_snap.y and Shape_Cast_Ground.enabled == true:
-			#_reset_shapecast(false)
-		#elif global_position.y < curve_snap.y and Shape_Cast_Ground.enabled == false:
-			#_reset_shapecast(true)
-			
+
 	if Char_Input.can_jump():
-		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.RAY_GROUND_AIR_DIST)
-		var shape_ground_offset : float =  (GlobalSettings.SHAPE_GROUND_DIST if (is_ground or is_pipe) else GlobalSettings.SHAPE_GROUND_AIR_DIST)
+		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (can_air) else GlobalSettings.RAY_GROUND_AIR_DIST)
 		
 		Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist)
 		shape_col_ground = Shape_Cast_Ground.collision_result
-		ray_ground = LibHelpers.raycast(position + basis_y * 0.05, -basis.y, ray_dist, self)
-		if ray_ground and ray_ground.collider.is_in_group("wall"):
-			ray_ground = {}
 		if shape_col_ground:
 			var _col_normal = shape_col_ground[0].normal
 			var _dot = _col_normal.dot(up_direction)
@@ -284,7 +269,6 @@ func surface_check() -> void:
 				shape_col_ground = []
 	else:
 		shape_col_ground = []
-		ray_ground = {}
 	Shape_Cast.target_position = to_local(position + forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
 
@@ -533,7 +517,7 @@ func _handle_jump() -> void:
 					path_vel = _pipe_snap.vel
 					pipe_snap_flip = _pipe_snap.flip
 					Char_Statemachine.set_player_state(CharStates.State.PIPESNAP)
-					_reset_shapecast(false)
+					reset_shapecast(false)
 					shape_col_ground = []
 					return
 		
@@ -559,11 +543,28 @@ func _handle_jump() -> void:
 
 func start_grind() -> void:
 	is_jump = false
-	_reset_shapecast(true)
+	reset_shapecast(true)
 	
 func start_lip() -> void:
 	is_jump = false
-	_reset_shapecast(true)
+	reset_shapecast(true)
 	
-func _reset_shapecast(enabled : bool) -> void:
+func reset_shapecast(enabled : bool) -> void:
 	Shape_Cast_Ground.collide_with_bodies = enabled
+	
+func set_path() -> void:
+	var _closest_path : Path3D = LibHelpers.get_closest_path(Area, position)
+	if _closest_path != null:
+		if path != _closest_path:
+			print(_closest_path)
+		path = _closest_path
+		path_closed = LibHelpers.is_path_closed(path)
+		path_offset = path.curve.get_closest_offset(position * path.global_transform)
+		curve_tangent = LibHelpers.get_path_tangent(path, path_offset)
+		path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
+	else:
+		path = null
+	
+func set_previous_values() -> void:
+	last_up_dir = up_direction
+	last_vel = velocity

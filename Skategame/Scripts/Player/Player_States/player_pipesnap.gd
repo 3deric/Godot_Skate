@@ -7,7 +7,13 @@ func exit():
 	char_ctrl.can_air = false
 
 func physics_update(_delta : float):
+	char_ctrl.surface_check()
 	_pipe_snap_movement(_delta)
+	char_ctrl.set_previous_values()
+	_ground_check()
+	char_ctrl.set_char_up_direction()
+	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
+	char_ctrl.move_and_slide()
 
 func _pipe_snap_movement(_delta) -> void: 
 	char_ctrl.curve_snap = LibHelpers.get_path_position(char_ctrl.path, char_ctrl.path_offset)
@@ -20,3 +26,8 @@ func _pipe_snap_movement(_delta) -> void:
 	char_ctrl.position = Vector3(char_ctrl.curve_snap.x, char_ctrl.position.y, char_ctrl.curve_snap.z) + char_ctrl.up_direction * GlobalSettings.PIPESNAP_OFFSET
 	char_ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	char_ctrl.velocity = LibHelpers.kill_pipe_orthogonal_velocity(char_ctrl.velocity, char_ctrl.curve_tangent)
+
+func _ground_check() -> void:
+	if char_ctrl.position.y < char_ctrl.curve_snap.y:
+		char_ctrl.reset_shapecast(true)
+		transitioned.emit(self, "Player_Pipe")	
