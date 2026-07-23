@@ -10,6 +10,7 @@ func physics_update(_delta : float):
 	char_ctrl.surface_check()
 	_pipe_snap_movement(_delta)
 	char_ctrl.set_previous_values()
+	_pipe_end_check()
 	_ground_check()
 	char_ctrl.set_char_up_direction()
 	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
@@ -26,6 +27,17 @@ func _pipe_snap_movement(_delta) -> void:
 	char_ctrl.position = Vector3(char_ctrl.curve_snap.x, char_ctrl.position.y, char_ctrl.curve_snap.z) + char_ctrl.up_direction * GlobalSettings.PIPESNAP_OFFSET
 	char_ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	char_ctrl.velocity = LibHelpers.kill_pipe_orthogonal_velocity(char_ctrl.velocity, char_ctrl.curve_tangent)
+
+func _pipe_end_check() -> void:
+	if !LibHelpers.get_stick_curve(char_ctrl.path,  char_ctrl.path_offset, 0.1) and !char_ctrl.path_closed:
+		var newUpDir : Vector3 = Vector3.UP.cross(char_ctrl.curve_tangent)
+		if char_ctrl.pipe_snap_flip:
+			newUpDir*=-1
+		if(newUpDir != Vector3.ZERO):
+			char_ctrl.up_direction = (newUpDir + char_ctrl.last_up_dir)/2
+		else:
+			char_ctrl.up_direction = char_ctrl.last_up_dir
+		transitioned.emit(self, "Player_Pipesnap_Air")
 
 func _ground_check() -> void:
 	if char_ctrl.position.y < char_ctrl.curve_snap.y:

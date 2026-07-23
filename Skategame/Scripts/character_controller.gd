@@ -84,11 +84,6 @@ func _process(delta: float) -> void:
 	Char_Animation.set_vis_transform(self, delta, GlobalSettings.INTERP_SPEED)
 
 func _physics_process(delta):
-	#if !Player_Scene.is_playing:
-		#return
-	#can_air = false
-	#can_grind = false
-	#can_lip = false
 	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	#if Char_Statemachine.is_player_state(CharStates.State.FALL):
 		#fall_timer -= delta
@@ -100,6 +95,7 @@ func _physics_process(delta):
 	#_fall_check(delta)
 	Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
 	Char_Animation.set_vis_balance(Char_Statemachine.get_player_state(), balance_angle)
+	
 	#match Char_Statemachine.player_state:
 		#CharStates.State.FALL:
 			#return

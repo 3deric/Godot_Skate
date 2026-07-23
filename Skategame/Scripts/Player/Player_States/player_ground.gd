@@ -10,12 +10,11 @@ func physics_update(_delta : float):
 	char_ctrl.surface_check() 					# collision check
 	char_ctrl.set_path()						# get path for grinding and pipesnap
 	_ground_movement(_delta)					# execute ground motion
-	char_ctrl.set_previous_values()
 	
 	_ground_check()
 	
 	_handle_jump()	
-	
+	char_ctrl.set_previous_values()
 	char_ctrl.set_char_up_direction()
 	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
 	char_ctrl.move_and_slide()

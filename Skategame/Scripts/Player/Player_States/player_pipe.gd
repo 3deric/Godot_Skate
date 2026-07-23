@@ -48,8 +48,8 @@ func _handle_jump() -> void:
 func _pipesnap_check() -> void:
 	if char_ctrl.path == null:
 		return
-	if char_ctrl.Char_Input.get_input().y == 0:
-		pass
+	if !char_ctrl.Char_Input.get_input().y == 0:
+		return
 	if char_ctrl.global_position.y >LibHelpers.get_path_position(char_ctrl.path, char_ctrl.path_offset).y:
 		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(char_ctrl.xform, char_ctrl.velocity, char_ctrl.path, char_ctrl.path_offset)
 		var _stick = LibHelpers.get_stick_curve(char_ctrl.path, char_ctrl.path_offset, 1.0)
