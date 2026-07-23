@@ -11,9 +11,9 @@ func physics_update(_delta : float):
 	char_ctrl.set_path()	
 	_ground_movement(_delta)
 	char_ctrl.set_previous_values()
+	
 	_pipesnap_check()
 	_ground_check()
-	
 	_handle_jump()	
 	
 	char_ctrl.set_char_up_direction()
@@ -46,24 +46,9 @@ func _handle_jump() -> void:
 		transitioned.emit(self, "Player_Air")
 		
 func _pipesnap_check() -> void:
-	if char_ctrl.path == null:
-		return
-	if !char_ctrl.Char_Input.get_input().y == 0:
-		return
-	if char_ctrl.global_position.y >LibHelpers.get_path_position(char_ctrl.path, char_ctrl.path_offset).y:
-		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(char_ctrl.xform, char_ctrl.velocity, char_ctrl.path, char_ctrl.path_offset)
-		var _stick = LibHelpers.get_stick_curve(char_ctrl.path, char_ctrl.path_offset, 1.0)
-		if char_ctrl.path_closed: #always set stick to true when the path is closed
-			_stick = true
-		if _pipe_snap.valid  and char_ctrl.xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
-			char_ctrl.curve_tangent = _pipe_snap.tan
-			char_ctrl.path_dir = _pipe_snap.dir
-			char_ctrl.path_vel = _pipe_snap.vel
-			char_ctrl.pipe_snap_flip = _pipe_snap.flip
-			char_ctrl.reset_shapecast(false)
-			char_ctrl.shape_col_ground = []
-			transitioned.emit(self, "Player_Pipesnap")
-			
+	if char_ctrl.get_pipesnap():
+		transitioned.emit(self, "Player_Pipesnap")
+					
 func _ground_check() -> void:
 	if char_ctrl.shape_col_ground:
 		var _coll_info = char_ctrl.shape_col_ground[0].collider

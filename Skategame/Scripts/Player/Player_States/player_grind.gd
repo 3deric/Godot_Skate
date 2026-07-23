@@ -1,10 +1,15 @@
 extends PlayerState
 
 func enter():
+	char_ctrl.Char_Tricks._start_trick(char_ctrl.Char_Tricks.available_grind_tricks)	
+	char_ctrl.reset_shapecast(false)
+	char_ctrl.Char_Tricks.performed_olli = false
 	char_ctrl.can_grind = true
+	char_ctrl.randomize_balance()
 	
 func exit():
 	char_ctrl.can_grind = false
+	char_ctrl.reset_shapecast(true)
 	
 func physics_update(_delta : float):
 	_grind_movement(_delta)
@@ -26,7 +31,7 @@ func _grind_movement(_delta) -> void:
 	if _target != char_ctrl.position:
 		char_ctrl.look_at(_target, char_ctrl.up_direction)
 	char_ctrl.velocity = char_ctrl.xform.basis.z * char_ctrl.path_vel * char_ctrl.path_dir
-	char_ctrl._balance_logic(_delta, 0)
+	char_ctrl.balance_logic(_delta, 0)
 	
 func _handle_jump() -> void:
 	pass

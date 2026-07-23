@@ -9,10 +9,9 @@ func exit() -> void:
 func physics_update(_delta : float):
 	char_ctrl.surface_check() 					# collision check
 	char_ctrl.set_path()						# get path for grinding and pipesnap
+	_grind_check()
 	_ground_movement(_delta)					# execute ground motion
-	
 	_ground_check()
-	
 	_handle_jump()	
 	char_ctrl.set_previous_values()
 	char_ctrl.set_char_up_direction()
@@ -54,3 +53,7 @@ func _ground_check() -> void:
 			return
 	else:
 		transitioned.emit(self, "Player_Air")
+
+func _grind_check() -> void:
+	if char_ctrl.start_grind():
+		transitioned.emit(self, "Player_Grind")

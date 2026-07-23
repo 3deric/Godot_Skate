@@ -73,7 +73,7 @@ func init_player(_transform : Transform3D, _is_playing : bool):
 		
 func get_can_grind() -> bool:
 	return can_grind
-	
+	#
 func get_can_lip() -> bool:
 	return can_lip
 	
@@ -90,6 +90,8 @@ func _physics_process(delta):
 		#if Char_Input.get_input().y and fall_timer < 0.1:
 			#_reset_player(last_ground_transform)
 	xform = global_transform
+	set_can_grind()
+	set_can_lip()
 	#_surface_check()
 	#_player_state()
 	#_fall_check(delta)
@@ -189,7 +191,7 @@ func _player_state() -> void:
 				lip_start_vel = _lip_start.vel
 				lip_start_up = _lip_start.up
 				can_lip = true
-			_randomize_balance()
+			randomize_balance()
 	
 	if Char_Statemachine.is_last_player_state(CharStates.State.PIPE) and Char_Input.get_input().y == 0 and path:
 		if global_position.y >LibHelpers.get_path_position(path, path_offset).y:
@@ -353,7 +355,7 @@ func _grind_movement(delta) -> void:
 	if _target != position:
 		look_at(_target, up_direction)
 	velocity = xform.basis.z * path_vel * path_dir
-	_balance_logic(delta, 0)
+	balance_logic(delta, 0)
 	
 func _lip_movement(delta) -> void:
 	if !path:
@@ -363,9 +365,9 @@ func _lip_movement(delta) -> void:
 	position = lip_start_pos
 	up_direction = lip_start_up
 	rotation.y = atan2(lip_start_dir.x,lip_start_dir.z)
-	_balance_logic(delta, 1)
+	balance_logic(delta, 1)
 
-func _randomize_balance() -> void:
+func randomize_balance() -> void:
 	balance_time = 1.0
 	balance_angle = 0.0
 	var _rand : float  = randf()
@@ -374,7 +376,7 @@ func _randomize_balance() -> void:
 	else:
 		balance_dir = -1
 
-func _balance_logic(delta: float, axis : int) -> void:
+func balance_logic(delta: float, axis : int) -> void:
 	if axis == 0:
 		if(Char_Input.get_input().x > 0.6 or Char_Input.get_input().x < -0.6):
 			_set_balance_dir(round(Char_Input.get_input().x))
@@ -537,14 +539,6 @@ func _handle_jump() -> void:
 			Char_Input.set_jump_cooldown()
 			path = null
 
-func start_grind() -> void:
-	is_jump = false
-	reset_shapecast(true)
-	
-func start_lip() -> void:
-	is_jump = false
-	reset_shapecast(true)
-	
 func reset_shapecast(enabled : bool) -> void:
 	Shape_Cast_Ground.collide_with_bodies = enabled
 	
@@ -560,7 +554,57 @@ func set_path() -> void:
 		path_dir = LibHelpers.get_path_dir(curve_tangent, velocity, 0.25)
 	else:
 		path = null
+
+func get_pipesnap() -> bool:
+	if path == null:
+		return false
+	if !Char_Input.get_input().y == 0:
+		return false
+	if global_position.y >LibHelpers.get_path_position(path, path_offset).y:
+		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
+		var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
+		if path_closed: #always set stick to true when the path is closed
+			_stick = true
+		if _pipe_snap.valid  and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
+			curve_tangent = _pipe_snap.tan
+			path_dir = _pipe_snap.dir
+			path_vel = _pipe_snap.vel
+			pipe_snap_flip = _pipe_snap.flip
+			reset_shapecast(false)
+			shape_col_ground = []
+			return true
+	return false	
 	
+func set_can_grind() -> void:
+	can_grind = false
+	if !path:
+		return
+	var _grind_start : Dictionary = LibHelpers.start_grind(velocity, path, path_offset)
+	if _grind_start.valid:
+		path_vel = _grind_start.vel
+		curve_tangent = _grind_start.tan
+		path_dir = _grind_start.dir
+		can_grind = true
+	
+func set_can_lip() -> void:
+	can_lip = false
+	if !path:
+		return
+	var _lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
+	if _lip_start.valid:
+		var _curve = path.curve
+		lip_start_pos = _lip_start.pos
+		curve_tangent = _lip_start.tan
+		lip_start_dir = _lip_start.dir
+		lip_start_vel = _lip_start.vel
+		lip_start_up = _lip_start.up
+		can_lip = true
+
 func set_previous_values() -> void:
 	last_up_dir = up_direction
 	last_vel = velocity
+
+func start_grind() -> bool:
+	if get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
+		return true
+	return false
