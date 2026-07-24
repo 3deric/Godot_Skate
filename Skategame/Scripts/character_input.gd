@@ -43,7 +43,8 @@ func _jump_cooldown(_delta) -> void:
 		
 func _update_input_buffer():
 	if Input.is_action_just_released('Jump'):
-		input_buffer.push(Action.JUMP)
+		if !Char_Controller.can_air:
+			input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):
 		input_buffer.push(Action.GRIND)

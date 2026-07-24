@@ -7,7 +7,7 @@ func exit() -> void:
 	pass
 
 func physics_update(_delta : float):
-	char_ctrl.surface_check() 					# collision check
+	#char_ctrl.surface_check() 					# collision check
 	char_ctrl.set_path()						# get path for grinding and pipesnap
 	_grind_check()
 	_ground_movement(_delta)					# execute ground motion
@@ -19,7 +19,7 @@ func physics_update(_delta : float):
 	char_ctrl.move_and_slide()
 	if char_ctrl.Char_Input.can_jump():
 		char_ctrl.apply_floor_snap()
-	
+	char_ctrl.surface_check() 
 	char_ctrl.Char_Animation.animation_handler_ground_pipe(char_ctrl.velocity, char_ctrl.Char_Input.get_input())
 
 func _ground_movement(_delta) -> void: 	
@@ -40,16 +40,15 @@ func _handle_jump() -> void:
 	if char_ctrl.Char_Input.get_input_jump():
 		char_ctrl.velocity += Vector3.UP * char_ctrl.stats.jump_vel
 		char_ctrl.Char_Input.set_jump_cooldown()
-		
 		transitioned.emit(self, "Player_Air")
 		
 func _ground_check() -> void:
 	if char_ctrl.shape_col_ground:
 		var _coll_info = char_ctrl.shape_col_ground[0].collider
-		#if _coll_info.is_in_group("wall"):
-			#return
+		var _coll_normal = char_ctrl.shape_col_ground[0].normal
 		if _coll_info.is_in_group('pipe'):
-			transitioned.emit(self, "Player_Pipe")
+			if char_ctrl.up_direction.dot(_coll_normal) > 0.995:
+				transitioned.emit(self, "Player_Pipe")
 			return
 	else:
 		transitioned.emit(self, "Player_Air")

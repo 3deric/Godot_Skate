@@ -51,7 +51,9 @@ func _pipesnap_check() -> void:
 		return
 	if _pipesnap.air == false:
 		transitioned.emit(self, "Player_Pipesnap")
-	transitioned.emit(self, "Player_Air")	
+	else:
+		char_ctrl.velocity -= char_ctrl.up_direction * 0.5
+		transitioned.emit(self, "Player_Air")	
 				
 func _ground_check() -> void:
 	if char_ctrl.shape_col_ground:
