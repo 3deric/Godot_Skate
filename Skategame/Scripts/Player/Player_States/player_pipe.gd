@@ -46,9 +46,13 @@ func _handle_jump() -> void:
 		transitioned.emit(self, "Player_Air")
 		
 func _pipesnap_check() -> void:
-	if char_ctrl.get_pipesnap():
+	var _pipesnap : Dictionary = char_ctrl.get_pipesnap()
+	if !_pipesnap.valid == true:
+		return
+	if _pipesnap.air == false:
 		transitioned.emit(self, "Player_Pipesnap")
-					
+	transitioned.emit(self, "Player_Air")	
+				
 func _ground_check() -> void:
 	if char_ctrl.shape_col_ground:
 		var _coll_info = char_ctrl.shape_col_ground[0].collider
