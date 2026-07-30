@@ -1,17 +1,17 @@
-extends PlayerState
+extends CharacterState
 
 func enter():
-	char_ctrl.can_lip = true
+	pass
 	
 func exit():
-	char_ctrl.can_lip = false
+	pass
 
 func physics_update(_delta : float):
 	_lip_movement(_delta)
 
 func _lip_movement(_delta) -> void:
-	var _curve : Curve3D = char_ctrl.path.curve
-	char_ctrl.position = char_ctrl.lip_start_pos
-	char_ctrl.up_direction = char_ctrl.lip_start_up
-	char_ctrl.rotation.y = atan2(char_ctrl.lip_start_dir.x,char_ctrl.lip_start_dir.z)
-	char_ctrl._balance_logic(_delta, 1)
+	var _curve : Curve3D = ctrl.path.curve
+	ctrl.position = ctrl.lip_start_pos
+	ctrl.up_direction = ctrl.lip_start_up
+	ctrl.rotation.y = atan2(ctrl.lip_start_dir.x,ctrl.lip_start_dir.z)
+	ctrl._balance_logic(_delta, 1)

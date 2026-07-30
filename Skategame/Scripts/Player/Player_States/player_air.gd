@@ -1,39 +1,40 @@
-extends PlayerState
+extends CharacterState
 
 func enter():
-	char_ctrl.can_air = true
+	tricks.set_start_air()
 	
 func exit():
-	char_ctrl.can_air = false
+	tricks.set_end_air()
 
 func physics_update(_delta : float):
-	char_ctrl.surface_check()
+	ctrl.surface_check(true)
 	
 	_air_movement(_delta)
 	
-	char_ctrl.set_previous_values()
+	ctrl.set_previous_values()
 	
 	_ground_check()
 	
-	char_ctrl.set_char_up_direction()
-	char_ctrl.global_transform = LibHelpers.align(char_ctrl.global_transform, char_ctrl.up_direction)
-	char_ctrl.move_and_slide()
+	ctrl.set_char_up_direction()
+	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
+	ctrl.move_and_slide()
+	tricks.set_air_trick()
 
 func _air_movement(_delta) -> void: 	
-	var _rot_delta = char_ctrl.Char_Input.get_input().x * char_ctrl.stats.rot_jump * _delta
-	char_ctrl.global_rotate(char_ctrl.xform.basis.y, _rot_delta)
-	char_ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
-	char_ctrl.up_direction = lerp(char_ctrl.up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
+	var _rot_delta = ctrl.Char_Input.get_input().x * ctrl.stats.rot_jump * _delta
+	ctrl.global_rotate(ctrl.xform.basis.y, _rot_delta)
+	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
+	ctrl.up_direction = lerp(ctrl.up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
 
 func _ground_check() -> void:
-	if char_ctrl.shape_col_ground:
-		var _coll_info = char_ctrl.shape_col_ground[0].collider
+	if ctrl.shape_col_ground:
+		var _coll_info = ctrl.shape_col_ground[0].collider
 		if _coll_info.is_in_group("wall"):
 			return
 		if _coll_info.is_in_group('pipe'):
 			transitioned.emit(self, "Player_Pipe")
 			return
-		if char_ctrl.up_direction.dot(Vector3.UP) < 0.5:
+		if ctrl.up_direction.dot(Vector3.UP) < 0.5:
 			return
 		if _coll_info.is_in_group('floor'):
 			transitioned.emit(self, "Player_Ground")

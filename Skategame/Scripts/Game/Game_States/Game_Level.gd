@@ -8,7 +8,7 @@ func init(main_game : MainGame) -> void:
 
 func enter() -> void:
 	main_game.load_level(main_game.selected_level_uid)
-	main_game.player.Char_Controller.char_states.set_force_state("Player_Reset")
+	main_game.player.Char_Controller.Char_Statemachine.set_force_state("Player_Reset")
 	
 func exit() -> void:
 	pass

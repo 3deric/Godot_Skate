@@ -41,7 +41,6 @@ var performed_olli : bool = false
 @onready var Char_Input : CharacterInput = $"../Char_Input"
 @onready var Char : CharacterController = $".."
 @onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
-@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
 @onready var Char_Animation : CharacterAnimation = $"../Char_Animation"
 	
 func _ready() -> void:
@@ -54,39 +53,7 @@ func _process(delta: float) -> void:
 	_update_trick_ui()
 	_trick_cooldown(delta)
 	_set_trick_rot(delta * Char_Input.get_input().x * Char.stats.rot_jump)
-	if Char_Statemachine.is_player_state(CharStates.State.GROUND) or Char_Statemachine.is_player_state(CharStates.State.PIPE):
-		_combo_cooldown(delta)
-		performed_olli = false
-	if !can_trick:
-		return
-	if Char.get_can_grind() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
-		if Char_Statemachine.set_player_state(CharStates.State.GRIND):
-			_start_trick(available_grind_tricks)	
-			#Char.start_grind()
-			performed_olli = false
-		return
-	if Char.get_can_lip() and Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
-		if Char_Statemachine.set_player_state(CharStates.State.LIP):
-			#Char.start_lip()
-			_start_trick(available_lip_tricks)
-			performed_olli = false
-		return
-	if Char.get_can_air():
-		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.JUMP:
-			if performed_olli:
-				return
-			_start_trick(available_air_tricks)
-			performed_olli = true
-			return
-		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.FLIP:
-			_start_trick(available_flip_tricks)
-			performed_olli = true
-			return
-		if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRAB:
-			_start_trick(available_grab_tricks)
-			performed_olli = true
-			return
-			
+
 func _trick_cooldown(_delta) -> void:
 	if current_trick_duration > 0.0:
 		current_trick_duration -= _delta
@@ -113,7 +80,7 @@ func _update_trick_ui():
 		
 func _start_trick(_tricks : Array[Trick]) -> void:
 	for trick : Trick in _tricks:
-		if trick.matches_input(Char_Input.input_buffer.buffer):
+		if trick.matches_input(Char_Input.input_buffer.buffer) or trick.trick_name == 'Olli':
 			if _get_trick_active():
 				_end_trick()
 			Char_Input.input_buffer.clear()
@@ -140,8 +107,6 @@ func _set_trick_rot(_delta : float) -> void:
 	current_trick.set_rotation(_delta)
 
 func set_state_changed() -> void:
-	if Char_Statemachine.get_player_state() == CharStates.State.FALL:
-		return
 	if is_trick_active:
 		_end_trick()
 		
@@ -183,3 +148,28 @@ func order_tricks_by_desc_complexity(_tricks : Array[Trick]) -> Array[Trick]:
 	var _sorted_tricks = _tricks.duplicate()
 	_sorted_tricks.sort_custom(func(a, b): return a.input_sequence.size() > b.input_sequence.size())
 	return _sorted_tricks
+	
+func set_combo_cooldown(_delta : float):
+	_combo_cooldown(_delta)
+	
+func set_start_grind():
+	_start_trick(available_grind_tricks)	
+
+func set_start_lip():
+	_start_trick(available_grind_tricks)	
+
+func set_start_air():
+	_start_trick(available_air_tricks)
+		
+func set_air_trick():
+	if !can_trick:
+		return
+	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.FLIP:
+		_start_trick(available_flip_tricks)
+		return
+	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRAB:
+		_start_trick(available_grab_tricks)
+		return
+			
+func set_end_air():
+	_end_trick()

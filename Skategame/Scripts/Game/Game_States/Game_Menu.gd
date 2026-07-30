@@ -9,7 +9,7 @@ func init(main_game : MainGame) -> void:
 func enter() -> void:
 	main_game.load_level(main_game.selected_level_uid)
 	main_game.main_menu.set_visibility(true)
-	main_game.player.Char_Controller.char_states.set_force_state("Player_Setup")
+	main_game.player.Char_Controller.Char_Statemachine.set_force_state("Player_Setup")
 	pass
 	
 func exit() -> void:

@@ -1,4 +1,4 @@
-extends PlayerState
+extends CharacterState
 
 func enter() -> void:
 	_reset_player()
@@ -11,17 +11,17 @@ func update(delta : float):
 		transitioned.emit(self, "Player_Ground")
 
 func _reset_player() -> void:
-	var _transform = char_ctrl.last_ground_transform
-	char_ctrl.Ingame_Ui.set_fail_view(false)
-	char_ctrl.Ingame_Ui.set_balance_view(false)
-	char_ctrl.Char_Ragdoll.set_end_simulation()
-	char_ctrl.Char_Animation.reset_vis_transform(char_ctrl)
-	char_ctrl.Char_Animation.init(true)
-	char_ctrl.standing_timer = GlobalSettings.STANDING_TIMER
-	char_ctrl.up_direction = Vector3.UP
-	char_ctrl.velocity = Vector3.ZERO
-	char_ctrl.last_vel = Vector3.ZERO
-	char_ctrl.global_transform = _transform
-	char_ctrl.Camera_Pos.global_position = _transform.origin
-	char_ctrl.balance_angle = 0.0
-	char_ctrl.Char_Input.reset()
+	var _transform = ctrl.last_ground_transform
+	ctrl.Ingame_Ui.set_fail_view(false)
+	ctrl.Ingame_Ui.set_balance_view(false)
+	ctrl.Char_Ragdoll.set_end_simulation()
+	ctrl.Char_Animation.reset_vis_transform(ctrl)
+	ctrl.Char_Animation.init(true)
+	ctrl.standing_timer = GlobalSettings.STANDING_TIMER
+	ctrl.up_direction = Vector3.UP
+	ctrl.velocity = Vector3.ZERO
+	ctrl.last_vel = Vector3.ZERO
+	ctrl.global_transform = _transform
+	ctrl.Camera_Pos.global_position = _transform.origin
+	ctrl.balance_angle = 0.0
+	ctrl.Char_Input.reset()

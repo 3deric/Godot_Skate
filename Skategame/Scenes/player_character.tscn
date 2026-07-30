@@ -1,20 +1,19 @@
-[gd_scene load_steps=81 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=80 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" uid="uid://cplfljpkpqfeq" path="res://Scripts/character_init.gd" id="1_4pbxa"]
-[ext_resource type="Script" uid="uid://mb0rtkjq1w6v" path="res://Scripts/character_controller.gd" id="1_5mxk1"]
+[ext_resource type="Script" uid="uid://mb0rtkjq1w6v" path="res://Scripts/Player/character_controller.gd" id="1_5mxk1"]
 [ext_resource type="PackedScene" uid="uid://dn0qnb0q164ex" path="res://Assets/Characters/Meshes/SK_char.glb" id="2_et04f"]
 [ext_resource type="Resource" uid="uid://c2lkksbixifnl" path="res://Scripts/Settings/player_settings_default.tres" id="3_12ptb"]
 [ext_resource type="Material" uid="uid://c30kou2tte4x3" path="res://Assets/Characters/Materials/M_hair_messy.tres" id="3_fcng2"]
-[ext_resource type="Script" uid="uid://ttim5fheld44" path="res://Scripts/character_customization.gd" id="3_wydvi"]
-[ext_resource type="Script" uid="uid://c40755apkstd3" path="res://Scripts/character_animation.gd" id="4_y7t1c"]
+[ext_resource type="Script" uid="uid://ttim5fheld44" path="res://Scripts/Player/character_customization.gd" id="3_wydvi"]
+[ext_resource type="Script" uid="uid://c40755apkstd3" path="res://Scripts/Player/character_animation.gd" id="4_y7t1c"]
 [ext_resource type="Script" uid="uid://ng4n4r581ipy" path="res://Scripts/character_ragdoll.gd" id="5_4fh7w"]
-[ext_resource type="Script" uid="uid://knib40x165wf" path="res://Scripts/character_statemachine.gd" id="5_ons1q"]
-[ext_resource type="Script" uid="uid://c5e6diayl6i64" path="res://Scripts/character_tricks.gd" id="5_q5hbr"]
+[ext_resource type="Script" uid="uid://c5e6diayl6i64" path="res://Scripts/Player/character_tricks.gd" id="5_q5hbr"]
 [ext_resource type="Script" uid="uid://baxb16l08qo1q" path="res://Scripts/character_input.gd" id="6_w775p"]
 [ext_resource type="PackedScene" uid="uid://cctt1un35hyco" path="res://Scenes/debug_view.tscn" id="7_ajo0r"]
 [ext_resource type="PackedScene" uid="uid://f8h2uynd2b7n" path="res://Scenes/ingame_overlay.tscn" id="8_flf3p"]
 [ext_resource type="Script" uid="uid://cjdpaxthe6v0o" path="res://Scripts/character_turntable.gd" id="10_ews8v"]
-[ext_resource type="Script" uid="uid://dbprb7pdhqv2u" path="res://Scripts/Player/player_statemachine.gd" id="10_w6p7y"]
+[ext_resource type="Script" uid="uid://dbprb7pdhqv2u" path="res://Scripts/Player/character_statemachine.gd" id="10_w6p7y"]
 [ext_resource type="Script" uid="uid://sxi0w2r15ml8" path="res://Scripts/Player/Player_States/player_air.gd" id="11_e05f7"]
 [ext_resource type="Script" uid="uid://d1ic5rnxeguo6" path="res://Scripts/Player/Player_States/player_none.gd" id="12_e05f7"]
 [ext_resource type="Script" uid="uid://0jarjmpf6we3" path="res://Scripts/Player/Player_States/player_grind.gd" id="12_j5y83"]
@@ -257,6 +256,7 @@ radius = 0.25
 height = 1.5
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6m2el"]
+margin = 0.01
 radius = 0.1
 
 [node name="Player_Character" type="Node3D"]
@@ -380,11 +380,11 @@ surface_material_override/0 = ExtResource("3_fcng2")
 active = false
 
 [node name="Physical Bone DEF-spine" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(1, 2.3628262e-07, -8.8706826e-14, 7.6772416e-08, -0.3249181, -0.9457422, -2.2346245e-07, 0.9457422, -0.32491812, -7.781913e-06, 0.88211733, -0.009120354)
+transform = Transform3D(1, 2.3628262e-07, -8.877046e-14, 7.6772416e-08, -0.3249181, -0.94574213, -2.2346245e-07, 0.9457422, -0.3249181, -7.781964e-06, 0.88211733, -0.009120354)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.781827e-06, 0.00037927434, 0.06497193)
-body_offset = Transform3D(1, -4.2911523e-09, 1.4741488e-09, -7.1054274e-14, -2.9802322e-08, -1.0010521, 1.4210855e-13, 1.0090396, -0.006183386, -7.78192e-06, 0.06504029, 1.9043684e-05)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.781878e-06, 0.00037927428, 0.064971924)
+body_offset = Transform3D(1, -4.2911523e-09, 1.4741488e-09, -7.1054274e-14, -2.9802322e-08, -1.0010523, 1.4210855e-13, 1.0090396, -0.006183386, -7.781971e-06, 0.06504029, 1.9043684e-05)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-spine"
@@ -610,11 +610,11 @@ transform = Transform3D(-4.3714593e-08, -1, 0, 1, -4.3711836e-08, 0, 0, -1.80300
 shape = SubResource("CapsuleShape3D_euix3")
 
 [node name="Physical Bone DEF-spine_002" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(1, -1.1240138e-15, 2.3063396e-14, 2.309055e-14, 0.04433726, -0.99901664, 1.0034067e-16, 0.9990167, 0.044337258, 0, 1.1180445, 0.012722133)
+transform = Transform3D(1, -1.1240145e-15, 2.3063396e-14, 2.309055e-14, 0.04433726, -0.99901664, 1.0034138e-16, 0.9990167, 0.044337258, 0, 1.1180445, 0.012722133)
 collision_layer = 4
 joint_type = 5
 joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.1602932e-15, -5.9735354e-05, 0.06762252)
-body_offset = Transform3D(0.99999994, 1.1370896e-13, 3.2046794e-14, 5.3174e-15, 1.9334257e-06, -1.0000197, 3.3507295e-16, 1.0100815, 0.00089227036, 0, 0.06762385, 0)
+body_offset = Transform3D(0.99999994, 1.1370894e-13, 3.2046794e-14, 5.3174e-15, 1.9334257e-06, -1.0000197, 3.350737e-16, 1.0100815, 0.00089227036, 0, 0.06762385, 0)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-spine.002"
@@ -841,11 +841,11 @@ transform = Transform3D(0.999977, 7.450581e-09, -1.296401e-06, 2.1010637e-06, 8.
 shape = SubResource("CapsuleShape3D_i0ilm")
 
 [node name="Physical Bone DEF-upper_arm_L" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(-0.8059122, 0.08197381, -0.58633256, -0.587501, 0.011601727, 0.8091402, 0.07313079, 0.99656695, 0.038809728, 0.25720036, 1.2476109, -0.026702333)
+transform = Transform3D(-0.8059122, 0.08197381, -0.5863325, -0.587501, 0.011601727, 0.80914026, 0.07313079, 0.99656695, 0.03880972, 0.25720036, 1.2476109, -0.026702333)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1808173e-06, -8.3713894e-05, 0.10967961)
-body_offset = Transform3D(1.0000544, 0.00147973, 5.8029313e-05, 2.7986243e-07, 6.072223e-07, -1.000015, -6.7055225e-08, 1.0100311, 0.0007780306, -5.9604645e-08, 0.10968125, -7.804483e-07)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.1906994e-06, -8.3713894e-05, 0.10967961)
+body_offset = Transform3D(1.0000544, 0.00147973, 5.8119418e-05, 2.7986243e-07, 6.072223e-07, -1.000015, -6.7055225e-08, 1.0100311, 0.0007780306, -5.9604645e-08, 0.10968125, -7.804483e-07)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-upper_arm.L"
@@ -995,11 +995,11 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_8u1ju")
 
 [node name="Physical Bone DEF-shoulder_R" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(0.02177827, -0.39111564, 0.9200839, 0.24965899, 0.8932732, 0.37380937, -0.968089, 0.22156626, 0.11709947, -0.109603226, 1.3702198, -0.012138757)
+transform = Transform3D(0.02177827, -0.39111564, 0.9200838, 0.24965899, 0.8932732, 0.37380937, -0.968089, 0.22156626, 0.117099464, -0.109603226, 1.3702198, -0.012138757)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00019736215, -6.759167e-05, 0.090487644)
-body_offset = Transform3D(0.982025, -0.20908238, -0.11050136, 3.0143015e-06, 0.46727344, -0.8841129, 0.23378785, 0.8596145, 0.45432624, 0.009791061, 0.08003287, -0.041098952)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00019736309, -6.758794e-05, 0.090487644)
+body_offset = Transform3D(0.982025, -0.20908238, -0.110501364, 3.0143015e-06, 0.46727344, -0.88411295, 0.23378785, 0.8596145, 0.45432624, 0.009791061, 0.08003287, -0.041098952)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-shoulder.R"
@@ -1149,11 +1149,11 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_m3sir")
 
 [node name="Physical Bone DEF-forearm_R" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(-0.80354404, 0.33456808, 0.49232233, 0.5895797, 0.5611913, 0.58091325, -0.081931956, 0.7570526, -0.64819646, -0.38210645, 1.0856706, 0.047694884)
+transform = Transform3D(-0.80354404, 0.33456808, 0.49232233, 0.5895797, 0.5611913, 0.58091325, -0.081931956, 0.7570526, -0.6481964, -0.38210645, 1.0856706, 0.047694884)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0008981339, 0.0018670135, 0.12327799)
-body_offset = Transform3D(1.0000238, 0.0035792254, -0.0071164407, -0.008088477, -0.0051917434, -1.0041184, -0.0048527047, 1.005782, -0.015064478, -2.7537346e-05, 0.12380266, -1.6331673e-05)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00089813344, 0.001867021, 0.12327799)
+body_offset = Transform3D(1.0000238, 0.0035792254, -0.007116437, -0.008088477, -0.0051917434, -1.0041184, -0.0048527047, 1.005782, -0.0150645375, -2.7537346e-05, 0.12380266, -1.6331673e-05)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-forearm.R"
@@ -1303,11 +1303,11 @@ transform = Transform3D(1, 1.8474111e-12, -3.6948222e-12, 0, 0, 1, 0, -1, 0, 0, 
 shape = SubResource("CapsuleShape3D_bdrer")
 
 [node name="Physical Bone DEF-spine_005" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(1, 4.724266e-07, -2.4202862e-14, 1.3050632e-07, -0.27624685, -0.96108675, -4.5404292e-07, 0.96108675, -0.27624685, 7.782415e-06, 1.4928666, -0.0011224695)
+transform = Transform3D(1, 4.724266e-07, -2.4202862e-14, 1.3050632e-07, -0.27624685, -0.96108675, -4.5404292e-07, 0.96108675, -0.27624685, 7.782466e-06, 1.4928666, -0.0011224695)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.782475e-06, 0.0001261006, 0.023828868)
-body_offset = Transform3D(1, -8.861235e-09, 2.546912e-09, 1.8474111e-13, -3.874302e-07, -1.0007602, 9.663381e-13, 1.0093341, -0.005341321, 7.782415e-06, 0.023846984, 0)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.782526e-06, 0.0001261006, 0.023828868)
+body_offset = Transform3D(1, -8.861235e-09, 2.546912e-09, 1.8474111e-13, -3.874302e-07, -1.0007602, 9.663381e-13, 1.0093341, -0.005341321, 7.782466e-06, 0.023846984, 0)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-spine.005"
@@ -1842,11 +1842,11 @@ transform = Transform3D(1, 0, 0, 0, 0, 1, 0, -1, 0, 0, 0, 0)
 shape = SubResource("CapsuleShape3D_wfjhv")
 
 [node name="Physical Bone DEF-hand_R" type="PhysicalBone3D" parent="Character/Char/Char_Skeleton/Skeleton3D/PhysicalBoneSimulator3D"]
-transform = Transform3D(-0.81950164, 0.3490187, 0.45453608, 0.57052165, 0.57168865, 0.5896415, -0.05405724, 0.7425348, -0.6676225, -0.47576573, 0.9706898, 0.17307961)
+transform = Transform3D(-0.81950164, 0.34901866, 0.4545361, 0.57052165, 0.57168865, 0.5896416, -0.05405724, 0.7425348, -0.6676225, -0.47576573, 0.9706898, 0.17307961)
 collision_layer = 4
 joint_type = 5
-joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00067011546, 0.00070277386, 0.07099068)
-body_offset = Transform3D(1.0000299, -0.00081589073, 0.00073350966, 8.456409e-07, -8.046627e-07, -1.0044651, 7.748604e-07, 1.0055816, -0.010010183, 0.0006186366, 0.071307674, 3.9339066e-06)
+joint_offset = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00067011337, 0.0007027717, 0.07099068)
+body_offset = Transform3D(1.0000299, -0.00081592053, 0.00073347986, 8.456409e-07, -8.046627e-07, -1.0044651, 7.748604e-07, 1.0055816, -0.010010153, 0.0006186366, 0.071307674, 3.9339066e-06)
 friction = 0.3
 bounce = 0.22
 bone_name = "DEF-hand.R"
@@ -2039,42 +2039,39 @@ script = ExtResource("6_w775p")
 [node name="Char_Customization" type="Node3D" parent="Character"]
 script = ExtResource("3_wydvi")
 
-[node name="Char_States" type="Node" parent="Character" node_paths=PackedStringArray("initial_state")]
+[node name="Char_Statemachine" type="Node" parent="Character" node_paths=PackedStringArray("initial_state")]
 script = ExtResource("10_w6p7y")
 initial_state = NodePath("Player_Setup")
 
-[node name="Player_Air" type="Node" parent="Character/Char_States"]
+[node name="Player_Air" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("11_e05f7")
 
-[node name="Player_None" type="Node" parent="Character/Char_States"]
+[node name="Player_None" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("12_e05f7")
 
-[node name="Player_Grind" type="Node" parent="Character/Char_States"]
+[node name="Player_Grind" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("12_j5y83")
 
-[node name="Player_Ground" type="Node" parent="Character/Char_States"]
+[node name="Player_Ground" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("13_ck4qn")
 
-[node name="Player_Lip" type="Node" parent="Character/Char_States"]
+[node name="Player_Lip" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("14_uchij")
 
-[node name="Player_Pipe" type="Node" parent="Character/Char_States"]
+[node name="Player_Pipe" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("15_0oa0h")
 
-[node name="Player_Pipesnap" type="Node" parent="Character/Char_States"]
+[node name="Player_Pipesnap" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("16_wfjhv")
 
-[node name="Player_Pipesnap_Air" type="Node" parent="Character/Char_States"]
+[node name="Player_Pipesnap_Air" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("17_ijhcx")
 
-[node name="Player_Reset" type="Node" parent="Character/Char_States"]
+[node name="Player_Reset" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("18_5oli8")
 
-[node name="Player_Setup" type="Node" parent="Character/Char_States"]
+[node name="Player_Setup" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("19_nu5ed")
-
-[node name="Char_Statemachine" type="Node3D" parent="Character"]
-script = ExtResource("5_ons1q")
 
 [node name="Char_Turntable" type="Node3D" parent="Character"]
 transform = Transform3D(0.7942238, 0, -0.60762537, 0, 1, 0, 0.60762537, 0, 0.7942238, -8.57115e-05, -0.00309938, -1.13249e-05)

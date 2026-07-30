@@ -1,18 +1,18 @@
-class_name PlayerStatemachine
+class_name CharacterStatemachine
 extends Node
 
-@export var initial_state : PlayerState
+@export var initial_state : CharacterState
 @onready var char_ctrl : CharacterController = $".."
 
-var current_state : PlayerState
+var current_state : CharacterState
 var states : Dictionary = {}
 
 func init():
 	for child in get_children():
-		if child is PlayerState:
+		if child is CharacterState:
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(on_child_transition)
-			child.init(char_ctrl)
+			child.init(char_ctrl, char_ctrl.Char_Statemachine, char_ctrl.Char_Input, char_ctrl.Char_Animation, char_ctrl.Char_Tricks)
 			
 	if initial_state:
 		initial_state.enter()
@@ -20,15 +20,15 @@ func init():
 	print("Transitioning to Player State: " + current_state.name)
 
 			
-func _process(delta) -> void:
+func process(delta) -> void:
 	if current_state:
 		current_state.update(delta)
 		
-func _physics_process(delta: float) -> void:
+func physics_process(delta: float) -> void:
 	if current_state:
 		current_state.physics_update(delta)
 
-func on_child_transition(state : PlayerState, new_state_name : String):
+func on_child_transition(state : CharacterState, new_state_name : String):
 	if state != current_state:
 		return	
 	var new_state = states.get(new_state_name.to_lower())

@@ -1,4 +1,4 @@
-extends PlayerState
+extends CharacterState
 
 func enter():
 	pass
