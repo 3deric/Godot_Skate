@@ -47,5 +47,3 @@ func set_force_state(new_state_name : String):
 	new_state.enter()
 	current_state = new_state
 	print("Transitioning to State: " + new_state.name)
-	
-	#on_child_transition()

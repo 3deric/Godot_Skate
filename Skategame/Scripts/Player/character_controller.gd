@@ -210,7 +210,7 @@ func get_can_lip() -> bool:
 	if !path:
 		return false
 	var _lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
-	if _lip_start.valid:
+	if _lip_start.valid: 
 		var _curve = path.curve
 		lip_start_pos = _lip_start.pos
 		curve_tangent = _lip_start.tan
@@ -223,3 +223,9 @@ func get_can_lip() -> bool:
 func set_previous_values() -> void:
 	last_up_dir = up_direction
 	last_vel = velocity
+
+func set_up_alignment() -> void:
+	self.global_transform = LibHelpers.align(self.global_transform, self.up_direction)
+
+func set_path_null() -> void:
+	self.path = null

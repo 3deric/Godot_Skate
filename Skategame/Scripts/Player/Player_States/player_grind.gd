@@ -1,21 +1,23 @@
 extends CharacterState
 
 func enter():
-	ctrl.Char_Tricks._start_trick(ctrl.Char_Tricks.available_grind_tricks)	
+	tricks.set_grind_trick()
+	tricks.performed_olli = false
 	ctrl.reset_shapecast(false)
-	ctrl.Char_Tricks.performed_olli = false
 	ctrl.randomize_balance()
 	
 func exit():
+	ctrl.set_path_null()
 	ctrl.reset_shapecast(true)
 	
 func physics_update(_delta : float):
+	ctrl.set_previous_values()
+	ctrl.set_up_alignment()
 	_grind_movement(_delta)
-	ctrl.last_up_dir = ctrl.up_direction
-	ctrl.last_vel = ctrl.velocity
-	_handle_jump()	
-	ctrl.set_char_up_direction()
-	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
+	_handle_jump()
+	_grind_end_check()
+	tricks.set_grind_trick()
+
 
 func _grind_movement(_delta) -> void: 	
 	ctrl.curve_snap = LibHelpers.get_path_position(ctrl.path, ctrl.path_offset)
@@ -31,5 +33,14 @@ func _grind_movement(_delta) -> void:
 	ctrl.velocity = ctrl.xform.basis.z * ctrl.path_vel * ctrl.path_dir
 	ctrl.balance_logic(_delta, 0)
 	
-func _handle_jump() -> void:
-	pass
+func _grind_end_check() -> void:
+	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.1) and !ctrl.path_closed:
+		ctrl.reset_shapecast(true)
+		if ctrl.shape_col_ground:
+			var _coll_info = ctrl.shape_col_ground[0].collider
+			var _coll_normal = ctrl.shape_col_ground[0].normal
+			if _coll_info.is_in_group('pipe'):
+				transitioned.emit(self, "Player_Pipe")
+			else:
+				transitioned.emit(self, "Player_Ground")
+		transitioned.emit(self, "Player_Air")

@@ -170,6 +170,14 @@ func set_air_trick():
 	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRAB:
 		_start_trick(available_grab_tricks)
 		return
+		
+func set_grind_trick():
+	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
+		_start_trick(available_grind_tricks)
+		
+func set_lip_trick():
+	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
+		_start_trick(available_lip_tricks)
 			
-func set_end_air():
+func set_end_trick():
 	_end_trick()

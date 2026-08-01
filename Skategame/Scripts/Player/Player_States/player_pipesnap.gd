@@ -16,6 +16,7 @@ func physics_update(_delta : float):
 	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
 	ctrl.move_and_slide()
 	tricks.set_air_trick()
+	_grind_lip_check()
 
 func _pipe_snap_movement(_delta) -> void: 
 	ctrl.curve_snap = LibHelpers.get_path_position(ctrl.path, ctrl.path_offset)
@@ -38,9 +39,12 @@ func _pipe_end_check() -> void:
 			ctrl.up_direction = (newUpDir + ctrl.last_up_dir)/2
 		else:
 			ctrl.up_direction = ctrl.last_up_dir
+		ctrl.set_path_null()
 		transitioned.emit(self, "Player_Pipesnap_Air")
 
 func _ground_check() -> void:
 	if ctrl.position.y < ctrl.curve_snap.y:
 		ctrl.reset_shapecast(true)
-		transitioned.emit(self, "Player_Pipe")	
+		ctrl.set_path_null()
+		transitioned.emit(self, "Player_Pipe")
+		

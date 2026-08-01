@@ -14,6 +14,7 @@ func physics_update(_delta : float):
 	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
 	ctrl.move_and_slide()
 	tricks.set_air_trick()
+	_grind_lip_check()
 
 func _pipe_snap_air_movement(_delta) -> void:
 	ctrl.global_rotate(ctrl.xform.basis.y, ctrl.Char_Input.get_input().x * ctrl.stats.rot_jump * _delta)

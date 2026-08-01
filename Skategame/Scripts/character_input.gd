@@ -91,6 +91,11 @@ func get_input_jump() -> bool:
 		return true
 	return false
 	
+func get_input_grind() -> bool:
+	if Input.is_action_pressed("Grind") or input_buffer.get_last_input() == Action.GRIND:
+		return true
+	return false	
+	
 func get_dir_before_jump() -> int:
 	if input_buffer.get_second_last_input() == Action.LEFT:
 		return 1
