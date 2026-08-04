@@ -7,20 +7,9 @@ func exit() -> void:
 	pass
 
 func physics_update(_delta : float):
-	ctrl.surface_check(false)
-	ctrl.set_path()	
-	_ground_movement(_delta)
-	ctrl.set_previous_values()
+	_ground_movement(_delta)					
+	_handle_jump()	
 	_pipesnap_check()
-	_ground_check()	
-	ctrl.set_char_up_direction()
-	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
-	ctrl.move_and_slide()
-	if input.can_jump():
-		ctrl.apply_floor_snap()
-	anim.animation_handler_ground_pipe(_delta, ctrl.velocity)
-	tricks.set_combo_cooldown(_delta)
-	_handle_jump()
 	_grind_lip_check()
 
 func _pipesnap_check() -> void:

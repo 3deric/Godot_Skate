@@ -43,3 +43,4 @@ func _grind_lip_check() -> void:
 		transitioned.emit(self, "Player_Grind")
 	elif ctrl.get_can_lip():
 		transitioned.emit(self, "Player_Lip")
+		

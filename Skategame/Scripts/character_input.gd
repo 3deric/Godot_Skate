@@ -87,7 +87,7 @@ func get_input() -> Vector3:
 	
 func get_input_jump() -> bool:
 	if input_buffer.get_last_input() == Action.JUMP and can_jump():
-		input_buffer.buffer.clear()
+		#input_buffer.buffer.clear()
 		return true
 	return false
 	
@@ -103,8 +103,3 @@ func get_dir_before_jump() -> int:
 		return -1
 	else:
 		return 0
-			
-func _on_player_state_changed():
-	var last_input = input_buffer.get_last_input()
-	if not last_input == Action.JUMP:
-		input_buffer.push(Action.JUMP)

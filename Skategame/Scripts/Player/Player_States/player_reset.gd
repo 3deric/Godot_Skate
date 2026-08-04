@@ -15,8 +15,7 @@ func _reset_player() -> void:
 	ctrl.Ingame_Ui.set_fail_view(false)
 	ctrl.Ingame_Ui.set_balance_view(false)
 	ctrl.Char_Ragdoll.set_end_simulation()
-	ctrl.Char_Animation.reset_vis_transform(ctrl)
-	ctrl.Char_Animation.init(true)
+
 	ctrl.standing_timer = GlobalSettings.STANDING_TIMER
 	ctrl.up_direction = Vector3.UP
 	ctrl.velocity = Vector3.ZERO
@@ -25,3 +24,6 @@ func _reset_player() -> void:
 	ctrl.Camera_Pos.global_position = _transform.origin
 	ctrl.balance_angle = 0.0
 	ctrl.Char_Input.reset()
+	anim.init(true)
+	anim.reset_vis_balance()
+	anim.reset_vis_transform(ctrl)

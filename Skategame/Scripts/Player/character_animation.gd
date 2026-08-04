@@ -48,6 +48,9 @@ func set_vis_balance(state : int, balance_angle : float) -> void:
 	else:
 		skeleton_3d.rotation = Vector3(0,0,0)
 		
+func reset_vis_balance() -> void:
+	skeleton_3d.rotation = Vector3(0,0,0)	
+		
 func set_vis_transform(char_controller : CharacterController, _delta, _speed) -> void:
 	Char.global_transform = Char.global_transform.interpolate_with(char_controller.global_transform, _delta * _speed)
 	Char.global_position = char_controller.global_position

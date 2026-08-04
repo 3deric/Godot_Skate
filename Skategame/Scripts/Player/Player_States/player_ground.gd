@@ -8,22 +8,13 @@ func exit() -> void:
 	pass
 
 func physics_update(_delta : float):
-	ctrl.surface_check(false) 					# collision check
-	ctrl.set_path()						# get path for grinding and pipesnap
-	_ground_movement(_delta)					# execute ground motion
-	_ground_check()
-	ctrl.set_previous_values()
-	ctrl.set_char_up_direction()
-	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
-	ctrl.move_and_slide()
-	if input.can_jump():
-		ctrl.apply_floor_snap()
-	anim.animation_handler_ground_pipe(_delta, ctrl.velocity)
-	tricks.set_combo_cooldown(_delta)
+	_ground_movement(_delta)					
 	_handle_jump()	
 	_grind_lip_check()
 	
 func _ground_movement(_delta) -> void: 	
+	ctrl.surface_check(false) 		
+	ctrl.set_path()	
 	ctrl.last_ground_transform = ctrl.global_transform
 	if input.get_input().y < 0:
 		ctrl.velocity *= GlobalSettings.GROUND_SLOWDOWN
@@ -36,6 +27,15 @@ func _ground_movement(_delta) -> void:
 		ctrl.velocity += ctrl.xform.basis.z * input.get_input().z * ctrl.stats.acc
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	ctrl.velocity = LibHelpers.kill_orthogonal_velocity(ctrl.xform, ctrl.velocity)
+	_ground_check()
+	ctrl.set_previous_values()
+	ctrl.set_char_up_direction()
+	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
+	ctrl.move_and_slide()
+	if input.can_jump():
+		ctrl.apply_floor_snap()
+	anim.animation_handler_ground_pipe(_delta, ctrl.velocity)
+	tricks.set_combo_cooldown(_delta)	
 		
 func _ground_check() -> void:
 	if ctrl.shape_col_ground:
@@ -47,5 +47,3 @@ func _ground_check() -> void:
 			return
 	else:
 		transitioned.emit(self, "Player_Air")
-
-  

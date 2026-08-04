@@ -9,7 +9,7 @@ func enter():
 func exit():
 	ctrl.set_path_null()
 	ctrl.reset_shapecast(true)
-	anim.set_vis_balance(2,0)
+	anim.reset_vis_balance()
 
 func physics_update(_delta : float):
 	ctrl.set_previous_values()

@@ -14,6 +14,8 @@ func _setup_movement(_delta) -> void:
 
 func _reset() -> void:
 	ctrl.top_level = false
-	ctrl.Char_Animation.init(false)
 	ctrl.position = Vector3.ZERO
 	ctrl.rotation = Vector3.ZERO
+	anim.init(false)
+	anim.reset_vis_balance()
+	anim.reset_vis_transform(ctrl)
