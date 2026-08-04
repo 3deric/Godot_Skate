@@ -24,3 +24,18 @@ func _air_check() -> void:
 	if !ctrl.Char_Input.get_input().y == 0:
 		ctrl.reset_shapecast(true)
 		transitioned.emit(self, "Player_Air")
+
+func _get_faceplant(shape_col_fwd : Array, up_direction : Vector3) -> bool:
+	var floor_col = null
+	if len(shape_col_fwd) > 0:
+		for col in shape_col_fwd:
+			if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
+				floor_col = col
+	if floor_col and up_direction.dot(Vector3.UP) < 0.5:
+		var _normal = floor_col.normal
+		var _dot = _normal.dot(up_direction)
+		if _dot <= 0.5:
+			print("Fall Faceplant: " + str(_dot))
+			transitioned.emit(self, "Player_Fall")
+			return true
+	return false

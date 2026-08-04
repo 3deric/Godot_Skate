@@ -16,12 +16,14 @@ func physics_update(_delta : float):
 	ctrl.set_up_alignment()
 	_grind_movement(_delta)
 	if ctrl.balance_logic(_delta, 0):
-		print("fall")
+		_handle_fall()
+		return
 	anim.set_vis_balance(0, ctrl.balance_angle)
-	_handle_jump()
-	_grind_end_check()
+	if _handle_jump():
+		return
+	if _grind_end_check():
+		return
 	tricks.set_grind_trick()
-
 
 func _grind_movement(_delta) -> void: 	
 	ctrl.curve_snap = LibHelpers.get_path_position(ctrl.path, ctrl.path_offset)
@@ -37,7 +39,7 @@ func _grind_movement(_delta) -> void:
 	ctrl.velocity = ctrl.xform.basis.z * ctrl.path_vel * ctrl.path_dir
 	ctrl.balance_logic(_delta, 0)
 	
-func _grind_end_check() -> void:
+func _grind_end_check() -> bool:
 	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.1) and !ctrl.path_closed:
 		ctrl.reset_shapecast(true)
 		if ctrl.shape_col_ground:
@@ -45,11 +47,15 @@ func _grind_end_check() -> void:
 			var _coll_normal = ctrl.shape_col_ground[0].normal
 			if _coll_info.is_in_group('pipe'):
 				transitioned.emit(self, "Player_Pipe")
+				return true
 			else:
 				transitioned.emit(self, "Player_Ground")
+				return true
 		transitioned.emit(self, "Player_Air")
+		return true
+	return false
 
-func _handle_jump() -> void:
+func _handle_jump() -> bool:
 	if input.get_input_jump():
 		ctrl.velocity = ctrl.xform.basis.z * abs(ctrl.path_vel)
 		ctrl.velocity += ctrl.xform.basis.y * ctrl.stats.jump_vel
@@ -57,4 +63,9 @@ func _handle_jump() -> void:
 		ctrl.position += ctrl.xform.basis.y * 0.05
 		input.set_jump_cooldown()
 		transitioned.emit(self, "Player_Air")
+		return true
+	return false
 	
+func _handle_fall() -> void:
+	print("Fall Balance Issues: " + str(ctrl.balance_angle))
+	transitioned.emit(self, "Player_Fall")

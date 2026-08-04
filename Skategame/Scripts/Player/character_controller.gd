@@ -103,10 +103,9 @@ func set_char_up_direction() -> void:
 	else:
 		up_direction = last_up_dir
 
-func set_fall(_fall_reason, _fall_value) -> void:
+func set_fall() -> void:
 	Char_Tricks.set_clear_tricks()
 	Char_Ragdoll.set_start_simulation(last_vel)
-	#Char_Statemachine.set_player_state(CharStates.State.FALL)
 	Ingame_Ui.set_fail_view(true)
 	fall_timer = GlobalSettings.FALL_TIMER
 	

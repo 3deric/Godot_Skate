@@ -7,26 +7,23 @@ func exit():
 	tricks.set_end_trick()
 
 func physics_update(_delta : float):
-	ctrl.surface_check(true)
-	
 	_air_movement(_delta)
-	
-	ctrl.set_previous_values()
-	
-	_ground_check()
-	
-	ctrl.set_char_up_direction()
-	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
-	ctrl.move_and_slide()
 	tricks.set_air_trick()
-	_grind_lip_check()
+	if _grind_lip_check():
+		return
 
 func _air_movement(_delta) -> void: 	
+	ctrl.surface_check(true)
 	var _rot_delta = ctrl.Char_Input.get_input().x * ctrl.stats.rot_jump * _delta
 	ctrl.global_rotate(ctrl.xform.basis.y, _rot_delta)
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	ctrl.up_direction = lerp(ctrl.up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
-
+	ctrl.set_previous_values()
+	_ground_check()
+	ctrl.set_char_up_direction()
+	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
+	ctrl.move_and_slide()
+	
 func _ground_check() -> void:
 	if ctrl.shape_col_ground:
 		var _coll_info = ctrl.shape_col_ground[0].collider

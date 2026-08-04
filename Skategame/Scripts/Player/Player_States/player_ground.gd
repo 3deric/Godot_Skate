@@ -8,14 +8,18 @@ func exit() -> void:
 	pass
 
 func physics_update(_delta : float):
-	_ground_movement(_delta)					
-	_handle_jump()	
-	_grind_lip_check()
+	_ground_movement(_delta, true)
+	if _handle_jump():
+		return
+	if _grind_lip_check():
+		return
 	
-func _ground_movement(_delta) -> void: 	
+func _ground_movement(_delta, store: bool = false) -> void: 	
 	ctrl.surface_check(false) 		
-	ctrl.set_path()	
-	ctrl.last_ground_transform = ctrl.global_transform
+	ctrl.set_path()
+	_ground_check()	
+	if store:
+		ctrl.last_ground_transform = ctrl.global_transform
 	if input.get_input().y < 0:
 		ctrl.velocity *= GlobalSettings.GROUND_SLOWDOWN
 		ctrl.global_rotate(ctrl.xform.basis.y, input.get_input().x * ctrl.stats.rot_kickturn * _delta)
@@ -27,7 +31,6 @@ func _ground_movement(_delta) -> void:
 		ctrl.velocity += ctrl.xform.basis.z * input.get_input().z * ctrl.stats.acc
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	ctrl.velocity = LibHelpers.kill_orthogonal_velocity(ctrl.xform, ctrl.velocity)
-	_ground_check()
 	ctrl.set_previous_values()
 	ctrl.set_char_up_direction()
 	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
@@ -44,6 +47,6 @@ func _ground_check() -> void:
 		if _coll_info.is_in_group('pipe'):
 			if ctrl.up_direction.dot(_coll_normal) > 0.995:
 				transitioned.emit(self, "Player_Pipe")
-			return
+				return
 	else:
 		transitioned.emit(self, "Player_Air")

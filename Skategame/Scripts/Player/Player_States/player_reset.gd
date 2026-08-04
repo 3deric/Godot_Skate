@@ -7,7 +7,7 @@ func exit() -> void:
 	pass
 
 func update(delta : float):
-	if Input.is_action_pressed("Jump"):
+	if Input.is_action_pressed("Up"):
 		transitioned.emit(self, "Player_Ground")
 
 func _reset_player() -> void:

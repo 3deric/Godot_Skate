@@ -1,4 +1,4 @@
-[gd_scene load_steps=79 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=80 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" uid="uid://cplfljpkpqfeq" path="res://Scripts/character_init.gd" id="1_4pbxa"]
 [ext_resource type="Script" uid="uid://mb0rtkjq1w6v" path="res://Scripts/Player/character_controller.gd" id="1_5mxk1"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" uid="uid://b2n8fflm4020s" path="res://Scripts/Player/Player_States/player_pipesnap_air.gd" id="17_ijhcx"]
 [ext_resource type="Script" uid="uid://coa2rq5tb34jb" path="res://Scripts/Player/Player_States/player_reset.gd" id="18_5oli8"]
 [ext_resource type="Script" uid="uid://c8mpa7pb3wghd" path="res://Scripts/Player/Player_States/player_setup.gd" id="19_nu5ed"]
+[ext_resource type="Script" uid="uid://b57jry454yhg6" path="res://Scripts/Player/Player_States/player_fall.gd" id="21_w6p7y"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6m2el"]
 radius = 0.09765625
@@ -2071,6 +2072,9 @@ script = ExtResource("18_5oli8")
 
 [node name="Player_Setup" type="Node" parent="Character/Char_Statemachine"]
 script = ExtResource("19_nu5ed")
+
+[node name="Player_Fall" type="Node" parent="Character/Char_Statemachine"]
+script = ExtResource("21_w6p7y")
 
 [node name="Char_Turntable" type="Node3D" parent="Character"]
 transform = Transform3D(0.7942238, 0, -0.60762537, 0, 1, 0, 0.60762537, 0, 0.7942238, -8.57115e-05, -0.00309938, -1.13249e-05)
