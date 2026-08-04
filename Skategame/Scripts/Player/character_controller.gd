@@ -36,7 +36,6 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input
-@onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 @onready var Player_Scene : Player = $".."
 @onready var Char_Statemachine: CharacterStatemachine = $Char_Statemachine
 
@@ -106,12 +105,12 @@ func set_char_up_direction() -> void:
 func set_fall() -> void:
 	Char_Tricks.set_clear_tricks()
 	Char_Ragdoll.set_start_simulation(last_vel)
-	Ingame_Ui.set_fail_view(true)
+	#Ingame_Ui.set_fail_view(true)
 	fall_timer = GlobalSettings.FALL_TIMER
 	
 func _reset_player(_transform : Transform3D) -> void:
-	Ingame_Ui.set_fail_view(false)
-	Ingame_Ui.set_balance_view(false)
+	#Ingame_Ui.set_fail_view(false)
+	#Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
 	Char_Animation.reset_vis_transform(self)
 	standing_timer = GlobalSettings.STANDING_TIMER
@@ -142,7 +141,7 @@ func balance_logic(delta: float, axis : int) -> bool:
 			_set_balance_dir(round(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
-	Ingame_Ui.set_balance_value(-balance_angle)
+	#Ingame_Ui.set_balance_value(-balance_angle)
 	if abs(balance_angle) > PI / stats.balance_threshold:
 		return true
 	return false

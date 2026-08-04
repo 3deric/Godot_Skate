@@ -8,7 +8,8 @@ func exit():
 
 func physics_update(_delta : float):
 	_pipe_snap_air_movement(_delta)
-	_air_check()
+	if _air_check():
+		return
 	ctrl.set_previous_values()
 	ctrl.set_char_up_direction()
 	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
@@ -20,10 +21,12 @@ func _pipe_snap_air_movement(_delta) -> void:
 	ctrl.global_rotate(ctrl.xform.basis.y, ctrl.Char_Input.get_input().x * ctrl.stats.rot_jump * _delta)
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	
-func _air_check() -> void:
+func _air_check() -> bool:
 	if !ctrl.Char_Input.get_input().y == 0:
 		ctrl.reset_shapecast(true)
 		transitioned.emit(self, "Player_Air")
+		return true
+	return false
 
 func _get_faceplant(shape_col_fwd : Array, up_direction : Vector3) -> bool:
 	var floor_col = null
@@ -38,4 +41,17 @@ func _get_faceplant(shape_col_fwd : Array, up_direction : Vector3) -> bool:
 			print("Fall Faceplant: " + str(_dot))
 			transitioned.emit(self, "Player_Fall")
 			return true
+	return false
+	
+func _grind_lip_check() -> bool:
+	if !input.get_input_grind():
+		return false
+	if ctrl.path == null:
+		return false
+	if ctrl.get_can_grind():
+		transitioned.emit(self, "Player_Grind")
+		return true
+	elif ctrl.get_can_lip():
+		transitioned.emit(self, "Player_Lip")
+		return true
 	return false

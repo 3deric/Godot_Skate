@@ -36,3 +36,16 @@ func _ground_check() -> void:
 			return
 		if _coll_info.is_in_group('floor'):
 			transitioned.emit(self, "Player_Ground")
+
+func _grind_lip_check() -> bool:
+	if !input.get_input_grind():
+		return false
+	if ctrl.path == null:
+		return false
+	if ctrl.get_can_grind():
+		transitioned.emit(self, "Player_Grind")
+		return true
+	elif ctrl.get_can_lip():
+		transitioned.emit(self, "Player_Lip")
+		return true
+	return false

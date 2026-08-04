@@ -27,25 +27,3 @@ func update(_delta : float):
 	
 func physics_update(_delta : float):
 	pass
-
-func _handle_jump() -> bool:
-	if input.get_input_jump():
-		ctrl.velocity += Vector3.UP * ctrl.stats.jump_vel
-		input.set_jump_cooldown()
-		transitioned.emit(self, "Player_Air")
-		return true
-	return false
-
-func _grind_lip_check() -> bool:
-	if !input.get_input_grind():
-		return false
-	if ctrl.path == null:
-		return false
-	if ctrl.get_can_grind():
-		transitioned.emit(self, "Player_Grind")
-		return true
-	elif ctrl.get_can_lip():
-		transitioned.emit(self, "Player_Lip")
-		return true
-	return false
-		

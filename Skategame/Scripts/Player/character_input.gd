@@ -3,7 +3,6 @@ extends Node3D
 
 @onready var Char_Controller : CharacterController = $".."
 @onready var Player_Scene : Player = $"../.."
-@onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 
 enum Action {
 	JUMP,
@@ -70,7 +69,7 @@ func _update_input_buffer():
 		input_buffer.push(Action.REVERT)
 		
 	if input_buffer.get_buffer_cooldown() or input_buffer.get_buffer_updated():
-		Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
+		pass#Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
 			
 func reset() -> void:
 	input = Vector3i.ZERO

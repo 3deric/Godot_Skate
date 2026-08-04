@@ -12,8 +12,8 @@ func update(delta : float):
 
 func _reset_player() -> void:
 	var _transform = ctrl.last_ground_transform
-	ctrl.Ingame_Ui.set_fail_view(false)
-	ctrl.Ingame_Ui.set_balance_view(false)
+	#ctrl.Ingame_Ui.set_fail_view(false)
+	#ctrl.Ingame_Ui.set_balance_view(false)
 	ctrl.Char_Ragdoll.set_end_simulation()
 
 	ctrl.standing_timer = GlobalSettings.STANDING_TIMER
