@@ -8,3 +8,4 @@ class_name PlayerSettings
 @export var rot_kickturn : float = 4.0
 @export var rot_jump : float= 7.0
 @export var max_vel : float = 12.0
+@export var balance_threshold : float = 4.0

@@ -9,11 +9,15 @@ func enter():
 func exit():
 	ctrl.set_path_null()
 	ctrl.reset_shapecast(true)
+	anim.set_vis_balance(2,0)
 	
 func physics_update(_delta : float):
 	ctrl.set_previous_values()
 	ctrl.set_up_alignment()
 	_grind_movement(_delta)
+	if ctrl.balance_logic(_delta, 0):
+		print("fall")
+	anim.set_vis_balance(0, ctrl.balance_angle)
 	_handle_jump()
 	_grind_end_check()
 	tricks.set_grind_trick()
@@ -44,3 +48,13 @@ func _grind_end_check() -> void:
 			else:
 				transitioned.emit(self, "Player_Ground")
 		transitioned.emit(self, "Player_Air")
+
+func _handle_jump() -> void:
+	if input.get_input_jump():
+		ctrl.velocity = ctrl.xform.basis.z * abs(ctrl.path_vel)
+		ctrl.velocity += ctrl.xform.basis.y * ctrl.stats.jump_vel
+		ctrl.velocity += ctrl.xform.basis.x * input.get_dir_before_jump() * GlobalSettings.JUMP_GRIND_DIR_MULTI
+		ctrl.position += ctrl.xform.basis.y * 0.05
+		input.set_jump_cooldown()
+		transitioned.emit(self, "Player_Air")
+	

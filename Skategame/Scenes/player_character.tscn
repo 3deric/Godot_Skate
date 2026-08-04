@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://d2nejhxrsjjgk"]
+[gd_scene load_steps=79 format=3 uid="uid://d2nejhxrsjjgk"]
 
 [ext_resource type="Script" uid="uid://cplfljpkpqfeq" path="res://Scripts/character_init.gd" id="1_4pbxa"]
 [ext_resource type="Script" uid="uid://mb0rtkjq1w6v" path="res://Scripts/Player/character_controller.gd" id="1_5mxk1"]
@@ -17,7 +17,6 @@
 [ext_resource type="Script" uid="uid://sxi0w2r15ml8" path="res://Scripts/Player/Player_States/player_air.gd" id="11_e05f7"]
 [ext_resource type="Script" uid="uid://d1ic5rnxeguo6" path="res://Scripts/Player/Player_States/player_none.gd" id="12_e05f7"]
 [ext_resource type="Script" uid="uid://0jarjmpf6we3" path="res://Scripts/Player/Player_States/player_grind.gd" id="12_j5y83"]
-[ext_resource type="Script" uid="uid://b7qjhj7vjo4u4" path="res://Scripts/character_fall.gd" id="13_6m2el"]
 [ext_resource type="Script" uid="uid://u7ano4ot16nx" path="res://Scripts/Player/Player_States/player_ground.gd" id="13_ck4qn"]
 [ext_resource type="Script" uid="uid://dtxtlg8o7qosi" path="res://Scripts/Player/Player_States/player_lip.gd" id="14_uchij"]
 [ext_resource type="Script" uid="uid://x2vydu801neg" path="res://Scripts/Player/Player_States/player_pipe.gd" id="15_0oa0h"]
@@ -2079,9 +2078,6 @@ script = ExtResource("10_ews8v")
 
 [node name="Char_Ragdoll" type="Node3D" parent="Character"]
 script = ExtResource("5_4fh7w")
-
-[node name="Char_Fallcheck" type="Node3D" parent="Character"]
-script = ExtResource("13_6m2el")
 
 [node name="Debug_View" parent="Character" instance=ExtResource("7_ajo0r")]
 visible = false

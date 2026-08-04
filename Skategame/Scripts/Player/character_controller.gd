@@ -36,7 +36,6 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input
-@onready var Char_Fallcheck : CharacterFallcheck = $Char_Fallcheck
 @onready var Ingame_Ui : IngameOverlay = $Ingame_Ui
 @onready var Player_Scene : Player = $".."
 @onready var Char_Statemachine: CharacterStatemachine = $Char_Statemachine
@@ -135,7 +134,7 @@ func randomize_balance() -> void:
 	else:
 		balance_dir = -1
 
-func balance_logic(delta: float, axis : int) -> void:
+func balance_logic(delta: float, axis : int) -> bool:
 	if axis == 0:
 		if(Char_Input.get_input().x > 0.6 or Char_Input.get_input().x < -0.6):
 			_set_balance_dir(round(Char_Input.get_input().x))
@@ -145,6 +144,9 @@ func balance_logic(delta: float, axis : int) -> void:
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	Ingame_Ui.set_balance_value(-balance_angle)
+	if abs(balance_angle) > PI / stats.balance_threshold:
+		return true
+	return false
 	
 func _set_balance_dir(_dir: int) -> void:
 	balance_dir = _dir

@@ -38,11 +38,11 @@ func reset():
 	anim_tree.set('parameters/conditions/is_trick0', false)
 	anim_tree.set('parameters/conditions/is_trick1', false)	
 
-func set_vis_balance(state : CharStates.State, balance_angle : float) -> void:
-	if state == CharStates.State.GRIND:
+func set_vis_balance(state : int, balance_angle : float) -> void:
+	if state == 0:
 		var current_rotation  = skeleton_3d.rotation
 		skeleton_3d.rotation = Vector3(current_rotation.x, current_rotation.y, -balance_angle * 0.5)
-	elif state == CharStates.State.LIP:
+	elif state == 1:
 		var current_rotation = skeleton_3d.rotation
 		skeleton_3d.rotation = Vector3(-balance_angle * 0.5, current_rotation.y, current_rotation.z)
 	else:

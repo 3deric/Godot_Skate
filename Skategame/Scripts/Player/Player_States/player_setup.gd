@@ -1,8 +1,7 @@
 extends CharacterState
 
 func enter() -> void:
-	ctrl.top_level = false
-	ctrl.Char_Animation.init(false)
+	_reset()
 	
 func exit() -> void:
 	ctrl.top_level = true
@@ -12,3 +11,9 @@ func physics_update(_delta : float) -> void:
 
 func _setup_movement(_delta) -> void: 	
 	ctrl.global_rotate(ctrl.xform.basis.y, ctrl.Char_Input.get_input().x * ctrl.stats.rot_setup * _delta)
+
+func _reset() -> void:
+	ctrl.top_level = false
+	ctrl.Char_Animation.init(false)
+	ctrl.position = Vector3.ZERO
+	ctrl.rotation = Vector3.ZERO
