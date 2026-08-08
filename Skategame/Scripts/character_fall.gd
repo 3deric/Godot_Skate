@@ -1,35 +1,35 @@
 class_name CharacterFallcheck
-extends Node3D
+extends Node
 
 var recent_max_speed : float = 0.0
 
-func get_out_of_bounds(position : Vector3) -> bool:
-	if position.y < - 100:
-		print("Fall Out of Bounds: " + str(position.y))
+func get_fall_balance(balance_angle : float, threshold : float = 4.0) -> bool:
+	if abs(balance_angle) > PI / threshold:
 		return true
 	return false
-	
-func get_faceplant(shape_col_fwd : Array, up_direction : Vector3) -> bool:
-	var floor_col = null
+
+func get_fall_faceplant(shape_col_fwd : Array, up_direction : Vector3 = Vector3.UP) -> bool:
+	var _floor_col = null
+	var _normal = Vector3.ZERO
 	if len(shape_col_fwd) > 0:
 		for col in shape_col_fwd:
 			if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
-				floor_col = col
-	if floor_col and up_direction.dot(Vector3.UP) < 0.5:
-		var _normal = floor_col.normal
+				_floor_col = col
+				_normal = _floor_col.normal
+	if _floor_col and up_direction.dot(_normal) < 0.5:
 		var _dot = _normal.dot(up_direction)
 		if _dot <= 0.5:
 			print("Fall Faceplant: " + str(_dot))
 			return true
 	return false
-	
-func get_balance_issues(balance_angle : float, balance_treshold : float = 4.0) -> bool:
-	if (balance_angle > PI / balance_treshold or balance_angle < -PI /balance_treshold):
-		print("Fall Balance Issues: " + str(balance_angle))
+
+func get_fall_out_of_bounds(position : Vector3) -> bool:
+	if position.y < - 100:
+		print("Fall Out of Bounds: " + str(position.y))
 		return true
 	return false
 	
-func get_landed_perpendicular(xform, velocity : Vector3, up_direction : Vector3) -> bool:
+func get_fall_landed_perpendicular(xform, velocity : Vector3, up_direction : Vector3) -> bool:
 	var _fwd_vel : Vector3 = LibHelpers.forward_velocity(velocity, up_direction)
 	if _fwd_vel.length() <= GlobalSettings.PERPENDICULAR_FALL_THRESHOLD:
 		return false
@@ -38,7 +38,8 @@ func get_landed_perpendicular(xform, velocity : Vector3, up_direction : Vector3)
 		print("Fall Perpendicular: " + str(_perp.dot))
 		return true
 	return false
-	
+
+	#
 #func get_stand_perpendicular(up_direction : Vector3) -> bool:
 	#var _dot = up_direction.dot(Vector3.UP)
 	#if _dot < 0.85:
@@ -46,12 +47,12 @@ func get_landed_perpendicular(xform, velocity : Vector3, up_direction : Vector3)
 		#return true
 	#return false
 	#
-func get_decelleration(velocity : Vector3, last_vel : Vector3, delta) -> bool:
-	var dec = (velocity - last_vel) / delta
-	if dec.length_squared() > 250000 and velocity.length_squared() < last_vel.length_squared():
-		print("Fall Sudden Stop: " + str(dec))
-		return true
-	return false
+#func get_decelleration(velocity : Vector3, last_vel : Vector3, delta) -> bool:
+	#var dec = (velocity - last_vel) / delta
+	#if dec.length_squared() > 250000 and velocity.length_squared() < last_vel.length_squared():
+		#print("Fall Sudden Stop: " + str(dec))
+		#return true
+	#return false
 	
 	#if last_vel.length_squared() > 1 and velocity.length_squared() < 0.5:
 		#print(last_vel.length_squared())

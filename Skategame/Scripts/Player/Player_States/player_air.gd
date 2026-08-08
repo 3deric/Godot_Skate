@@ -40,8 +40,6 @@ func _ground_check() -> void:
 func _grind_lip_check() -> bool:
 	if !input.get_input_grind():
 		return false
-	if ctrl.path == null:
-		return false
 	if ctrl.get_can_grind():
 		transitioned.emit(self, "Player_Grind")
 		return true

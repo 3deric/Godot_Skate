@@ -14,13 +14,14 @@ func exit():
 func physics_update(_delta : float):
 	ctrl.set_previous_values()
 	ctrl.set_up_alignment()
+	ctrl.balance_logic(_delta, 1)
 	_lip_movement(_delta)
-	anim.set_vis_balance(1, ctrl.balance_angle)
-	if ctrl.balance_logic(_delta, 1):
+	if fall.get_fall_balance(ctrl.balance_angle):
 		_handle_fall()
 		return
 	if _handle_jump():
 		return
+	anim.set_vis_balance(1, ctrl.balance_angle)
 	tricks.set_lip_trick()
 
 func _lip_movement(_delta) -> void:

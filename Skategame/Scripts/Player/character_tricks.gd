@@ -1,5 +1,5 @@
 class_name CharacterTricks
-extends Node3D
+extends Node
 
 const COMBO_COOLDOWN_TIME : float = 0.5
 const ROT_ROUNDING : float = 15

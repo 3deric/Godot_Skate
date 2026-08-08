@@ -14,15 +14,16 @@ func exit():
 func physics_update(_delta : float):
 	ctrl.set_previous_values()
 	ctrl.set_up_alignment()
+	ctrl.balance_logic(_delta, 0)
 	_grind_movement(_delta)
-	if ctrl.balance_logic(_delta, 0):
+	if fall.get_fall_balance(ctrl.balance_angle):
 		_handle_fall()
 		return
-	anim.set_vis_balance(0, ctrl.balance_angle)
 	if _handle_jump():
 		return
 	if _grind_end_check():
 		return
+	anim.set_vis_balance(0, ctrl.balance_angle)
 	tricks.set_grind_trick()
 
 func _grind_movement(_delta) -> void: 	
@@ -45,7 +46,7 @@ func _grind_end_check() -> bool:
 		if ctrl.shape_col_ground:
 			var _coll_info = ctrl.shape_col_ground[0].collider
 			var _coll_normal = ctrl.shape_col_ground[0].normal
-			if _coll_info.is_in_group('pipe'):
+			if _coll_info.is_in_group('pipe'): # check the normal too, to avoid jittering at the end of a elevated grinddable surface
 				transitioned.emit(self, "Player_Pipe")
 				return true
 			else:

@@ -36,6 +36,7 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Char_Animation: CharacterAnimation = $Char_Animation
 @onready var Char_Tricks : CharacterTricks = $Char_Tricks
 @onready var Char_Input : CharacterInput = $Char_Input
+@onready var Char_Fall : CharacterFallcheck = $Char_Fall
 @onready var Player_Scene : Player = $".."
 @onready var Char_Statemachine: CharacterStatemachine = $Char_Statemachine
 
@@ -67,22 +68,19 @@ func _physics_process(delta):
 	#Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
 	#Char_Animation.set_vis_balance(balance_angle)
 
-func surface_check(is_air = true) -> void:
-	var speed : float = velocity.length()
-	var basis_y : Vector3 = xform.basis.y
-	var forward_dir : Vector3 = Vector3.ZERO
-
-	var move_clamp : float = min(speed, 0.25)
-
-	# To Do: Reimplement with new statemachine!
-	#if can_grind:
-		#forward_dir = curve_tangent * -path_dir * move_clamp
-	#else:
-		#forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * move_clamp
+func surface_check(is_air : bool = true, is_grind : bool = false) -> void:
+	var _speed : float = velocity.length()
+	var _basis_y : Vector3 = xform.basis.y
+	var _forward_dir : Vector3 = Vector3.ZERO
+	var _move_clamp : float = min(_speed, 5.0)
+	
+	if is_grind:
+		_forward_dir = curve_tangent * -path_dir * _move_clamp
+	else:
+		_forward_dir = LibHelpers.horizontal_velocity(velocity).normalized() * _move_clamp
 
 	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_air) else GlobalSettings.RAY_GROUND_AIR_DIST)
-		#var ray_dist : float = 0.1 if (can_air) else 0.25
 		Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist)
 		shape_col_ground = Shape_Cast_Ground.collision_result
 		if shape_col_ground:
@@ -92,7 +90,7 @@ func surface_check(is_air = true) -> void:
 				shape_col_ground = []
 	else:
 		shape_col_ground = []
-	Shape_Cast.target_position = to_local(position + forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
+	Shape_Cast.target_position = to_local(position + _forward_dir * GlobalSettings.SHAPE_CAST_OFFSET_MULTIPLIER)
 	shape_col_fwd = Shape_Cast.collision_result
 
 func set_char_up_direction() -> void:
@@ -127,12 +125,9 @@ func randomize_balance() -> void:
 	balance_time = 1.0
 	balance_angle = 0.0
 	var _rand : float  = randf()
-	if (_rand >= 0.5):
-		balance_dir = 1
-	else:
-		balance_dir = -1
+	balance_dir = 1 if _rand >= 0.5 else -1
 
-func balance_logic(delta: float, axis : int) -> bool:
+func balance_logic(delta: float, axis : int) -> void:
 	if axis == 0:
 		if(Char_Input.get_input().x > 0.6 or Char_Input.get_input().x < -0.6):
 			_set_balance_dir(round(Char_Input.get_input().x))
@@ -142,9 +137,6 @@ func balance_logic(delta: float, axis : int) -> bool:
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
 	#Ingame_Ui.set_balance_value(-balance_angle)
-	if abs(balance_angle) > PI / stats.balance_threshold:
-		return true
-	return false
 	
 func _set_balance_dir(_dir: int) -> void:
 	balance_dir = _dir
@@ -165,7 +157,7 @@ func set_path() -> void:
 	else:
 		path = null
 
-func get_pipesnap() -> Dictionary:
+func get_pipesnap() -> Dictionary: # Todo, refactor 
 	if path == null:
 		return {
 		"valid": false

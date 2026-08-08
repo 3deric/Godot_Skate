@@ -1,5 +1,5 @@
 class_name CharacterAnimation
-extends Node3D
+extends Node
 
 #controls the animtree of the Char_Controller
 @onready var anim_tree: AnimationTree = %AnimationTree

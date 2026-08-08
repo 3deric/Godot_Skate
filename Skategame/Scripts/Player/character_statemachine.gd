@@ -12,7 +12,7 @@ func init():
 		if child is CharacterState:
 			states[child.name.to_lower()] = child
 			child.transitioned.connect(on_child_transition)
-			child.init(char_ctrl, char_ctrl.Char_Statemachine, char_ctrl.Char_Input, char_ctrl.Char_Animation, char_ctrl.Char_Tricks)
+			child.init(char_ctrl, char_ctrl.Char_Statemachine, char_ctrl.Char_Input, char_ctrl.Char_Animation, char_ctrl.Char_Tricks, char_ctrl.Char_Fall)
 			
 	if initial_state:
 		initial_state.enter()

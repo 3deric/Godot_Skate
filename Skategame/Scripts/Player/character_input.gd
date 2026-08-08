@@ -1,5 +1,5 @@
 class_name CharacterInput
-extends Node3D
+extends Node
 
 @onready var Char_Controller : CharacterController = $".."
 @onready var Player_Scene : Player = $"../.."
