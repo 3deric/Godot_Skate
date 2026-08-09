@@ -30,15 +30,15 @@ var standing_timer : float = GlobalSettings.STANDING_TIMER
 @onready var Collision : CollisionShape3D = get_node('CollisionShape3D')
 @onready var Shape_Cast : ShapeCast3D = $ShapeCast3D
 @onready var Shape_Cast_Ground : ShapeCast3D = $ShapeCast3DGround
-@onready var Camera_Pos: Node3D = $"../Camera_Pos"
-@onready var Camera: Camera3D = $"../Camera_Pos/Camera3D"
-@onready var Char_Ragdoll : CharacterRagdoll = $Char_Ragdoll
-@onready var Char_Animation: CharacterAnimation = $Char_Animation
-@onready var Char_Tricks : CharacterTricks = $Char_Tricks
-@onready var Char_Input : CharacterInput = $Char_Input
-@onready var Char_Fall : CharacterFallcheck = $Char_Fall
+@onready var Camera_Pos: Node3D = $"../Character_Camera/Camera_Pos"
+@onready var Camera: Camera3D = $"../Character_Camera/Camera_Pos/Camera3D"
+@onready var Char_Ragdoll : CharacterRagdoll = $"../Systems/Char_Ragdoll"
+@onready var Char_Animation: CharacterAnimation = $"../Systems/Char_Animation"
+@onready var Char_Tricks : CharacterTricks = $"../Systems/Char_Tricks"
+@onready var Char_Input : CharacterInput = $"../Systems/Char_Input"
+@onready var Char_Fall : CharacterFallcheck = $"../Systems/Char_Fall"
+@onready var Char_Statemachine: CharacterStatemachine = $"../Systems/Char_Statemachine"
 @onready var Player_Scene : Player = $".."
-@onready var Char_Statemachine: CharacterStatemachine = $Char_Statemachine
 
 #grind and lip trick variables
 var balance_time  : float = 1.0
@@ -65,8 +65,6 @@ func _physics_process(delta):
 	Camera_Pos.global_position = Camera_Pos.position.lerp(global_position, delta * 10)
 	xform = global_transform
 	Char_Statemachine.physics_process(delta)
-	#Char_Animation.animation_handler(self, Char_Input.get_input(), Char_Statemachine.get_player_state(), delta)
-	#Char_Animation.set_vis_balance(balance_angle)
 
 func surface_check(is_air : bool = true, is_grind : bool = false) -> void:
 	var _speed : float = velocity.length()
@@ -103,12 +101,9 @@ func set_char_up_direction() -> void:
 func set_fall() -> void:
 	Char_Tricks.set_clear_tricks()
 	Char_Ragdoll.set_start_simulation(last_vel)
-	#Ingame_Ui.set_fail_view(true)
 	fall_timer = GlobalSettings.FALL_TIMER
 	
 func _reset_player(_transform : Transform3D) -> void:
-	#Ingame_Ui.set_fail_view(false)
-	#Ingame_Ui.set_balance_view(false)
 	Char_Ragdoll.set_end_simulation()
 	Char_Animation.reset_vis_transform(self)
 	standing_timer = GlobalSettings.STANDING_TIMER
@@ -118,7 +113,6 @@ func _reset_player(_transform : Transform3D) -> void:
 	global_transform = _transform
 	Camera_Pos.global_position = _transform.origin
 	balance_angle = 0.0
-	#Char_Statemachine.reset_player_state()
 	Char_Input.reset()
 
 func randomize_balance() -> void:
@@ -136,7 +130,6 @@ func balance_logic(delta: float, axis : int) -> void:
 			_set_balance_dir(round(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
-	#Ingame_Ui.set_balance_value(-balance_angle)
 	
 func _set_balance_dir(_dir: int) -> void:
 	balance_dir = _dir

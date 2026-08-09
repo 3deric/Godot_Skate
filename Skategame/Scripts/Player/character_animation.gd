@@ -3,10 +3,10 @@ extends Node
 
 #controls the animtree of the Char_Controller
 @onready var anim_tree: AnimationTree = %AnimationTree
-@onready var Char : Node3D = %Char
-@onready var Char_Input :CharacterInput = $"../Char_Input"
-@onready var skeleton_3d: Skeleton3D = %Char_Skeleton/Skeleton3D
-@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
+@onready var Char : Node3D = $"../../Character_Visual"
+@onready var Char_Input : CharacterInput = $"../Char_Input"
+@onready var skeleton_3d: Skeleton3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D"
+@onready var body_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_body"
 
 var anim_blend : Vector2 = Vector2.ZERO #blendvector for animations
 var ANIM_INTERP_SPEED : float = 5.0 #interpolation speed between anim states

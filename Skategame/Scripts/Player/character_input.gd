@@ -1,7 +1,7 @@
 class_name CharacterInput
 extends Node
 
-@onready var Char_Controller : CharacterController = $".."
+@onready var Char_Controller : CharacterController = $"../../Character"
 @onready var Player_Scene : Player = $"../.."
 
 enum Action {

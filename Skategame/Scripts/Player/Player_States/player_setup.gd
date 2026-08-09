@@ -4,7 +4,7 @@ func enter() -> void:
 	_reset()
 	
 func exit() -> void:
-	ctrl.top_level = true
+	pass
 
 func physics_update(_delta : float) -> void:
 	_setup_movement(_delta)

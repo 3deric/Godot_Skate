@@ -39,7 +39,7 @@ var combo_cooldown : float = 0.0
 var performed_olli : bool = false
 
 @onready var Char_Input : CharacterInput = $"../Char_Input"
-@onready var Char : CharacterController = $".."
+@onready var Char : CharacterController = $"../../Character"
 @onready var Char_Animation : CharacterAnimation = $"../Char_Animation"
 	
 func _ready() -> void:

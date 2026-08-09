@@ -2,7 +2,7 @@ class_name CharacterStatemachine
 extends Node
 
 @export var initial_state : CharacterState
-@onready var char_ctrl : CharacterController = $".."
+@onready var char_ctrl : CharacterController = $"../../Character"
 
 var current_state : CharacterState
 var states : Dictionary = {}
