@@ -2,6 +2,7 @@ extends CharacterState
 
 func enter():
 	tricks.set_start_air()
+	ctrl.set_path_null()
 	
 func exit():
 	tricks.set_end_trick()
@@ -29,6 +30,8 @@ func _ground_check() -> void:
 		var _coll_info = ctrl.shape_col_ground[0].collider
 		if _coll_info.is_in_group("wall"):
 			return
+		if fall.get_fall_landed_perpendicular(ctrl.xform, ctrl.velocity, ctrl.up_direction):
+			transitioned.emit(self, "Player_Fall")
 		if _coll_info.is_in_group('pipe'):
 			transitioned.emit(self, "Player_Pipe")
 			return

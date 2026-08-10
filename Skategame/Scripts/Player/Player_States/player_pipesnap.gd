@@ -46,6 +46,9 @@ func _ground_check() -> void:
 	if ctrl.position.y < ctrl.curve_snap.y:
 		ctrl.reset_shapecast(true)
 		ctrl.set_path_null()
+		if fall.get_fall_landed_perpendicular(ctrl.xform, ctrl.velocity, ctrl.up_direction):
+			transitioned.emit(self, "Player_Fall")
+			return
 		transitioned.emit(self, "Player_Pipe")
 		
 func _grind_lip_check() -> bool:

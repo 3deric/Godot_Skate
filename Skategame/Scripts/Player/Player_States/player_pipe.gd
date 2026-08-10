@@ -25,6 +25,7 @@ func _pipesnap_check() -> bool:
 	else:
 		ctrl.velocity -= ctrl.up_direction * 0.5
 		transitioned.emit(self, "Player_Air")	
+		tricks.set_start_air()
 		return true
 	return false
 
@@ -42,6 +43,7 @@ func _handle_jump() -> bool:
 	if input.get_input_jump():
 		ctrl.velocity += Vector3.UP * ctrl.stats.jump_vel
 		input.set_jump_cooldown()
+		# implement pipesnap through jumping
 		transitioned.emit(self, "Player_Air")
 		return true
 	return false

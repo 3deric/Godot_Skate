@@ -152,10 +152,8 @@ func set_path() -> void:
 
 func get_pipesnap() -> Dictionary: # Todo, refactor 
 	if path == null:
-		return {
-		"valid": false
-		}
-	if global_position.y >LibHelpers.get_path_position(path, path_offset).y:
+		return {"valid": false}
+	if global_position.y > LibHelpers.get_path_position(path, path_offset).y:
 		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 		var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
 		if path_closed: #always set stick to true when the path is closed
@@ -167,18 +165,10 @@ func get_pipesnap() -> Dictionary: # Todo, refactor
 			pipe_snap_flip = _pipe_snap.flip
 			shape_col_ground = []
 			if Char_Input.get_input().y != 0:
-				return{
-					"valid" = true,
-					"air" = true
-				}
+				return {"valid": true,"air": true}
 			reset_shapecast(false)
-			return {
-			"valid": true,
-			"air": false
-			}
-	return {
-		"valid": false
-		}	
+			return {"valid": true,"air": false}
+	return {"valid": false}	
 	
 func get_can_grind() -> bool:
 	if !path:
@@ -195,7 +185,7 @@ func get_can_lip() -> bool:
 	if !path:
 		return false
 	var _lip_start : Dictionary = LibHelpers.start_lip(xform, velocity, path, path_offset)
-	if _lip_start.valid: 
+	if _lip_start: # _lip_start.valid dont check if its valid since grind check has to return false before
 		var _curve = path.curve
 		lip_start_pos = _lip_start.pos
 		curve_tangent = _lip_start.tan
