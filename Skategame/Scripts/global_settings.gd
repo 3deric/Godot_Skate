@@ -2,7 +2,7 @@ extends Resource
 class_name GlobalSettings
 
 const GRAVITY : float = 15.0
-const BALANCE_MULTI : float = 0.75
+const BALANCE_MULTI : float = 0.25
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
 const INTERP_SPEED : float = 15.0

@@ -15,6 +15,7 @@ func physics_update(_delta : float):
 
 func _air_movement(_delta) -> void: 	
 	ctrl.surface_check(true)
+	ctrl.set_path()
 	var _rot_delta = ctrl.Char_Input.get_input().x * ctrl.stats.rot_jump * _delta
 	ctrl.global_rotate(ctrl.xform.basis.y, _rot_delta)
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
