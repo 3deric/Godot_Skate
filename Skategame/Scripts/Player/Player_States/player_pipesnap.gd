@@ -2,9 +2,10 @@ extends CharacterState
 
 func enter():
 	tricks.set_start_air()
+	ctrl.reset_shapecast(false)
 	
 func exit():
-	pass
+	ctrl.reset_shapecast(true)
 
 func physics_update(_delta : float):
 	ctrl.surface_check()
@@ -43,6 +44,8 @@ func _pipe_end_check() -> void:
 		transitioned.emit(self, "Player_Pipesnap_Air")
 
 func _ground_check() -> void:
+	if ctrl.velocity.y > 0:
+		return
 	if ctrl.position.y < ctrl.curve_snap.y:
 		ctrl.reset_shapecast(true)
 		ctrl.set_path_null()

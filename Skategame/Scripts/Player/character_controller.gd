@@ -150,10 +150,10 @@ func set_path() -> void:
 	else:
 		path = null
 
-func get_pipesnap() -> Dictionary: # Todo, refactor 
+func get_pipesnap(_jump : bool = false) -> Dictionary: # Todo, refactor 
 	if path == null:
 		return {"valid": false}
-	if global_position.y > LibHelpers.get_path_position(path, path_offset).y:
+	if global_position.y > LibHelpers.get_path_position(path, path_offset).y or _jump:
 		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
 		var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
 		if path_closed: #always set stick to true when the path is closed
@@ -164,9 +164,10 @@ func get_pipesnap() -> Dictionary: # Todo, refactor
 			path_vel = _pipe_snap.vel
 			pipe_snap_flip = _pipe_snap.flip
 			shape_col_ground = []
+			if _jump:
+				return {"valid": true,"air": false}
 			if Char_Input.get_input().y != 0:
 				return {"valid": true,"air": true}
-			reset_shapecast(false)
 			return {"valid": true,"air": false}
 	return {"valid": false}	
 	

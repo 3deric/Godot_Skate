@@ -43,7 +43,9 @@ func _handle_jump() -> bool:
 	if input.get_input_jump():
 		ctrl.velocity += Vector3.UP * ctrl.stats.jump_vel
 		input.set_jump_cooldown()
-		# implement pipesnap through jumping
+		if ctrl.get_pipesnap(true).valid == true:
+			transitioned.emit(self, "Player_Pipesnap")
+			return true
 		transitioned.emit(self, "Player_Air")
 		return true
 	return false
