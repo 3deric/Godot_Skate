@@ -12,6 +12,9 @@ func physics_update(_delta : float):
 	tricks.set_air_trick()
 	if _grind_lip_check():
 		return
+	if fall.get_fall_out_of_bounds(ctrl.global_position):
+		transitioned.emit(self, "Player_Fall")
+		return
 
 func _air_movement(_delta) -> void: 	
 	ctrl.surface_check(true)
@@ -31,8 +34,10 @@ func _ground_check() -> void:
 		var _coll_info = ctrl.shape_col_ground[0].collider
 		if _coll_info.is_in_group("wall"):
 			return
+		
 		if fall.get_fall_landed_perpendicular(ctrl.xform, ctrl.velocity, ctrl.up_direction):
 			transitioned.emit(self, "Player_Fall")
+			return
 		if _coll_info.is_in_group('pipe'):
 			transitioned.emit(self, "Player_Pipe")
 			return

@@ -11,6 +11,7 @@ func physics_update(_delta : float):
 	if _air_check():
 		return
 	if _fall_check():
+		transitioned.emit(self, "Player_Fall")
 		return
 	if _grind_lip_check():
 		return
@@ -59,7 +60,8 @@ func _grind_lip_check() -> bool:
 	return false
 
 func _fall_check() -> bool:
+	if fall.get_fall_out_of_bounds(ctrl.global_position):
+		return true
 	if fall.get_fall_faceplant(ctrl.shape_col_fwd, ctrl.up_direction):
-		transitioned.emit(self, "Player_Fall")
 		return true
 	return false
