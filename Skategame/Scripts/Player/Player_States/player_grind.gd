@@ -13,8 +13,10 @@ func exit():
 	
 func physics_update(_delta : float):
 	ctrl.set_previous_values()
+	ctrl.surface_check(false, true)
 	ctrl.set_up_alignment()
 	ctrl.balance_logic(_delta, 0)
+	ctrl.handle_bounce()
 	_grind_movement(_delta)
 	if fall.get_fall_balance(ctrl.balance_angle):
 		_handle_fall()
@@ -70,3 +72,4 @@ func _handle_jump() -> bool:
 func _handle_fall() -> void:
 	print("Fall Balance Issues: " + str(ctrl.balance_angle))
 	transitioned.emit(self, "Player_Fall")
+	

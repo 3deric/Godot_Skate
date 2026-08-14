@@ -8,7 +8,8 @@ func exit():
 	ctrl.reset_shapecast(true)
 
 func physics_update(_delta : float):
-	ctrl.surface_check()
+	ctrl.surface_check(false, true)
+	ctrl.handle_bounce()
 	_pipe_snap_movement(_delta)
 	ctrl.set_previous_values()
 	_pipe_end_check()

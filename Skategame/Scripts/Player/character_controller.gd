@@ -20,9 +20,6 @@ var anim_blend : Vector3 = Vector3.ZERO
 var shape_col_fwd : Array = []
 var shape_col_ground : Array = []
 var ray_ground : Dictionary = {}
-var on_wall : bool = false
-var last_on_wall : bool = false
-var is_jump : bool = false
 var standing_timer : float = GlobalSettings.STANDING_TIMER
 
 #global object references
@@ -70,7 +67,7 @@ func surface_check(is_air : bool = true, is_grind : bool = false) -> void:
 	var _speed : float = velocity.length()
 	var _basis_y : Vector3 = xform.basis.y
 	var _forward_dir : Vector3 = Vector3.ZERO
-	var _move_clamp : float = min(_speed, 5.0)
+	var _move_clamp : float = min(_speed, 0.5)
 	
 	if is_grind:
 		_forward_dir = curve_tangent * -path_dir * _move_clamp
@@ -195,6 +192,44 @@ func get_can_lip() -> bool:
 		lip_start_up = _lip_start.up
 		return true
 	return false
+
+func handle_bounce() -> void:
+	var wall_col = null
+	if len(shape_col_fwd) > 0:
+		for col in shape_col_fwd:
+			if col.collider.is_in_group('wall'):
+				wall_col = col
+	
+	if wall_col and !revert_path:
+		path_vel *= -GlobalSettings.PATH_BOUNCE_MULTI
+		path_dir *= -1
+		revert_path = true
+	
+	if !wall_col:
+		revert_path = false
+
+func handle_wall_bounce() -> void:
+	var wall_col = null
+	if len(shape_col_fwd) > 0:
+		for col in shape_col_fwd:
+			if col.collider.is_in_group('wall'):
+				wall_col = col
+	if wall_col:
+		var _normal = wall_col.normal
+		var _fwd_vel = LibHelpers.forward_velocity(velocity, up_direction)
+		var _vel_length = _fwd_vel.length()
+		
+		var _dot = abs(_normal.dot(_fwd_vel.normalized()))
+		if _dot < 0.5:
+			return
+
+		if _vel_length > GlobalSettings.WALL_BOUNCE_VEL_THRESH:
+			var _reflection = velocity.bounce(_normal)
+			velocity = _reflection * GlobalSettings.WALL_BOUNCE_MULTI
+			position += _normal * GlobalSettings.WALL_BOUNCE_OFFSET_MULTI
+			if velocity.length() > 0.1:
+				look_at(global_position - velocity.normalized(), up_direction)
+			print('Wall bounce! Normal: ', _normal, ' Velocity: ', velocity.length())
 
 func set_previous_values() -> void:
 	last_up_dir = up_direction

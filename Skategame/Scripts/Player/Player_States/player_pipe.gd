@@ -8,6 +8,7 @@ func exit() -> void:
 
 func physics_update(_delta : float):
 	_ground_movement(_delta)
+	ctrl.handle_wall_bounce()
 	if _handle_jump():
 		return	
 	if _pipesnap_check():
