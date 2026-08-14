@@ -3,7 +3,6 @@ extends Trick
 
 func _init():
 	trick_name = "Kickflip"
-	base_states = [CharStates.State.AIR, CharStates.State.PIPESNAP, CharStates.State.PIPESNAPAIR]
 	duration = 0.5
 	base_score = 300
 	difficulty = 1.2

@@ -37,4 +37,4 @@ func on_child_transition(state : GameState, new_state_name : String):
 		current_state.exit()		
 	new_state.enter()
 	current_state = new_state
-	print("Transitioning to State: " + new_state.name)
+	print("Transitioning to Game State: " + new_state.name)

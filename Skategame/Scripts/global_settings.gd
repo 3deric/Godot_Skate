@@ -2,7 +2,7 @@ extends Resource
 class_name GlobalSettings
 
 const GRAVITY : float = 15.0
-const BALANCE_MULTI : float = 0.75
+const BALANCE_MULTI : float = 0.25
 const PIPESNAP_OFFSET : float = 0.0
 const UP_ALIGN_SPEED : float = 5.0
 const INTERP_SPEED : float = 15.0
@@ -19,8 +19,8 @@ const WALL_BOUNCE_MULTI : float = 0.25
 const WALL_BOUNCE_OFFSET_MULTI : float = 0.05
 const PATH_BOUNCE_MULTI : float = 0.75
 const JUMP_GRIND_DIR_MULTI : float = 0.5
-const RAY_GROUND_DIST : float = 0.5
-const RAY_GROUND_AIR_DIST : float = 0.25
+const RAY_GROUND_DIST : float = 0.1
+const RAY_GROUND_AIR_DIST : float = 0.15
 const SHAPE_GROUND_DIST : float = 0.3
 const SHAPE_GROUND_AIR_DIST : float = 0.15
 const SHAPE_COL_DOT : float = 0.5

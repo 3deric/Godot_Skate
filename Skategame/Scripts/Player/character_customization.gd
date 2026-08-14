@@ -1,15 +1,15 @@
 class_name CharacterCustomization
-extends Node3D
+extends Node
 
-@onready var body_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_body"
-@onready var top_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_top"
-@onready var bottom_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_bottom"
-@onready var shoes_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_shoes"
-@onready var board_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_board"
-@onready var hair_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_hair"
-@onready var helmet_mesh : MeshInstance3D =  $"../Char/Char_Skeleton/Skeleton3D/char_helmet"
-@onready var glasses_mesh : MeshInstance3D = $"../Char/Char_Skeleton/Skeleton3D/char_headwear"
-@onready var char_skeleton: Node3D = $"../Char/Char_Skeleton"
+@onready var body_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_body"
+@onready var top_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_top"
+@onready var bottom_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_bottom"
+@onready var shoes_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_shoes"
+@onready var board_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_board"
+@onready var hair_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_hair"
+@onready var helmet_mesh : MeshInstance3D =  $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_helmet"
+@onready var glasses_mesh : MeshInstance3D = $"../../Character_Visual/Char_Skeleton/Skeleton3D/char_headwear"
+@onready var char_skeleton: Node3D = $"../../Character_Visual/Char_Skeleton"
 const BODY_MALE : Material = preload("res://Assets/Characters/Materials/M_char_male_body_colorable.tres")
 const BODY_FEMALE : Material = preload("res://Assets/Characters/Materials/M_char_female_body_colorable.tres")
 
@@ -25,16 +25,16 @@ func _init() -> void:
 
 
 func _connect_signals() -> void:
-	if not CustomizationManager.color_updated.is_connected(_on_color_updated):
-		CustomizationManager.color_updated.connect(_on_color_updated)
-	if not CustomizationManager.decal_updated.is_connected(_on_decal_updated):
-		CustomizationManager.decal_updated.connect(_on_decal_updated)
-	if not CustomizationManager.customization_updated.is_connected(_on_customization_updated):
-		CustomizationManager.customization_updated.connect(_on_customization_updated)
-	if not CustomizationManager.float_updated.is_connected(_on_float_updated):
-		CustomizationManager.float_updated.connect(_on_float_updated)
-	if not CustomizationManager.mesh_updated.is_connected(_on_mesh_updated):
-		CustomizationManager.mesh_updated.connect(_on_mesh_updated)
+	if not CustomizationManager.instance.color_updated.is_connected(_on_color_updated):
+		CustomizationManager.instance.color_updated.connect(_on_color_updated)
+	if not CustomizationManager.instance.decal_updated.is_connected(_on_decal_updated):
+		CustomizationManager.instance.decal_updated.connect(_on_decal_updated)
+	if not CustomizationManager.instance.customization_updated.is_connected(_on_customization_updated):
+		CustomizationManager.instance.customization_updated.connect(_on_customization_updated)
+	if not CustomizationManager.instance.float_updated.is_connected(_on_float_updated):
+		CustomizationManager.instance.float_updated.connect(_on_float_updated)
+	if not CustomizationManager.instance.mesh_updated.is_connected(_on_mesh_updated):
+		CustomizationManager.instance.mesh_updated.connect(_on_mesh_updated)
 
 
 func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Color) -> void:
@@ -124,7 +124,7 @@ func _on_customization_updated() ->void:
 
 	
 func _update_from_data() -> void:
-	var data = CustomizationManager.character_data
+	var data = CustomizationManager.instance.character_data
 	_update_top_base_color(data.top_base_color)
 	_update_top_accent_color(data.top_accent_color)
 	_update_top_detail_color(data.top_detail_color)
@@ -205,11 +205,11 @@ func _update_board_metal_color(color: Color) -> void:
 
 
 func _update_board_decal(index: int) -> void:
-	_update_decal(board_mesh, "decal", CustomizationManager.board_decals[index])
+	_update_decal(board_mesh, "decal", CustomizationManager.instance.board_decals[index])
 
 
 func _update_top_decal(index: int) -> void:
-	_update_decal(top_mesh, "decal", CustomizationManager.top_decals[index])
+	_update_decal(top_mesh, "decal", CustomizationManager.instance.top_decals[index])
 	
 
 func _update_body_eyes_color(color: Color) -> void:
@@ -229,7 +229,7 @@ func _update_hair_mesh(index :int) -> void:
 		hair_mesh.hide()
 	else:
 		hair_mesh.show()
-		hair_mesh.mesh = CustomizationManager.hair_meshes[index -1]
+		hair_mesh.mesh = CustomizationManager.instance.hair_meshes[index -1]
 		
 		
 func _update_top_mesh(index :int) -> void:
@@ -237,7 +237,7 @@ func _update_top_mesh(index :int) -> void:
 		top_mesh.hide()
 	else:
 		top_mesh.show()
-		top_mesh.mesh = CustomizationManager.top_meshes[index -1]
+		top_mesh.mesh = CustomizationManager.instance.top_meshes[index -1]
 	
 		
 func _update_bottom_mesh(index :int) -> void:
@@ -245,7 +245,7 @@ func _update_bottom_mesh(index :int) -> void:
 		bottom_mesh.hide()
 	else:
 		bottom_mesh.show()
-		bottom_mesh.mesh = CustomizationManager.bottom_meshes[index -1]
+		bottom_mesh.mesh = CustomizationManager.instance.bottom_meshes[index -1]
 	
 		
 func _update_shoes_mesh(index :int) -> void:
@@ -254,7 +254,7 @@ func _update_shoes_mesh(index :int) -> void:
 		body_mesh.set_blend_shape_value(1,0.0)
 	else:
 		shoes_mesh.show()
-		shoes_mesh.mesh = CustomizationManager.shoe_meshes[index -1]
+		shoes_mesh.mesh = CustomizationManager.instance.shoe_meshes[index -1]
 		body_mesh.set_blend_shape_value(1,1.0)
 
 func _update_helmet_mesh(index :int) -> void:
@@ -262,14 +262,14 @@ func _update_helmet_mesh(index :int) -> void:
 		helmet_mesh.hide()
 	else:
 		helmet_mesh.show()
-		helmet_mesh.mesh = CustomizationManager.helmet_meshes[index -1]
+		helmet_mesh.mesh = CustomizationManager.instance.helmet_meshes[index -1]
 		
 func _update_glasses_mesh(index :int) -> void:
 	if index == 0:
 		glasses_mesh.hide()
 	else:
 		glasses_mesh.show()
-		glasses_mesh.mesh = CustomizationManager.glasses_meshes[index -1]
+		glasses_mesh.mesh = CustomizationManager.instance.glasses_meshes[index -1]
 		
 		
 func _update_gender(value : float) -> void:

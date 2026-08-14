@@ -1,10 +1,8 @@
 class_name CharacterInput
-extends Node3D
+extends Node
 
-@onready var Char_Controller : CharacterController = $".."
+@onready var Char_Controller : CharacterController = $"../../Character"
 @onready var Player_Scene : Player = $"../.."
-@onready var Char_Statemachine: CharacterStatemachine = $"../Char_Statemachine"
-@onready var Ingame_Ui: IngameOverlay = $"../Ingame_Ui"
 
 enum Action {
 	JUMP,
@@ -30,7 +28,7 @@ func _process(_delta):
 	_jump_cooldown(_delta)
 	input_buffer.input_cooldown(_delta)
 	_input_handler()
-	_on_player_state_changed()
+	#_on_player_state_changed()
 	
 func _input_handler(): 	#handles player inputs
 	input.x = Input.get_action_strength('Left') - Input.get_action_strength('Right')
@@ -43,6 +41,7 @@ func _jump_cooldown(_delta) -> void:
 		
 func _update_input_buffer():
 	if Input.is_action_just_released('Jump'):
+		#if !Char_Controller.can_air: # To Do -> reimplement
 		input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):
@@ -70,7 +69,7 @@ func _update_input_buffer():
 		input_buffer.push(Action.REVERT)
 		
 	if input_buffer.get_buffer_cooldown() or input_buffer.get_buffer_updated():
-		Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
+		pass#Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
 			
 func reset() -> void:
 	input = Vector3i.ZERO
@@ -86,7 +85,15 @@ func get_input() -> Vector3:
 	return input
 	
 func get_input_jump() -> bool:
-	return input_buffer.get_last_input() == Action.JUMP and can_jump()
+	if input_buffer.get_last_input() == Action.JUMP and can_jump():
+		#input_buffer.buffer.clear()
+		return true
+	return false
+	
+func get_input_grind() -> bool:
+	if Input.is_action_pressed("Grind") or input_buffer.get_last_input() == Action.GRIND:
+		return true
+	return false	
 	
 func get_dir_before_jump() -> int:
 	if input_buffer.get_second_last_input() == Action.LEFT:
@@ -95,12 +102,3 @@ func get_dir_before_jump() -> int:
 		return -1
 	else:
 		return 0
-			
-func _on_player_state_changed():
-	var current_state : CharStates.State = Char_Statemachine.player_state
-	var last_state : CharStates.State = Char_Statemachine.last_player_state
-
-	if current_state == CharStates.State.PIPESNAP and current_state != last_state and last_state != CharStates.State.RESET:
-		var last_input = input_buffer.get_last_input()
-		if not last_input == Action.JUMP:
-			input_buffer.push(Action.JUMP)

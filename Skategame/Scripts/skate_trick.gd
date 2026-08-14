@@ -13,14 +13,10 @@ var trick_animation : String
 
 func _init(): #prevent direct instancing of base class
 	assert(false, "Trick is an abstract base class")
-
-func matches_state(char_state : CharacterStates.State) -> bool:
-	return base_state == char_state
-	
+		
 func matches_input(buffer: Array[int]) -> bool:
 	if buffer.size() < input_sequence.size():
 		return false
-
 	var start : int = buffer.size() - input_sequence.size()
 	for i : int in input_sequence.size():
 		if buffer[start + i] != input_sequence[i]:
