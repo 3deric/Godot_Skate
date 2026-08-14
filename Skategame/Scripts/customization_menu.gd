@@ -30,7 +30,7 @@ extends Control
 func _ready() -> void:
 	_setup_buttons()
 	_setup_options()
-	CustomizationManager.customization_updated.connect(_update_ui_from_data)
+	CustomizationManager.instance.customization_updated.connect(_update_ui_from_data)
 
 
 func _setup_buttons() -> void:
@@ -62,7 +62,7 @@ func _setup_buttons() -> void:
 
 
 func _setup_options() -> void:
-	var data = CustomizationManager.character_data
+	var data = CustomizationManager.instance.character_data
 	option_button_deck.clear()
 	option_button_deck.add_item("Wood", CharacterData.BoardDecal.Bare)
 	option_button_deck.add_item("Style 1", CharacterData.BoardDecal.Style1)
@@ -125,7 +125,7 @@ func _setup_options() -> void:
 	
 	
 func _update_ui_from_data() -> void:
-	var data = CustomizationManager.character_data
+	var data = CustomizationManager.instance.character_data
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color
 	color_picker_button_top_detail.color = data.top_detail_color
@@ -154,110 +154,110 @@ func _update_ui_from_data() -> void:
 		
 
 func _on_color_picker_button_top_base_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'base', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'base', color)
 
 
 func _on_color_picker_button_top_accent_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'accent', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'accent', color)
 
 
 func _on_color_picker_button_top_detail_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'detail', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'detail', color)
 
 
 func _on_color_picker_button_bottom_base_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'base', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'base', color)
 		
 
 func _on_color_picker_button_bottom_accent_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'accent', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'accent', color)
 
 
 func _on_color_picker_button_bottom_detail_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'detail', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'detail', color)
 
 
 func _on_color_picker_button_shoes_base_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'base', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'base', color)
 
 
 func _on_color_picker_button_shoes_accent_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'accent', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'accent', color)
 	
 
 func _on_color_picker_button_shoes_detail_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'detail', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'detail', color)
 
 
 func _on_color_picker_button_wheels_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Board, 'wheels', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Board, 'wheels', color)
 
 
 func _on_color_picker_button_details_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Board, 'accent', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Board, 'accent', color)
 
 
 func _on_color_picker_button_metal_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Board, 'metal', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Board, 'metal', color)
 
 
 func _on_option_button_deck_item_selected(index: int) -> void:
-	CustomizationManager.update_decal(CharacterData.CharacterPart.Board, index)
+	CustomizationManager.instance.update_decal(CharacterData.CharacterPart.Board, index)
 
 
 func _on_option_button_top_decal_item_selected(index: int) -> void:
-	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, index)
+	CustomizationManager.instance.update_decal(CharacterData.CharacterPart.Top, index)
 
 
 func _on_h_slider_skin_color_value_changed(value: float) -> void:
-	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'skin_color', value)
+	CustomizationManager.instance.update_float(CharacterData.CharacterPart.Body, 'skin_color', value)
 
 
 func _on_color_picker_button_eye_color_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Body, 'eyes', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Body, 'eyes', color)
 
 
 func _on_color_picker_button_hair_color_color_changed(color: Color) -> void:
-	CustomizationManager.update_color(CharacterData.CharacterPart.Hair, 'color', color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Hair, 'color', color)
 
 
 func _on_option_button_hair_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Hair, index)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Hair, 'color', color_picker_button_hair_color.color)
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Hair, index)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Hair, 'color', color_picker_button_hair_color.color)
 
 
 func _on_option_button_top_style_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Top, index)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'base', color_picker_button_top_base.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'accent', color_picker_button_top_accent.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Top, 'detail', color_picker_button_top_detail.color)
-	CustomizationManager.update_decal(CharacterData.CharacterPart.Top, option_button_top_decal.selected)
-	CustomizationManager.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Top, index)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'base', color_picker_button_top_base.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'accent', color_picker_button_top_accent.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Top, 'detail', color_picker_button_top_detail.color)
+	CustomizationManager.instance.update_decal(CharacterData.CharacterPart.Top, option_button_top_decal.selected)
+	CustomizationManager.instance.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
 
 
 func _on_option_button_bottom_style_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Bottom, index)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'base', color_picker_button_bottom_base.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'accent', color_picker_button_bottom_accent.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Bottom, 'detail', color_picker_button_bottom_detail.color)
-	CustomizationManager.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Bottom, index)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'base', color_picker_button_bottom_base.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'accent', color_picker_button_bottom_accent.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Bottom, 'detail', color_picker_button_bottom_detail.color)
+	CustomizationManager.instance.update_float(CharacterData.CharacterPart.Bottom, 'gender', float(check_button_gender.button_pressed))
 
 
 func _on_option_button_shoes_style_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Shoes, index)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'base', color_picker_button_shoes_base.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'accent', color_picker_button_shoes_accent.color)
-	CustomizationManager.update_color(CharacterData.CharacterPart.Shoes, 'detail', color_picker_button_shoes_detail.color)
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Shoes, index)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'base', color_picker_button_shoes_base.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'accent', color_picker_button_shoes_accent.color)
+	CustomizationManager.instance.update_color(CharacterData.CharacterPart.Shoes, 'detail', color_picker_button_shoes_detail.color)
 
 func _on_option_button_helmet_style_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Helmet, index)
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Helmet, index)
 
 func _on_option_button_glasses_style_item_selected(index: int) -> void:
-	CustomizationManager.update_mesh(CharacterData.CharacterPart.Glasses, index)
+	CustomizationManager.instance.update_mesh(CharacterData.CharacterPart.Glasses, index)
 	
 func _on_h_slider_size_value_changed(value: float) -> void:
-	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'size', value)
+	CustomizationManager.instance.update_float(CharacterData.CharacterPart.Body, 'size', value)
 
 
 func _on_check_button_gender_toggled(toggled_on: bool) -> void:
-	CustomizationManager.update_float(CharacterData.CharacterPart.Body, 'gender', float(toggled_on))
+	CustomizationManager.instance.update_float(CharacterData.CharacterPart.Body, 'gender', float(toggled_on))
