@@ -1,8 +1,12 @@
 extends CharacterState
 
+const SURFACE_TIMER_DELAY : float = 0.1
+var surface_timer : float
+
 func enter():
 	tricks.set_start_air()
 	ctrl.set_path_null()
+	surface_timer = SURFACE_TIMER_DELAY
 	
 func exit():
 	tricks.set_end_trick()
@@ -24,7 +28,8 @@ func _air_movement(_delta) -> void:
 	ctrl.velocity.y -= GlobalSettings.GRAVITY * _delta
 	ctrl.up_direction = lerp(ctrl.up_direction,Vector3.UP, _delta * GlobalSettings.UP_ALIGN_SPEED)
 	ctrl.set_previous_values()
-	_ground_check()
+	if _surface_check_delay(_delta):
+		_ground_check()
 	ctrl.set_char_up_direction()
 	ctrl.global_transform = LibHelpers.align(ctrl.global_transform, ctrl.up_direction)
 	ctrl.move_and_slide()
@@ -54,5 +59,12 @@ func _grind_lip_check() -> bool:
 		return true
 	elif ctrl.get_can_lip():
 		transitioned.emit(self, "Player_Lip")
+		return true
+	return false
+	
+func _surface_check_delay(_delta : float) -> bool:
+	if surface_timer >= 0:
+		surface_timer -= _delta
+	if surface_timer <= 0:
 		return true
 	return false

@@ -28,3 +28,5 @@ const STICK_CURVE_THRESHOLD : float = 0.05
 const TANGENT_LERP_SPD : float = 5.0
 const STANDING_TIMER_MIN_SPEED : float = 0.5
 const STANDING_TIMER : float = 0.5
+const MIN_GRIND_VEL : float = 1.0
+const GRIND_END_UP_VEL : float = 3.0

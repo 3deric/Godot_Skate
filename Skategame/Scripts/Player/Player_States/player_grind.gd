@@ -3,7 +3,7 @@ extends CharacterState
 func enter():
 	tricks.set_grind_trick()
 	tricks.performed_olli = false
-	ctrl.reset_shapecast(false)
+	ctrl.reset_shapecast(true)
 	ctrl.randomize_balance()
 	
 func exit():
@@ -40,6 +40,8 @@ func _grind_movement(_delta) -> void:
 	if _target != ctrl.position:
 		ctrl.look_at(_target, ctrl.up_direction)
 	ctrl.velocity = ctrl.xform.basis.z * ctrl.path_vel * ctrl.path_dir
+	if ctrl.velocity.length() < GlobalSettings.MIN_GRIND_VEL:
+		ctrl.path_vel = GlobalSettings.MIN_GRIND_VEL
 	ctrl.balance_logic(_delta, 0)
 	
 func _grind_end_check() -> bool:
@@ -54,6 +56,7 @@ func _grind_end_check() -> bool:
 			else:
 				transitioned.emit(self, "Player_Ground")
 				return true
+		ctrl.velocity += ctrl.up_direction * GlobalSettings.GRIND_END_UP_VEL
 		transitioned.emit(self, "Player_Air")
 		return true
 	return false
