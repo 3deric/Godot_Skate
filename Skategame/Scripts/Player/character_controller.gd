@@ -77,7 +77,7 @@ func surface_check(is_air : bool = true, is_grind : bool = false) -> void:
 	if Char_Input.can_jump():
 		var ray_dist : float = (GlobalSettings.RAY_GROUND_DIST if (is_air) else GlobalSettings.RAY_GROUND_AIR_DIST)
 		if is_grind:
-			Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist + basis.z * 1.0)
+			Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist + basis.z * 2.0)
 		else:
 			Shape_Cast_Ground.target_position = to_local(position -basis.y * ray_dist)
 		shape_col_ground = Shape_Cast_Ground.collision_result
