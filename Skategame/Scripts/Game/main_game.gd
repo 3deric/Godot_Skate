@@ -55,8 +55,7 @@ func _init_player() -> void:
 		push_error("Loaded player scene does not extend Player or DNE: " + PLAYER_SCENE_UID)
 		return
 	entity_root.add_child(player)
-	player.init(player.global_transform, false)
-	print("Initialized Player")
+	player.init()
 	
 func _init_interface() -> void:
 	var menu_scene : PackedScene = ResourceLoader.load(MAIN_MENU_UID) as PackedScene
@@ -126,20 +125,8 @@ func _deferred_load_level(level_scene_uid : String) -> void:
 	level_root.add_child(_current_level)
 	
 	await get_tree().process_frame
-	#_place_player_at_level_spawn()
+	_place_player_at_level_spawn()
 	#_setup_level_camera()
 
-#func _place_player_at_level_spawn() -> void:
-#	player.init(_current_level.get_player_spawn(), _current_level.get_is_playing())
-
-#func _process(delta: float) -> void:
-	#if Input.is_action_just_released('Esc'):
-		#_pause_menu.set_pause()
-		
-#func set_game_state(next : GameState) -> void:
-	#game_state = next
-	## todo, add switch to enable or disable menus based on the state
-	#_debug_game_state()	
-		#
-#func _debug_game_state() -> void:
-	#print(GameState.find_key(game_state))
+func _place_player_at_level_spawn() -> void:
+	player.init_level(_current_level.get_player_spawn(), _current_level.get_is_playing())

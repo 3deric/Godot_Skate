@@ -51,8 +51,12 @@ var lip_start_dir : Vector3 = Vector3.ZERO
 var curve_snap = Vector3.ZERO
 var curve_tangent = Vector3.ZERO
 
-func init_player(_transform : Transform3D, _is_playing : bool):
+func init_player():
 	Char_Statemachine.init()
+	
+func set_start_transform(_transform : Transform3D):
+	global_transform = _transform
+	Camera_Pos.global_position = global_position
 
 func _process(delta: float) -> void:
 	Char_Statemachine.process(delta)
