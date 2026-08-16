@@ -26,4 +26,3 @@ func _reset_player() -> void:
 	ctrl.Char_Input.reset()
 	anim.init(true)
 	anim.reset_vis_balance()
-	anim.reset_vis_transform(ctrl)

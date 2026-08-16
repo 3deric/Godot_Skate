@@ -57,6 +57,7 @@ func init_player():
 func set_start_transform(_transform : Transform3D):
 	global_transform = _transform
 	Camera_Pos.global_position = global_position
+	Char_Animation.reset_vis_transform(_transform)
 
 func _process(delta: float) -> void:
 	Char_Statemachine.process(delta)
@@ -109,7 +110,7 @@ func set_fall() -> void:
 	
 func _reset_player(_transform : Transform3D) -> void:
 	Char_Ragdoll.set_end_simulation()
-	Char_Animation.reset_vis_transform(self)
+	Char_Animation.reset_vis_transform(last_ground_transform)
 	standing_timer = GlobalSettings.STANDING_TIMER
 	up_direction = Vector3.UP
 	velocity = Vector3.ZERO

@@ -55,8 +55,8 @@ func set_vis_transform(char_controller : CharacterController, _delta, _speed) ->
 	Char.global_transform = Char.global_transform.interpolate_with(char_controller.global_transform, _delta * _speed)
 	Char.global_position = char_controller.global_position
 
-func reset_vis_transform(char_controller : CharacterController) -> void:
-	Char.global_transform = char_controller.global_transform
+func reset_vis_transform(_transform : Transform3D) -> void:
+	Char.global_transform = _transform
 
 func animation_handler_ground_pipe(_delta : float, _velocity : Vector3):
 	if _velocity.length() > 0.05:

@@ -18,4 +18,3 @@ func _reset() -> void:
 	ctrl.rotation = Vector3.ZERO
 	anim.init(false)
 	anim.reset_vis_balance()
-	anim.reset_vis_transform(ctrl)
