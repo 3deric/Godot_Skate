@@ -2,6 +2,7 @@ extends CharacterState
 
 func enter() -> void:
 	_reset_player()
+	ctrl.surface_check(false, false)
 	
 func exit() -> void:
 	pass

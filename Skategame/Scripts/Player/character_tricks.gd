@@ -75,7 +75,7 @@ func _rot_round(rot : float) -> String:
 func _update_trick_ui():
 	if !_get_trick_active():
 		return
-	#Ingame_Ui.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
+	TrickOverlay.instance.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
 		
 func _start_trick(_tricks : Array[Trick]) -> void:
 	for trick : Trick in _tricks:
@@ -86,7 +86,7 @@ func _start_trick(_tricks : Array[Trick]) -> void:
 			current_trick = trick.get_script().new()
 			_set_trick_active(true)
 			current_trick_duration = current_trick.duration
-			#Ingame_Ui.set_trick_view(current_trick.trick_name)
+			TrickOverlay.instance.set_trick_view(current_trick.trick_name)
 			combo_cooldown = COMBO_COOLDOWN_TIME
 			Char_Animation.set_trick_animation(trick.get_animation())
 			break
@@ -129,7 +129,7 @@ func set_end_combo() -> void:
 		_combo_text += " " + trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
 		#print(" - " + trick.trick_name)
 	_combo_text +=  " X" +str(tricks.size())
-	#Ingame_Ui.set_trick_view(_combo_text)
+	TrickOverlay.instance.set_trick_view(_combo_text)
 	tricks.clear()
 	
 func _set_trick_active(active : bool) -> void:

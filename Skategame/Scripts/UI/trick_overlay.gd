@@ -21,8 +21,8 @@ var trick_label_cooldown : float = 0.0
 
 var input_images : Array[TextureRect] = []
 
-@onready var Trick_Label : Label = $TrickView/TrickLabel
-@onready var Input_Container : HBoxContainer = $TrickView/InputView
+@onready var Trick_Label : Label = $TrickLabel
+@onready var Input_Container : HBoxContainer = $InputView
 
 func _ready():
 	instance = self

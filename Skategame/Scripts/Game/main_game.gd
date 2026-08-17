@@ -14,9 +14,11 @@ const LEVEL_2_UID : 		String = "uid://duaw5sk1sesed"
 const MAIN_MENU_UID : 		String = "uid://ydofbmuhla2w"
 const PAUSE_MENU_UID : 		String = "uid://3yuf44frpj4c"
 const DEBUG_MENU_UID : 		String = "uid://1l4k8vpth51o"
+const INGAME_HUD_UID :		String = "uid://f8h2uynd2b7n"
 
 var main_menu : 			MainMenu = null
 var pause_menu : 			PauseMenu = null
+var ingame_hud : 			IngameHud = null
 var _debug_menu : 			DebugMenu = null
 
 # Game state machine
@@ -83,6 +85,19 @@ func _init_interface() -> void:
 	
 	pause_root.add_child(pause_menu)
 	pause_menu.init()
+	
+	var ingame_hud_scene : PackedScene = ResourceLoader.load(INGAME_HUD_UID) as PackedScene
+	if ingame_hud_scene == null:
+		push_error("Could not load ingame hud scene: " + INGAME_HUD_UID)
+		return
+		
+	ingame_hud = ingame_hud_scene.instantiate() as IngameHud
+	if ingame_hud == null:
+		push_error("Loaded ingame hud scene does not extend Control or DNE: " + INGAME_HUD_UID)
+		return
+	
+	hud_root.add_child(ingame_hud)
+	ingame_hud.init()
 	
 	var debug_scene : PackedScene = ResourceLoader.load(DEBUG_MENU_UID) as PackedScene
 	if debug_scene == null:

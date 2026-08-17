@@ -1,11 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://f8h2uynd2b7n"]
+[gd_scene load_steps=6 format=3 uid="uid://f8h2uynd2b7n"]
 
-[ext_resource type="Script" uid="uid://b4dipi167u46h" path="res://Scripts/ingame_overlay.gd" id="1_sjbhh"]
+[ext_resource type="Script" uid="uid://pucc7nkqcg3e" path="res://Scripts/UI/ingame_hud.gd" id="1_7am8i"]
 [ext_resource type="Texture2D" uid="uid://cm2vewm0ogqjl" path="res://Assets/UI/you_died.png" id="2_76kcf"]
 [ext_resource type="Texture2D" uid="uid://cmsr6ypv1frsi" path="res://Assets/UI/balanceBackground.png" id="2_jsnj5"]
+[ext_resource type="Script" uid="uid://bx4y25x4nk0f3" path="res://Scripts/UI/trick_overlay.gd" id="3_hus36"]
 [ext_resource type="Texture2D" uid="uid://y5g3w80lojem" path="res://Assets/UI/balanceIndicator.png" id="3_vfp08"]
 
-[node name="IngameOverlay" type="Control"]
+[node name="IngameHud" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,11 +15,10 @@ offset_right = 3.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("1_sjbhh")
-
-[node name="SubViewport" type="SubViewport" parent="."]
+script = ExtResource("1_7am8i")
 
 [node name="BalanceView" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
@@ -63,7 +63,7 @@ pivot_offset = Vector2(2, 20)
 texture = ExtResource("3_vfp08")
 expand_mode = 1
 
-[node name="TrickView" type="Control" parent="."]
+[node name="TrickOverlay" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,13 +71,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+script = ExtResource("3_hus36")
 
-[node name="TrickLabel" type="Label" parent="TrickView"]
+[node name="TrickLabel" type="Label" parent="TrickOverlay"]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 55.0
-offset_bottom = 607.0
+offset_top = 74.0
+offset_bottom = 188.0
 grow_horizontal = 2
 theme_override_colors/font_shadow_color = Color(0.09411765, 0.09411765, 0.09411765, 0.5294118)
 theme_override_constants/shadow_offset_x = 2
@@ -86,21 +87,23 @@ theme_override_constants/shadow_outline_size = 2
 theme_override_font_sizes/font_size = 36
 horizontal_alignment = 1
 autowrap_mode = 2
+text_overrun_behavior = 5
 
-[node name="InputView" type="HBoxContainer" parent="TrickView"]
+[node name="InputView" type="HBoxContainer" parent="TrickOverlay"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -196.0
-offset_bottom = -131.0
+offset_top = -107.0
+offset_bottom = -42.0
 grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 alignment = 1
 
 [node name="FailView" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

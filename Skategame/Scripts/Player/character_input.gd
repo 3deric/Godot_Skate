@@ -41,7 +41,6 @@ func _jump_cooldown(_delta) -> void:
 		
 func _update_input_buffer():
 	if Input.is_action_just_released('Jump'):
-		#if !Char_Controller.can_air: # To Do -> reimplement
 		input_buffer.push(Action.JUMP)
 
 	if Input.is_action_just_pressed("Grind"):
@@ -69,7 +68,7 @@ func _update_input_buffer():
 		input_buffer.push(Action.REVERT)
 		
 	if input_buffer.get_buffer_cooldown() or input_buffer.get_buffer_updated():
-		pass#Ingame_Ui.update_input_buffer_vis(input_buffer.buffer)
+		TrickOverlay.instance.update_input_buffer_vis(input_buffer.buffer)
 			
 func reset() -> void:
 	input = Vector3i.ZERO
