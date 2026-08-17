@@ -2362,7 +2362,7 @@ directional_shadow_max_distance = 12.8
 environment = SubResource("Environment_7w7ni")
 
 [node name="Player_Spawn" type="Marker3D" parent="."]
-transform = Transform3D(0.31488708, 0, 0.94912916, 0, 1, 0, -0.94912916, 0, 0.31488708, -1.4520545, 5.1577096, 18.850063)
+transform = Transform3D(0.31488708, 0, 0.94912916, 0, 1, 0, -0.94912916, 0, 0.31488708, -1.4520545, 4.94883, 18.850063)
 
 [node name="PropCone" parent="." instance=ExtResource("6_btda1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1322355, 4.9474998, 16.415808)

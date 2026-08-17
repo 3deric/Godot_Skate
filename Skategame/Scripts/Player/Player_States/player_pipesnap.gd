@@ -58,6 +58,8 @@ func _ground_check() -> void:
 func _grind_lip_check() -> bool:
 	if !input.get_input_grind():
 		return false
+	if ctrl.position.y > ctrl.curve_snap.y + 1:
+		return false
 	if ctrl.get_can_grind():
 		transitioned.emit(self, "Player_Grind")
 		return true
