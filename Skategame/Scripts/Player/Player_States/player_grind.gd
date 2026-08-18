@@ -6,11 +6,13 @@ func enter():
 	tricks.performed_olli = false
 	ctrl.reset_shapecast(true)
 	ctrl.randomize_balance()
+	BalanceOverlay.instance.set_balance_view(true, PI/2)
 	
 func exit():
 	ctrl.set_path_null()
 	ctrl.reset_shapecast(true)
 	anim.reset_vis_balance()
+	BalanceOverlay.instance.set_balance_view(false)
 	
 func physics_update(_delta : float):
 	ctrl.set_previous_values()

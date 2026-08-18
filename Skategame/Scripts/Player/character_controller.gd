@@ -135,6 +135,7 @@ func balance_logic(delta: float, axis : int) -> void:
 			_set_balance_dir(round(-Char_Input.get_input().y))
 	balance_time += GlobalSettings.BALANCE_TIME_INC * delta
 	balance_angle += GlobalSettings.BALANCE_MULTI * delta * balance_dir * balance_time
+	BalanceOverlay.instance.set_balance_value(balance_angle)
 	
 func _set_balance_dir(_dir: int) -> void:
 	balance_dir = _dir
