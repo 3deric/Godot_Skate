@@ -5,6 +5,7 @@ extends Node
 @onready var char_ctrl : CharacterController = $"../../Character"
 
 var current_state : CharacterState
+var previous_state : CharacterState
 var states : Dictionary = {}
 
 func init():
@@ -31,6 +32,7 @@ func physics_process(delta: float) -> void:
 func on_child_transition(state : CharacterState, new_state_name : String):
 	if state != current_state:
 		return	
+	previous_state = current_state
 	var new_state = states.get(new_state_name.to_lower())
 	if !new_state:
 		return		
@@ -41,6 +43,7 @@ func on_child_transition(state : CharacterState, new_state_name : String):
 	print("Transitioning to State: " + new_state.name)
 	
 func set_force_state(new_state_name : String):
+	previous_state = current_state
 	var new_state = states.get(new_state_name.to_lower())
 	if current_state:
 		current_state.exit()

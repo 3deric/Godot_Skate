@@ -50,6 +50,7 @@ func _ground_check() -> void:
 				transitioned.emit(self, "Player_Pipe")
 				return
 	else:
+		ctrl.velocity += ctrl.up_direction * GlobalSettings.GRIND_END_UP_VEL
 		transitioned.emit(self, "Player_Air")
 
 func _handle_jump() -> bool:

@@ -78,6 +78,7 @@ func _update_trick_ui():
 	TrickOverlay.instance.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
 		
 func _start_trick(_tricks : Array[Trick]) -> void:
+	print("start trick!")
 	for trick : Trick in _tricks:
 		if trick.matches_input(Char_Input.input_buffer.buffer) or trick.trick_name == 'Olli':
 			if _get_trick_active():
@@ -92,7 +93,8 @@ func _start_trick(_tricks : Array[Trick]) -> void:
 			break
 			
 func _end_trick() -> void:
-	tricks.push_back(current_trick)
+	if current_trick != null:
+		tricks.push_back(current_trick)
 	_set_trick_active(false)
 	current_trick = null
 	can_trick = true
@@ -125,9 +127,9 @@ func set_end_combo() -> void:
 	var _combo_text : String = ""
 	for trick : Trick in tricks:
 		if trick == null:
-			break
+			continue
 		_combo_text += " " + trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
-		#print(" - " + trick.trick_name)
+		print(" - " + trick.trick_name)
 	_combo_text +=  " X" +str(tricks.size())
 	TrickOverlay.instance.set_trick_view(_combo_text)
 	tricks.clear()

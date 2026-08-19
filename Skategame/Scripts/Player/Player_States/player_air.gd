@@ -4,7 +4,8 @@ const SURFACE_TIMER_DELAY : float = 0.1
 var surface_timer : float
 
 func enter():
-	tricks.set_start_air()
+	if state.previous_state.name != "Player_Pipesnap_Air":
+		tricks.set_start_air()
 	ctrl.set_path_null()
 	surface_timer = SURFACE_TIMER_DELAY
 	

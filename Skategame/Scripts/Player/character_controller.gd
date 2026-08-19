@@ -98,8 +98,11 @@ func surface_check(is_air : bool = true, is_grind : bool = false) -> void:
 
 func set_char_up_direction() -> void:
 	if shape_col_ground:
-		if !shape_col_ground[0].collider.is_in_group("wall"):
-			up_direction = shape_col_ground[0].normal
+		if shape_col_ground[0].collider.is_in_group("wall"):
+			return
+		var _normal = shape_col_ground[0].normal
+		#if _normal.dot(up_direction) > 0.95: # sanity check to prevent jittering
+		up_direction = _normal
 	else:
 		up_direction = last_up_dir
 

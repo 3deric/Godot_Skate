@@ -16,11 +16,10 @@ func get_fall_faceplant(shape_col_fwd : Array, up_direction : Vector3 = Vector3.
 			if col.collider.is_in_group('floor') or col.collider.is_in_group('pipe'):
 				_floor_col = col
 				_normal = _floor_col.normal
-	if _floor_col and up_direction.dot(_normal) < 0.5:
-		var _dot = _normal.dot(up_direction)
-		if _dot <= 0.5:
-			print("Fall Faceplant: " + str(_dot))
-			return true
+	var _dot = _normal.dot(up_direction)
+	if _floor_col and _dot < 0.75:	
+		print("Fall Faceplant: " + str(_dot))
+		return true
 	return false
 
 func get_fall_out_of_bounds(position : Vector3) -> bool:

@@ -5,6 +5,7 @@ func enter():
 	ctrl.reset_shapecast(false)
 	
 func exit():
+	tricks.set_end_trick()
 	ctrl.reset_shapecast(true)
 
 func physics_update(_delta : float):
@@ -48,7 +49,7 @@ func _ground_check() -> void:
 	if ctrl.velocity.y > 0:
 		return
 	if ctrl.position.y < ctrl.curve_snap.y:
-		ctrl.reset_shapecast(true)
+		ctrl.surface_check(false, false)
 		ctrl.set_path_null()
 		if fall.get_fall_landed_perpendicular(ctrl.xform, ctrl.velocity, ctrl.up_direction):
 			transitioned.emit(self, "Player_Fall")

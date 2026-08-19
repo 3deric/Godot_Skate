@@ -26,7 +26,6 @@ func _pipesnap_check() -> bool:
 	else:
 		ctrl.velocity -= ctrl.up_direction * 0.5
 		transitioned.emit(self, "Player_Air")	
-		tricks.set_start_air()
 		return true
 	return false
 
