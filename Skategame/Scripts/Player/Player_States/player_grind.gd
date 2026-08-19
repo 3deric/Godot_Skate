@@ -46,7 +46,7 @@ func _grind_movement(_delta) -> void:
 	ctrl.balance_logic(_delta, 0)
 	
 func _grind_end_check() -> bool:
-	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.1) and !ctrl.path_closed:
+	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.01) and !ctrl.path_closed:
 		ctrl.reset_shapecast(true)
 		if ctrl.shape_col_ground:
 			var _coll_info = ctrl.shape_col_ground[0].collider

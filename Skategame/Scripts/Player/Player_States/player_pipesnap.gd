@@ -34,7 +34,7 @@ func _pipe_snap_movement(_delta) -> void:
 	ctrl.velocity = LibHelpers.kill_pipe_orthogonal_velocity(ctrl.velocity, ctrl.curve_tangent)
 
 func _pipe_end_check() -> void:
-	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.1) and !ctrl.path_closed:
+	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.01) and !ctrl.path_closed:
 		var newUpDir : Vector3 = Vector3.UP.cross(ctrl.curve_tangent)
 		if ctrl.pipe_snap_flip:
 			newUpDir*=-1

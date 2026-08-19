@@ -164,7 +164,7 @@ func get_pipesnap(_jump : bool = false) -> Dictionary: # Todo, refactor
 		return {"valid": false}
 	if global_position.y > LibHelpers.get_path_position(path, path_offset).y or _jump:
 		var _pipe_snap : Dictionary = LibHelpers.start_pipesnap(xform, velocity, path, path_offset)
-		var _stick = LibHelpers.get_stick_curve(path, path_offset, 1.0)
+		var _stick = LibHelpers.get_stick_curve(path, path_offset, 0.1)
 		if path_closed: #always set stick to true when the path is closed
 			_stick = true
 		if _pipe_snap.valid  and xform.basis.z.dot(Vector3.UP) >= 0.1 and _stick:
