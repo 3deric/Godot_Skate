@@ -22,6 +22,7 @@ var trick_label_cooldown : float = 0.0
 var input_images : Array[TextureRect] = []
 
 @onready var Trick_Label : Label = $TrickLabel
+@onready var Points_Label : Label = $PointsLabel
 @onready var Input_Container : HBoxContainer = $InputView
 
 func _ready():
@@ -31,12 +32,14 @@ func _ready():
 func _process(delta: float) -> void:
 	_trick_label_view_cooldown(delta)
 	
-func set_trick_view(_val):
+func set_trick_view(_val, _val_points):
 	Trick_Label.text = _val
+	Points_Label.text = _val_points
 	trick_label_cooldown = TRICK_LABEL_COOLDOWN_TIME
 	
 func clear_trick_view():
 	Trick_Label.text = ""
+	Points_Label.text = ""
 
 func _trick_label_view_cooldown(_delta):
 	if trick_label_cooldown > 0.0:

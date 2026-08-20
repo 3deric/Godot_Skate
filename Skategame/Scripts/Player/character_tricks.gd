@@ -75,7 +75,7 @@ func _rot_round(rot : float) -> String:
 func _update_trick_ui():
 	if !_get_trick_active():
 		return
-	TrickOverlay.instance.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())))
+	TrickOverlay.instance.set_trick_view(current_trick.trick_name + " " + _rot_round(rad_to_deg(current_trick.get_rotation())), "X " + str(tricks.size()) if tricks.size() > 1 else "")
 		
 func _start_trick(_tricks : Array[Trick]) -> void:
 	print("start trick!")
@@ -87,7 +87,7 @@ func _start_trick(_tricks : Array[Trick]) -> void:
 			current_trick = trick.get_script().new()
 			_set_trick_active(true)
 			current_trick_duration = current_trick.duration
-			TrickOverlay.instance.set_trick_view(current_trick.trick_name)
+			TrickOverlay.instance.set_trick_view(current_trick.trick_name, "X " + str(tricks.size()) if tricks.size() > 1 else "")
 			combo_cooldown = COMBO_COOLDOWN_TIME
 			Char_Animation.set_trick_animation(trick.get_animation())
 			break
@@ -125,14 +125,24 @@ func get_last_trick() -> Trick:
 
 func set_end_combo() -> void:
 	var _combo_text : String = ""
-	for trick : Trick in tricks:
-		if trick == null:
-			continue
-		_combo_text += " " + trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
-		print(" - " + trick.trick_name)
-	_combo_text +=  " X" +str(tricks.size())
-	TrickOverlay.instance.set_trick_view(_combo_text)
+	var _points : int = 0
+	var _index = 0
+	if tricks.size() > 1:
+		for trick : Trick in tricks:
+			if trick == null:
+				continue
+			if _index > 0:
+				_combo_text += " - "
+			_points += trick.get_score()
+			_combo_text +=  trick.trick_name + " " + str(_rot_round(rad_to_deg(trick.get_rotation())))
+			print(" - " + trick.trick_name)
+			_index += 1
+	else:
+		_points = tricks[0].get_score()
+		_combo_text = tricks[0].trick_name + " " + str(_rot_round(rad_to_deg(tricks[0].get_rotation())))
+	TrickOverlay.instance.set_trick_view(_combo_text, str(_points) + " X " + str(tricks.size()) if tricks.size() > 1 else "")
 	tricks.clear()
+	print(_combo_text)
 	
 func _set_trick_active(active : bool) -> void:
 	is_trick_active = active
@@ -173,6 +183,7 @@ func set_air_trick():
 		return
 		
 func set_grind_trick():
+	print(Char_Input.input_buffer.get_last_input())
 	if Char_Input.input_buffer.get_last_input() == Char_Input.Action.GRIND:
 		_start_trick(available_grind_tricks)
 		

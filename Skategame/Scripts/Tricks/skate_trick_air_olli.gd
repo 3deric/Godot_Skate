@@ -7,6 +7,7 @@ func _init():
 	base_score = 300
 	difficulty = 1.2
 	trick_animation = "Air_Olli"
+	can_rotate = true
 
 	input_sequence = [
 		CharacterInput.Action.JUMP

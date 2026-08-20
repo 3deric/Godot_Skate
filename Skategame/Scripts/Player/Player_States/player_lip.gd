@@ -25,7 +25,6 @@ func physics_update(_delta : float):
 	if _handle_jump():
 		return
 	anim.set_vis_balance(1, ctrl.balance_angle)
-	tricks.set_lip_trick()
 
 func _lip_movement(_delta) -> void:
 	var _curve : Curve3D = ctrl.path.curve

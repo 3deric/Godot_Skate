@@ -85,12 +85,11 @@ func get_input() -> Vector3:
 	
 func get_input_jump() -> bool:
 	if input_buffer.get_last_input() == Action.JUMP and can_jump():
-		#input_buffer.buffer.clear()
 		return true
 	return false
 	
 func get_input_grind() -> bool:
-	if Input.is_action_pressed("Grind") or input_buffer.get_last_input() == Action.GRIND:
+	if input_buffer.get_last_input() == Action.GRIND:
 		return true
 	return false	
 	

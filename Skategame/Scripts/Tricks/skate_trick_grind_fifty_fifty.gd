@@ -3,7 +3,6 @@ extends Trick
 
 func _init():
 	trick_name = "50-50 Grind"
-	base_states = [CharStates.State.GRIND]
 	duration = 0.1
 	base_score = 300
 	difficulty = 1.0

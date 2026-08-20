@@ -1,6 +1,7 @@
 extends CharacterState
 
 func enter():
+	print(input.input_buffer.buffer)
 	ctrl.path_vel = _min_path_vel(ctrl.path_vel)
 	tricks.set_grind_trick()
 	tricks.performed_olli = false
@@ -29,7 +30,6 @@ func physics_update(_delta : float):
 	if _grind_end_check():
 		return
 	anim.set_vis_balance(0, ctrl.balance_angle)
-	tricks.set_grind_trick()
 
 func _grind_movement(_delta) -> void: 	
 	ctrl.curve_snap = LibHelpers.get_path_position(ctrl.path, ctrl.path_offset)
@@ -46,7 +46,7 @@ func _grind_movement(_delta) -> void:
 	ctrl.balance_logic(_delta, 0)
 	
 func _grind_end_check() -> bool:
-	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.01) and !ctrl.path_closed:
+	if !LibHelpers.get_stick_curve(ctrl.path,  ctrl.path_offset, 0.001) and !ctrl.path_closed:
 		ctrl.reset_shapecast(true)
 		if ctrl.shape_col_ground:
 			var _coll_info = ctrl.shape_col_ground[0].collider

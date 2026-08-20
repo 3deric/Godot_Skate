@@ -7,6 +7,7 @@ func _init():
 	base_score = 300
 	difficulty = 1.2
 	trick_animation = "Flip_Kickflip"
+	can_rotate = true
 	
 	input_sequence = [
 		CharacterInput.Action.UP,
