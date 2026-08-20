@@ -1,5 +1,5 @@
 class_name CharacterStates
-extends Node3D
+extends Node
 
 enum State {
 	RESET, 

@@ -1,5 +1,7 @@
-#set as global variable in project settings and therefore doesnt need a custom class_name
-extends Node3D
+class_name CustomizationManager
+extends Node
+
+static var instance: CustomizationManager
 
 signal color_updated(part: CharacterData.CharacterPart, sub: String, color: Color)
 signal decal_updated(part: CharacterData.CharacterPart, index: int)
@@ -59,6 +61,7 @@ var glasses_meshes = [
 ]
 
 func _ready() -> void:
+	instance = self
 	character_data = CharacterData.new()
 
 

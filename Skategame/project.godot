@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Skategame"
-run/main_scene="res://Scenes/asset_shading.tscn"
+config/version="0.1.0"
+run/main_scene="uid://c64uo125g4ixe"
 config/features=PackedStringArray("4.5", "GL Compatibility")
-run/max_fps=60
 config/icon="res://icon.svg"
 
 [autoload]
 
-CustomizationManager="*res://Scripts/customization_manager.gd"
+CustomizationManager="res://Scripts/customization_manager.gd"
 CharStates="*res://Scripts/character_states.gd"
 
 [debug]
@@ -27,9 +27,8 @@ gdscript/warnings/inferred_declaration=1
 
 [display]
 
-window/size/viewport_width=1280
-window/size/viewport_height=720
 window/stretch/mode="viewport"
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -99,9 +98,22 @@ Flip={
 , Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
 ]
 }
+Esc={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194305,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
+, Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":80,"key_label":0,"unicode":112,"location":0,"echo":false,"script":null)
+]
+}
+
+[layer_names]
+
+3d_physics/layer_1="Scene"
+3d_physics/layer_2="Player"
+3d_physics/layer_4="Rails"
+3d_physics/layer_5="Props"
 
 [rendering]
 
 renderer/rendering_method="mobile"
 global_illumination/gi/use_half_resolution=true
-anti_aliasing/quality/screen_space_aa=1
+textures/default_filters/anisotropic_filtering_level=0

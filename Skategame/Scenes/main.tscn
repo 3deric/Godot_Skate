@@ -1,0 +1,111 @@
+[gd_scene load_steps=8 format=3 uid="uid://c64uo125g4ixe"]
+
+[ext_resource type="Script" uid="uid://6sh54e51ice" path="res://Scripts/Game/main_game.gd" id="1_jjgbg"]
+[ext_resource type="Script" uid="uid://cf8u014jv4ue8" path="res://Scripts/Game/game_statemachine.gd" id="2_bo1nx"]
+[ext_resource type="Script" uid="uid://bckowe7gm0ids" path="res://Scripts/Game/Game_States/Game_Splash.gd" id="3_8gbba"]
+[ext_resource type="Script" uid="uid://cbvgileg605mf" path="res://Scripts/Game/Game_States/Game_Bootup.gd" id="3_21xkr"]
+[ext_resource type="Script" uid="uid://cun8em0lnbss7" path="res://Scripts/Game/Game_States/Game_Menu.gd" id="5_6bp64"]
+[ext_resource type="Script" uid="uid://boq4o7gek4jdn" path="res://Scripts/Game/Game_States/Game_Level.gd" id="6_344ge"]
+[ext_resource type="Script" uid="uid://w03csletrpk5" path="res://Scripts/customization_manager.gd" id="7_6bp64"]
+
+[node name="Main" type="Node"]
+process_mode = 3
+script = ExtResource("1_jjgbg")
+
+[node name="Systems" type="Node" parent="."]
+
+[node name="Character_CustomizationManager" type="Node" parent="Systems"]
+script = ExtResource("7_6bp64")
+
+[node name="Game_Statemachine" type="Node" parent="Systems" node_paths=PackedStringArray("initial_state")]
+script = ExtResource("2_bo1nx")
+initial_state = NodePath("Game_Splash")
+
+[node name="Game_Bootup" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("3_21xkr")
+
+[node name="Game_Splash" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("3_8gbba")
+
+[node name="Game_Menu" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("5_6bp64")
+
+[node name="Game_Level" type="Node" parent="Systems/Game_Statemachine"]
+script = ExtResource("6_344ge")
+
+[node name="Level_Statemachine" type="Node" parent="Systems"]
+
+[node name="Level_None" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Start" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Play" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_Pause" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="Level_End" type="Node" parent="Systems/Level_Statemachine"]
+
+[node name="World" type="Node3D" parent="."]
+process_mode = 1
+
+[node name="LevelRoot" type="Node3D" parent="World"]
+
+[node name="EntityRoot" type="Node3D" parent="World"]
+
+[node name="EffectRoot" type="Node3D" parent="World"]
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+process_mode = 1
+layer = 10
+
+[node name="HudRoot" type="Control" parent="HudLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+process_mode = 2
+layer = 20
+
+[node name="PauseRoot" type="Control" parent="PauseLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="TransitionLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 100
+
+[node name="TransitionRoot" type="Control" parent="TransitionLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="DebugLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 128
+
+[node name="DebugRoot" type="Control" parent="DebugLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+mouse_behavior_recursive = 1

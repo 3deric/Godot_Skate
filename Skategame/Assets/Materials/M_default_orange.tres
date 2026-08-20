@@ -5,3 +5,4 @@
 [resource]
 cull_mode = 2
 albedo_texture = ExtResource("1_i5bfm")
+uv1_triplanar = true

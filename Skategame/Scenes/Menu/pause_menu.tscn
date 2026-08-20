@@ -1,0 +1,61 @@
+[gd_scene load_steps=2 format=3 uid="uid://3yuf44frpj4c"]
+
+[ext_resource type="Script" uid="uid://brjlqrnr1bps6" path="res://Scripts/Game/pause_menu.gd" id="1_i0al5"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i0al5")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.39660493
+anchor_right = 0.5
+anchor_bottom = 0.60339504
+offset_left = -275.0
+offset_top = -25.0
+offset_right = 275.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+metadata/_edit_use_anchors_ = true
+
+[node name="PanelMain" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelMain"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 25
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelMain/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="ButtonContinue" type="Button" parent="MarginContainer/PanelMain/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Continue"
+
+[node name="ButtonQuit" type="Button" parent="MarginContainer/PanelMain/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Quit"

@@ -1,25 +1,12 @@
-[gd_scene load_steps=39 format=4 uid="uid://bxeywehmeblyi"]
+[gd_scene load_steps=40 format=4 uid="uid://bxeywehmeblyi"]
 
-[ext_resource type="PackedScene" uid="uid://d2nejhxrsjjgk" path="res://Scenes/player_character.tscn" id="3_7gtpe"]
+[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scripts/Game/base_level.gd" id="1_epc26"]
 [ext_resource type="Material" uid="uid://dshu268utf6sb" path="res://Assets/Materials/M_default_grey.tres" id="5_cljkk"]
 [ext_resource type="Material" uid="uid://1ccrgh68ww8p" path="res://Assets/Materials/M_default_orange.tres" id="6_aovfd"]
 [ext_resource type="Material" uid="uid://bq024sjps0gm4" path="res://Assets/Materials/M_path.tres" id="6_q52lx"]
 [ext_resource type="Script" uid="uid://fo6j44olrayn" path="res://Scripts/Editor/rail_init.gd" id="7_0t1eh"]
-[ext_resource type="Texture2D" uid="uid://bec75ysydn6i4" path="res://Assets/Environment/Textures/PT_buikslotermeerplein.exr" id="7_v2d4r"]
-
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_agarl"]
-panorama = ExtResource("7_v2d4r")
-
-[sub_resource type="Sky" id="Sky_33a2s"]
-sky_material = SubResource("PanoramaSkyMaterial_agarl")
-
-[sub_resource type="Environment" id="Environment_t5anl"]
-background_mode = 2
-background_energy_multiplier = 0.75
-sky = SubResource("Sky_33a2s")
-tonemap_mode = 3
-glow_enabled = true
-glow_bloom = 0.15
+[ext_resource type="PackedScene" uid="uid://ccv8vscxca55a" path="res://Assets/Environment/test_pipe.glb" id="7_epc26"]
+[ext_resource type="PackedScene" uid="uid://dda2xkip8mqg7" path="res://Assets/Props/Cone/prop_cone.tscn" id="7_mgga7"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3vl80"]
 
@@ -324,27 +311,25 @@ _data = {
 }
 point_count = 32
 
-[node name="Level" type="Node3D"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_jpgmo"]
+sky_horizon_color = Color(0.970912, 0.9723938, 0.97871774, 1)
+ground_bottom_color = Color(0.50630045, 0.4432279, 0.37252346, 1)
+ground_horizon_color = Color(0.970912, 0.9723938, 0.97871774, 1)
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.84851, -0.0293182, 0.528366, -0.529179, -0.0470102, 0.847207, 0, -0.998464, -0.0554032, -3.14877, 6.86759, 18.2562)
-light_color = Color(0.87, 0.71543, 0.6438, 1)
-light_energy = 1.762
-shadow_enabled = true
-shadow_opacity = 0.59
-shadow_blur = 6.306
+[sub_resource type="Sky" id="Sky_epc26"]
+sky_material = SubResource("ProceduralSkyMaterial_jpgmo")
 
-[node name="player_character" parent="." instance=ExtResource("3_7gtpe")]
-transform = Transform3D(0.994854, 0, -0.101317, 0, 1, 0, 0.101317, 0, 0.994854, -1.3126838, -0.04510522, -2.3938448)
-is_playing = true
+[sub_resource type="Environment" id="Environment_mgga7"]
+background_mode = 2
+sky = SubResource("Sky_epc26")
+tonemap_mode = 2
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_t5anl")
+[node name="Level" type="Node3D" node_paths=PackedStringArray("_player_spawn")]
+script = ExtResource("1_epc26")
+_player_spawn = NodePath("Player_Spawn")
 
-[node name="DirectionalLight3D2" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.722135, 0.138408, 0.677764, 0.58475, 0.645598, 0.491193, -0.369577, 0.75103, -0.547143, -0.281779, 0.959275, -0.209071)
-light_energy = 0.5
-shadow_enabled = true
+[node name="Player_Spawn" type="Marker3D" parent="."]
+transform = Transform3D(0.7145948, 0, 0.69953865, 0, 1, 0, -0.69953865, 0, 0.7145948, -1.4520545, 0, -3.0474653)
 
 [node name="Bowlpark" type="Node3D" parent="."]
 
@@ -480,3 +465,28 @@ path_u_distance = 1.0
 path_joined = false
 material = ExtResource("6_q52lx")
 script = ExtResource("7_0t1eh")
+
+[node name="test_pipe" parent="." instance=ExtResource("7_epc26")]
+transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, 11.444146, 0.03676212, -7.8969355)
+
+[node name="test_pipe2" parent="." instance=ExtResource("7_epc26")]
+transform = Transform3D(-0.9959191, 0, 0.090250224, 0, 1, 0, -0.090250224, 0, -0.9959191, 4.071018, 0.03676021, -16.298286)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.117278665, -0.5318653, 0.8386686, 0.5847511, 0.64559627, 0.4911942, -0.8026905, 0.54801875, 0.23529437, -0.281779, 0.959275, -0.209071)
+light_color = Color(0.96574026, 0.947303, 0.9423368, 1)
+shadow_enabled = true
+directional_shadow_mode = 0
+directional_shadow_max_distance = 12.8
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_mgga7")
+
+[node name="PropCone" parent="." instance=ExtResource("7_mgga7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.563461, -2.3841858e-07, -11.171007)
+
+[node name="PropCone2" parent="." instance=ExtResource("7_mgga7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.4240513, 2.3841858e-07, -11.34966)
+
+[node name="PropCone3" parent="." instance=ExtResource("7_mgga7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.4806314, -2.3841858e-07, -11.650071)

@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwatq14gtsbjb"]
+
+[ext_resource type="Script" uid="uid://dwoicit6eh5cs" path="res://Scripts/Game/debug_menu.gd" id="1_u7ls7"]
+[ext_resource type="Texture2D" uid="uid://bollctn42liyc" path="res://Assets/UI/T_logo.svg" id="2_1pghc"]
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_u7ls7")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("2_1pghc")
+expand_mode = 3
+stretch_mode = 5
