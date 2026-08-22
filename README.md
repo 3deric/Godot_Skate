@@ -5,13 +5,19 @@ A skateboarding videogame which is inspired by the "Tony Hawks Pro Skater" games
 ![GodotS Skate Preview](/img/preview.png)
 
 # Requirements
+
+## Engine Version
 The project is compatible with Godot 4.5.
 https://godotengine.org/download/archive/4.5-stable/
+
+## System Requirements
+Requirements are simple. The game should run fine on 10 year old intel graphic chips.
+
 # Controls
 The game is meant to be controlled with a keyboard or controller. 
 
 > [!IMPORTANT]
-> At the moment only the xbox shows correct input prompts.
+> At the moment only the xbox controller shows correct input prompts.
 
 ## Input Mapping
 | Action   | Keyboard | X-Box |
@@ -51,7 +57,7 @@ The structure of a skatepark element or whole park should be as in the following
   - Skatepark_**Rail**_A
 
 > [!TIP]
-> A skatepark element can contain only one element. For example a halfpipe or a rail. But it is possible to export a whole skatepark in a single gltf file.
+> It is possible to import a single element (rail, pipe, kicker), or a whole skatepark in one gltf file.
 
 ## Description
 - **Col_Wall** Creates wall colliders
