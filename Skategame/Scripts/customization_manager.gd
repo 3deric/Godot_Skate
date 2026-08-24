@@ -1,4 +1,7 @@
-extends Node3D
+class_name CustomizationManager
+extends Node
+
+static var instance: CustomizationManager
 
 signal color_updated(part: CharacterData.CharacterPart, sub: String, color: Color)
 signal decal_updated(part: CharacterData.CharacterPart, index: int)
@@ -9,37 +12,56 @@ signal customization_updated()
 var character_data : CharacterData
 
 var board_decals = [
-	preload ("res://Assets/Characters/Textures/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/T_skateboard_deck.png"),
-	preload ("res://Assets/Characters/Textures/T_skateboard_deck_cat.png")
-]
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck.jpg"),
+	preload ("res://Assets/Characters/Textures/Decals/T_skateboard_deck_cat.jpg")
+	]
 
 var top_decals = [
-	preload ("res://Assets/Characters/Textures/T_decal_empty.png"),
-	preload ("res://Assets/Characters/Textures/T_decal_captain_bavaria.png"),
-	preload ("res://Assets/Characters/Textures/T_decal_test.png")
-]
+	preload ("res://Assets/Characters/Textures/Decals/T_decal_empty.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Pretzelman.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Aluminium.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Cassette.png"),
+	preload ("res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Earth.png")
+	]
 
-var hair_meshes_male = [
-	preload ("res://Assets/Characters/Meshes/SK_male_hair_short.res")
-]
+var hair_meshes = [
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_m_messy.res"),
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
+	]
 
-var top_meshes_male = [
-	preload ("res://Assets/Characters/Meshes/SK_male_hoodie.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shirt.res")
-]
+var hair_meshes_female = [
+	preload ("res://Assets/Characters/Meshes/Hair/SK_char_hair_f_ponytail.res")
+	]
 
-var bottom_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_jeans.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shorts.res")
-]
+var top_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_hoodie.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_shirt.res")
+	]
 
-var shoe_meshes_male = [
-	preload("res://Assets/Characters/Meshes/SK_male_sneakers.res"),
-	preload ("res://Assets/Characters/Meshes/SK_male_shoes_flat.res")
+var bottom_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_jeans.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_bottom_shorts.res")
+	]
+
+var shoe_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flat.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_sneakers.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/Sk_Char_clothes_shoes_boots.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_clothes_shoes_flipflops.res")
+	]
+	
+var helmet_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_base.res"),
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_helmet_godot.res")
+	]
+	
+var glasses_meshes = [
+	preload ("res://Assets/Characters/Meshes/Clothes/SK_char_headwear_sunglasses.res")
 ]
 
 func _ready() -> void:
+	instance = self
 	character_data = CharacterData.new()
 
 
@@ -57,6 +79,7 @@ func update_color(part: CharacterData.CharacterPart,sub: String, color: Color ) 
 		CharacterData.CharacterPart.Hair:
 			match sub:
 				'color':
+					print("updating color")
 					character_data.hair_color = color
 		CharacterData.CharacterPart.Top:
 			match sub:
@@ -105,6 +128,10 @@ func update_mesh(part: CharacterData.CharacterPart, index: int) -> void:
 			character_data.bottom_mesh = index
 		CharacterData.CharacterPart.Shoes:
 			character_data.shoes_mesh = index
+		CharacterData.CharacterPart.Helmet:
+			character_data.helmet_mesh = index
+		CharacterData.CharacterPart.Glasses:
+			character_data.glasses_mesh
 	mesh_updated.emit(part, index)
 	#customization_updated.emit()
 	
@@ -127,6 +154,8 @@ func update_float(part: CharacterData.CharacterPart, sub : String ,value: float)
 					character_data.size = value
 				'skin_color':
 					character_data.skin_color = value
+				'gender':
+					character_data.gender = value
 	float_updated.emit(part, sub, value)
 	#customization_updated.emit()
 		

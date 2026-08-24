@@ -1,0 +1,27 @@
+[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://b4ksryt2e0lsb"]
+
+[ext_resource type="Shader" uid="uid://cccrwanqhkb6b" path="res://Assets/Characters/Materials/Master/M_skin.tres" id="1_nt7em"]
+[ext_resource type="Texture2D" uid="uid://11mmn5xii5p8" path="res://Assets/Characters/Textures/Body/T_decal_male_facial_hair_beard_color.png" id="2_fbjqt"]
+[ext_resource type="Texture2D" uid="uid://jjiyffdv0l6d" path="res://Assets/Characters/Textures/Body/T_male_mask.png" id="3_p01nr"]
+[ext_resource type="Texture2D" uid="uid://c2m2t0t8888hm" path="res://Assets/Characters/Textures/Body/T_male_normal.png" id="4_nc1h1"]
+[ext_resource type="Texture2D" uid="uid://dkpi20n532xeh" path="res://Assets/Characters/Textures/Body/T_male_orm.png" id="5_5q5b3"]
+[ext_resource type="Texture2D" uid="uid://m4vvg2rkm7wv" path="res://Assets/Characters/Textures/Body/T_male_dark_color.png" id="6_sjnmx"]
+[ext_resource type="Texture2D" uid="uid://lmlnkfho0l6t" path="res://Assets/Characters/Textures/Body/T_male_white_color.png" id="7_cangl"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1_nt7em")
+shader_parameter/skin_light = ExtResource("7_cangl")
+shader_parameter/skin_dark = ExtResource("6_sjnmx")
+shader_parameter/skin_color = 0.0
+shader_parameter/underwear_color = Color(0.4433234, 0.5214809, 0.17996022, 1)
+shader_parameter/mask = ExtResource("3_p01nr")
+shader_parameter/decal = ExtResource("2_fbjqt")
+shader_parameter/orm = ExtResource("5_5q5b3")
+shader_parameter/eyes_color = Color(0.6846149, 0.38053694, 0.2414346, 1)
+shader_parameter/Roughness_Power = 1.0
+shader_parameter/backlight = Color(0.46666667, 0.16078432, 0.12941177, 1)
+shader_parameter/normal = ExtResource("4_nc1h1")
+shader_parameter/Normal_Depth = 0.25
+shader_parameter/Rim = 0.25
+shader_parameter/Rim_Tint = 0.35

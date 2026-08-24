@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dri5ttie2jgqo"]
+
+[ext_resource type="Script" uid="uid://bm0a7aivl2w0u" path="res://Scripts/Game/base_level.gd" id="1_fbeo4"]
+[ext_resource type="PackedScene" uid="uid://dwatq14gtsbjb" path="res://Scenes/Menu/splash_menu.tscn" id="1_q363x"]
+
+[node name="Splash" type="Node3D"]
+script = ExtResource("1_fbeo4")
+
+[node name="PauseMenu" parent="." instance=ExtResource("1_q363x")]
+script = null

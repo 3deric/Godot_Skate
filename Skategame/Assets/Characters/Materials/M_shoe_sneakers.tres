@@ -1,19 +1,23 @@
 [gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://y3h168m6edo"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_c7ct3"]
-[ext_resource type="Texture2D" uid="uid://b7riqxpu5r3it" path="res://Assets/Characters/Textures/T_sneaker_mask.png" id="2_e24ub"]
-[ext_resource type="Texture2D" uid="uid://dpjie64k0tw2b" path="res://Assets/Characters/Textures/T_sneaker_normal.png" id="3_45ndr"]
-[ext_resource type="Texture2D" uid="uid://debbede1evtbp" path="res://Assets/Characters/Textures/T_sneaker_orm.png" id="4_gv584"]
+[ext_resource type="Texture2D" uid="uid://ds6ndn8h3x70g" path="res://Assets/Characters/Textures/Clothes/T_sneaker_mask.png" id="2_b7wq8"]
+[ext_resource type="Texture2D" uid="uid://di501po4crenw" path="res://Assets/Characters/Textures/Clothes/T_sneaker_normal.png" id="3_eehru"]
+[ext_resource type="Texture2D" uid="uid://bde1lda1e5h2s" path="res://Assets/Characters/Textures/Clothes/T_sneaker_orm.png" id="4_i4bgc"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_c7ct3")
-shader_parameter/base_color = Color(0.180005, 0.180005, 0.180005, 1)
-shader_parameter/accent_color = Color(0.556863, 0.447059, 0.278431, 1)
-shader_parameter/detail_color = Color(1, 1, 1, 1)
+shader_parameter/adjustable_metal_color = false
+shader_parameter/base_color = Color(0.19607843, 0.19607843, 0.19607843, 1)
+shader_parameter/accent_color = Color(0.5568628, 0.44705883, 0.2784314, 1)
+shader_parameter/mask = ExtResource("2_b7wq8")
+shader_parameter/detail_color = Color(0.61960787, 0.61960787, 0.61960787, 1)
+shader_parameter/metal_color = Color(0.692421, 0.704291, 0.68658, 1)
+shader_parameter/orm = ExtResource("4_i4bgc")
 shader_parameter/Roughness_Power = 1.0
-shader_parameter/Rim = 0.1
+shader_parameter/backlight = Color(0, 0, 0, 1)
+shader_parameter/normal = ExtResource("3_eehru")
+shader_parameter/Normal_Depth = 0.1
+shader_parameter/Rim = 0.2
 shader_parameter/Rim_Tint = 0.5
-shader_parameter/mask = ExtResource("2_e24ub")
-shader_parameter/orm = ExtResource("4_gv584")
-shader_parameter/normal = ExtResource("3_45ndr")

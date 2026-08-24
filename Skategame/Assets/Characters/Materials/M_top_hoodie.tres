@@ -1,19 +1,25 @@
-[gd_resource type="ShaderMaterial" load_steps=5 format=3 uid="uid://mddnxeq6hgdi"]
+[gd_resource type="ShaderMaterial" load_steps=6 format=3 uid="uid://mddnxeq6hgdi"]
 
 [ext_resource type="Shader" uid="uid://bpcrq24tj5lyb" path="res://Assets/Characters/Materials/Master/M_colorable.tres" id="1_ww255"]
-[ext_resource type="Texture2D" uid="uid://5edyhf7cbq0v" path="res://Assets/Characters/Textures/T_hoodie_normal.png" id="2_21h0y"]
-[ext_resource type="Texture2D" uid="uid://dbqup1dh3n4cu" path="res://Assets/Characters/Textures/T_hoodie_mask.png" id="2_51pwq"]
-[ext_resource type="Texture2D" uid="uid://4ytfvpt1xkeu" path="res://Assets/Characters/Textures/T_hoodie_orm.png" id="4_hos3l"]
+[ext_resource type="Texture2D" uid="uid://dxjqrxqxbjbwm" path="res://Assets/Characters/Textures/Clothes/T_hoodie_mask.png" id="2_po3bk"]
+[ext_resource type="Texture2D" uid="uid://bk34axh0obvi8" path="res://Assets/Characters/Textures/Decals/T_Cloth_Decals_Aluminium.png" id="2_qriye"]
+[ext_resource type="Texture2D" uid="uid://iqp6ljjojguj" path="res://Assets/Characters/Textures/Clothes/T_hoodie_normal.png" id="3_qriye"]
+[ext_resource type="Texture2D" uid="uid://wrvl7y3tlhen" path="res://Assets/Characters/Textures/Clothes/T_hoodie_orm.png" id="4_fritj"]
 
 [resource]
 render_priority = 0
 shader = ExtResource("1_ww255")
-shader_parameter/base_color = Color(0.198988, 0.322279, 0.533544, 1)
-shader_parameter/accent_color = Color(0.2, 0.321569, 0.533333, 1)
-shader_parameter/detail_color = Color(0.806717, 0.774369, 0.782551, 1)
+shader_parameter/adjustable_metal_color = false
+shader_parameter/base_color = Color(0.3663142, 0.47356236, 0.21745768, 1)
+shader_parameter/accent_color = Color(0.3647059, 0.4745098, 0.21568628, 1)
+shader_parameter/mask = ExtResource("2_po3bk")
+shader_parameter/detail_color = Color(0.6768075, 0.6740968, 0.62836975, 1)
+shader_parameter/metal_color = Color(0.53, 0.53, 0.53, 1)
+shader_parameter/orm = ExtResource("4_fritj")
+shader_parameter/decal = ExtResource("2_qriye")
 shader_parameter/Roughness_Power = 1.0
-shader_parameter/Rim = 0.5
-shader_parameter/Rim_Tint = 0.25
-shader_parameter/mask = ExtResource("2_51pwq")
-shader_parameter/orm = ExtResource("4_hos3l")
-shader_parameter/normal = ExtResource("2_21h0y")
+shader_parameter/backlight = Color(0, 0, 0, 1)
+shader_parameter/normal = ExtResource("3_qriye")
+shader_parameter/Normal_Depth = 0.1
+shader_parameter/Rim = 0.2
+shader_parameter/Rim_Tint = 0.5

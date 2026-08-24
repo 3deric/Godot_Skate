@@ -1,131 +1,85 @@
 # GodotSkate
-Skate game prototype in Godot
+
+A skateboarding videogame which is inspired by the "Tony Hawks Pro Skater" games. The game has keyboard and controller support.
+
 ![GodotS Skate Preview](/img/preview.png)
+
+# Requirements
+
+## Engine Version
+The project is compatible with Godot 4.5.
+https://godotengine.org/download/archive/4.5-stable/
+
+## System Requirements
+Requirements are simple. The game should run fine on 10 year old intel graphic chips.
+
+# Controls
+The game is meant to be controlled with a keyboard or controller. 
+
+> [!IMPORTANT]
+> At the moment only the xbox controller shows correct input prompts.
+
+## Input Mapping
+| Action   | Keyboard | X-Box |
+|----------|----------|-------|
+| UP       | W        | Stick Up/Dpad Up    |
+| Left     | A        | Stick Left/Dpad Left |
+| Right    | D        | Stick Right/Dpad Right |
+| Down     | S        | Stick Down/Dpad Down    |
+| Jump     | Space    | A     |
+| Grind/Lip| X        | Y     |
+| Grab     | G        | B     |
+| Flip     | F        | X     |
+
+# Assets
+
+Textures and input images by https://www.kenney.nl
+
+Characters are based on modified low res metahuman characters by EPIC Games https://www.epicgames.com
+
 ![GodotS Skate Preview](/img/character_preview.png)
-Textures by https://www.kenney.nl/
-Characters are based on low res metahuman characters by EPIC Games.
 
-# Function Documentation
-I tried to keep most function self explainatory
+# Skatepark Asset Setup
 
-## character_controller
+Skatepark elements need to be imported in the gltf format. Objects inside the gltf files need to follow a strict naming convention.
 
-### _player_state()
-Keeps track of the current player movement state and changes the state based on conditions.
+I´m using the godot **_Col** Suffix to automatically create mesh colliders on the import.
 
-### _surface_check()
-Executes raycasts for the ground and the current movement direction.
+https://docs.godotengine.org/en/stable/tutorials/assets_pipeline/importing_3d_scenes/node_type_customization.html
 
-### _get_path_tangent()
-Returns the tangent of a path at a specific point.
+The structure of a skatepark element or whole park should be as in the following example.
 
-### _get_path_dir()
-Returns the direction along the path.
+- GLTF
+  - Skatepark_**Mesh**
+  - Skatepark_**Col_Wall**
+  - Skatepark_**Col_Floor**
+  - Skatepark_**Col_Pipe**
+  - Skatepark_**Rail**_A
 
-### _get_closest_curve_point()
-Returns the position on a curve based on the current location.
+> [!TIP]
+> It is possible to import a single element (rail, pipe, kicker), or a whole skatepark in one gltf file.
 
-### _get_closest_curve_offset()
-Returns the offset value of the curve. A value between 0 and the curve length.
+## Description
+- **Col_Wall** Creates wall colliders
+ - **Col_Floor** Creates floor colliders
+- **Col_Pipe** Creates the floor for halfpipes
+- **Rail** Creates a rail from a polyline 
 
-### _get_stick_curve()
-Returns true of the player should be attached to a curve, false if the player leaves the curve.
+## Automatic Godot Setup
 
-### _set_up_direction()
-Calculates the upvector.
+I generated a import script to automate the generation of rails, assignment of wall, floor and pipe colliders.
 
-### _lerp_vis_transform()
-Interpolates the visible player transform to avoid jittery motion because of lowres colliders.
+### Script usage
 
-### _fall()
-Falling logic.
+Assign the script `res://Scripts/Editor/park_import.gd` as the import script of a gltf file and reimport it.
 
-### _reset_player()
-Resets the player to the starting location, resets all player values.
+## Rail Setup in Blender
 
-### _input_handler()
-Read and map inputs.
+Rails are imported as polylines from blender. These polylines require a clean vertex order.
 
-### _animation_handler()
-Controls the animtree.
+I create a small Geometrynodes setup to get a clean polyline. The nodegroup converts a mesh into a curve and then back into a polyline.
 
-### _kill_orthogonal_velocity()
-Removes orthogonal velocity of the player.
+> [!CAUTION]
+> Every rail requires its own polyline.
 
-### _kill_pipe_orthogonal_velocity()
-Removes orthogonal velocity on a pipe.
-
-### _align()
-Aligns the player with the groud.
-
-### _limit_velocity()
-Speed limit.
-
-### _revert_motion()
-Turns the player to follow the movement direction.
-
-### _ground_movement()
-Ground movement logic.
-
-### _air_movement()
-Air movement logic.
-
-### _pipe_snap_movement()
-Movement logic while snapped to a pipe.
-
-### _grind_movement()
-Grinding movement logic.
-
-### _lip_movement()
-Lip movement logic.
-
-### _randomize_balance()
-Randomize balance direction.
-
-### _init_player()
-Initialize the player.
-
-### _check_reverse_motion()
-Checkup to execute the revert motion function.
-
-### _check_bounce_grind()
-Checkup if the player bounces off a wall while grinding.
-
-### _check_bounce()
-Checkup if the player bounces off a wall.
-
-###_debug_player_state()
-Prints debug infos.
-
-### _jump_timer()
-Timer function to get the time since the last jump.
-
-### _forward_velocity()
-Returns forward component of velocity.
-
-### _raycast()
-Raycast function.
-
-### _fall_check()
-Checks if the player should fall.
-
-## setup_park
-
-Park setup runs only in the editor. It requires 3d models as packed gltf scenes.
-
-Select a packed gltf-scene in the editor and run the script.
-
-### setup_park requirements
-![Park Setup](/img/parksetup.png)
-
-- *assetname*_Col_Pipe -> **Pipe collision**
-- *assetname*_Col_Floor -> **Floor collision**
-- *assetname*_Col_Wall -> **Wall collision**
-
-There can only be one of those 3 collision meshes inside of a packed scene. Concave colliders are created for each mesh. Keep them simple.
-
-- *assetname*_Rail_*X* -> **Rail line**
-
-Used to create rails, there can be multiple rails inside of one packed scene. Each rail needs a unique identifier. For example A,B,C etc. Rails need to be created as polylines. You need to take care of the vertex order. 
-To order the vertices you can convert the polyline to a curve and then back to a mesh in blender. This will order vertices based on connectivity.
-![Order Vertices](/img/vertexorder.png)
+![Geonodes Vertexorder](/img/vertexorder.png)
