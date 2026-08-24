@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="CustomizationAsset" load_steps=3 format=3 uid="uid://ca7cvh0nl6w41"]
+
+[ext_resource type="ArrayMesh" uid="uid://bsyx3b86l6ffq" path="res://Assets/Characters/Meshes/Clothes/SK_char_clothes_top_shirt.res" id="1_6aypu"]
+[ext_resource type="Script" uid="uid://bortdiketmnc3" path="res://Scripts/Customization/customization_asset.gd" id="2_46ujm"]
+
+[resource]
+script = ExtResource("2_46ujm")
+name = "top_shirt"
+display_name = "T-Shirt"
+part = 3
+ressource = ExtResource("1_6aypu")
+metadata/_custom_type_script = "uid://bortdiketmnc3"
