@@ -3,7 +3,14 @@
 A skateboarding videogame which is inspired by the "Tony Hawks Pro Skater" games. The game has keyboard and controller support.
 
 ![GodotS Skate Preview](/img/preview.png)
-
+## Features
+The game is in a very early state and has the following features.
+- Topdown movement with keyboard and controller
+- Basic gameloop with main menu and level selection
+- Character customization
+- Trick execution with basic point counter
+- Trick combos
+- Balancing of grind and lip tricks
 # Requirements
 
 ## Engine Version
@@ -15,6 +22,7 @@ Requirements are simple. The game should run fine on 10 year old intel graphic c
 
 # Controls
 The game is meant to be controlled with a keyboard or controller. 
+Hold Jump to accelerate. Hold down to decellerate.
 
 > [!IMPORTANT]
 > At the moment only the xbox controller shows correct input prompts.
@@ -22,10 +30,10 @@ The game is meant to be controlled with a keyboard or controller.
 ## Input Mapping
 | Action   | Keyboard | X-Box |
 |----------|----------|-------|
-| UP       | W        | Stick Up/Dpad Up    |
-| Left     | A        | Stick Left/Dpad Left |
+| Up       | W        | Stick Up/Dpad Up       |
+| Left     | A        | Stick Left/Dpad Left   |
 | Right    | D        | Stick Right/Dpad Right |
-| Down     | S        | Stick Down/Dpad Down    |
+| Down     | S        | Stick Down/Dpad Down   |
 | Jump     | Space    | A     |
 | Grind/Lip| X        | Y     |
 | Grab     | G        | B     |
