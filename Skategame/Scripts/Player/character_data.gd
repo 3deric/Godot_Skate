@@ -17,12 +17,12 @@ extends Resource
 @export var skin_color : float = 0.25
 @export var eye_color : Color = Color(0.356,0.425,0.583,1.0)
 @export var size : float = 1.0
-@export var board_decal : int = 0
+@export var board_decal : int = 1
 @export var top_decal : int = 0
-@export var hair_mesh : int = 0
-@export var top_mesh : int = 0
-@export var bottom_mesh : int = 0
-@export var shoes_mesh : int = 0
+@export var hair_mesh : int = 1
+@export var top_mesh : int = 1
+@export var bottom_mesh : int = 1
+@export var shoes_mesh : int = 1
 @export var helmet_mesh : int = 0
 @export var glasses_mesh : int = 0
 @export var gender : float = 0

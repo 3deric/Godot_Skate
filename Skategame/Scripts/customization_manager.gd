@@ -129,3 +129,7 @@ func _preload_customization_assets() -> void:
 				resources[resource.part].append(resource)
 		file_name = dir.get_next()
 	dir.list_dir_end()
+	for key in resources:
+		resources[key].sort_custom(func(a, b):
+			return a.resource_path.get_file().to_lower() < b.resource_path.get_file().to_lower()
+)

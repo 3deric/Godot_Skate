@@ -6,7 +6,7 @@
 [resource]
 script = ExtResource("2_w6y0h")
 ressource = ExtResource("1_opslx")
-name = "bottom_jeans"
-display_name = "Jeans"
+name = "bottom_shorts"
+display_name = "Shorts"
 part = 4
 metadata/_custom_type_script = "uid://bortdiketmnc3"
