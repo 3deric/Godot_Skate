@@ -37,17 +37,17 @@ func _connect_signals() -> void:
 		CustomizationManager.instance.mesh_updated.connect(_on_mesh_updated)
 
 
-func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Color) -> void:
+func _on_color_updated(part: CustomizationPart.Part, sub: String, color :Color) -> void:
 	match part:
-		CharacterData.CharacterPart.Body:
+		CustomizationPart.Part.BODY:
 			match sub:
 				'eyes':
 					_update_body_eyes_color(color)
-		CharacterData.CharacterPart.Hair:
+		CustomizationPart.Part.HAIR:
 			match sub:
 				'color':
 					_update_hair_color(color)
-		CharacterData.CharacterPart.Top:
+		CustomizationPart.Part.TOP:
 			match sub:
 				'base':
 					_update_top_base_color(color)
@@ -55,7 +55,7 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 					_update_top_accent_color(color)
 				'detail':
 					_update_top_detail_color(color)
-		CharacterData.CharacterPart.Bottom:
+		CustomizationPart.Part.BOTTOM:
 			match sub:
 				'base':
 					_update_bottom_base_color(color)
@@ -63,7 +63,7 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 					_update_bottom_accent_color(color)
 				'detail':
 					_update_bottom_detail_color(color)
-		CharacterData.CharacterPart.Shoes:
+		CustomizationPart.Part.SHOES:
 			match sub:
 				'base':
 					_update_shoes_base_color(color)
@@ -71,7 +71,7 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 					_update_shoes_accent_color(color)
 				'detail':
 					_update_shoes_detail_color(color)
-		CharacterData.CharacterPart.Board:
+		CustomizationPart.Part.BOARD:
 			match sub:
 				'wheels':
 					_update_board_wheels_color(color)
@@ -81,42 +81,42 @@ func _on_color_updated(part: CharacterData.CharacterPart, sub: String, color :Co
 					_update_board_metal_color(color)
 
 
-func _on_mesh_updated(part: CharacterData.CharacterPart, index : int) -> void:
+func _on_mesh_updated(part: CustomizationPart.Part, index : int) -> void:
 	match part:
-		CharacterData.CharacterPart.Hair:
+		CustomizationPart.Part.HAIR:
 			_update_hair_mesh(index)
-		CharacterData.CharacterPart.Top:
+		CustomizationPart.Part.TOP:
 			_update_top_mesh(index)
-		CharacterData.CharacterPart.Bottom:
+		CustomizationPart.Part.BOTTOM:
 			_update_bottom_mesh(index)
-		CharacterData.CharacterPart.Shoes:
+		CustomizationPart.Part.SHOES:
 			_update_shoes_mesh(index)
-		CharacterData.CharacterPart.Helmet:
+		CustomizationPart.Part.HELMET:
 			_update_helmet_mesh(index)
-		CharacterData.CharacterPart.Glasses:
+		CustomizationPart.Part.FACEWEAR:
 			_update_glasses_mesh(index)
 
 
-func _on_decal_updated(part: CharacterData.CharacterPart, index :int) -> void:
+func _on_decal_updated(part: CustomizationPart.Part, index :int) -> void:
 	match part:
-		CharacterData.CharacterPart.Top:
+		CustomizationPart.Part.TOP:
 			_update_top_decal(index)
-		CharacterData.CharacterPart.Board:
+		CustomizationPart.Part.BOARD:
 			_update_board_decal(index)
 
 
-func _on_float_updated(part: CharacterData.CharacterPart, sub: String, value: float) -> void:
+func _on_float_updated(part: CustomizationPart.Part, sub: String, value: float) -> void:
 	match part:
-		CharacterData.CharacterPart.Body:
+		CustomizationPart.Part.BODY:
 			match sub:
 				'skin_color':
 					_update_body_skin_color(value)
 				'size':
 					char_skeleton.scale = Vector3(value, value, value)
-				'gender':
-					_update_gender(value)
-					_update_top_gender(value)
-					_update_bottom_gender(value)
+				#'gender':
+				#	_update_gender(value)
+				#	_update_top_gender(value)
+				#	_update_bottom_gender(value)
 					
 
 func _on_customization_updated() ->void:
@@ -205,11 +205,13 @@ func _update_board_metal_color(color: Color) -> void:
 
 
 func _update_board_decal(index: int) -> void:
-	_update_decal(board_mesh, "decal", CustomizationManager.instance.board_decals[index])
+	pass
+	#_update_decal(board_mesh, "decal", CustomizationManager.instance.board_decals[index])
 
 
 func _update_top_decal(index: int) -> void:
-	_update_decal(top_mesh, "decal", CustomizationManager.instance.top_decals[index])
+	pass
+	#_update_decal(top_mesh, "decal", CustomizationManager.instance.top_decals[index])
 	
 
 func _update_body_eyes_color(color: Color) -> void:
@@ -225,53 +227,27 @@ func _update_hair_color(color: Color) -> void:
 
 	
 func _update_hair_mesh(index :int) -> void:
-	if index == 0:
-		hair_mesh.hide()
-	else:
-		hair_mesh.show()
-		hair_mesh.mesh = CustomizationManager.instance.hair_meshes[index -1]
-		
+	hair_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.HAIR][index].ressource	
 		
 func _update_top_mesh(index :int) -> void:
-	if index == 0:
-		top_mesh.hide()
-	else:
-		top_mesh.show()
-		top_mesh.mesh = CustomizationManager.instance.top_meshes[index -1]
-	
+	top_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.TOP][index].ressource	
 		
 func _update_bottom_mesh(index :int) -> void:
-	if index == 0:
-		bottom_mesh.hide()
-	else:
-		bottom_mesh.show()
-		bottom_mesh.mesh = CustomizationManager.instance.bottom_meshes[index -1]
-	
+	bottom_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.BOTTOM][index].ressource	
 		
 func _update_shoes_mesh(index :int) -> void:
-	if index == 0:
-		shoes_mesh.hide()
+	shoes_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.SHOES][index].ressource	
+	if shoes_mesh.mesh == null:
 		body_mesh.set_blend_shape_value(1,0.0)
 	else:
-		shoes_mesh.show()
-		shoes_mesh.mesh = CustomizationManager.instance.shoe_meshes[index -1]
 		body_mesh.set_blend_shape_value(1,1.0)
 
 func _update_helmet_mesh(index :int) -> void:
-	if index == 0:
-		helmet_mesh.hide()
-	else:
-		helmet_mesh.show()
-		helmet_mesh.mesh = CustomizationManager.instance.helmet_meshes[index -1]
+	helmet_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.HELMET][index].ressource	
 		
 func _update_glasses_mesh(index :int) -> void:
-	if index == 0:
-		glasses_mesh.hide()
-	else:
-		glasses_mesh.show()
-		glasses_mesh.mesh = CustomizationManager.instance.glasses_meshes[index -1]
-		
-		
+	glasses_mesh.mesh = CustomizationManager.instance.resources[CustomizationPart.Part.FACEWEAR][index].ressource	
+				
 func _update_gender(value : float) -> void:
 	body_mesh.set_blend_shape_value(0, value)
 	if value > 0.5:
@@ -281,11 +257,13 @@ func _update_gender(value : float) -> void:
 	
 
 func _update_top_gender(value : float) -> void:
-	top_mesh.set_blend_shape_value(0, value)
+	pass
+	#top_mesh.set_blend_shape_value(0, value)
 	
 
 func _update_bottom_gender(value : float) -> void:
-	bottom_mesh.set_blend_shape_value(0, value)
+	pass
+	#bottom_mesh.set_blend_shape_value(0, value)
 	
 
 func _update_color(_mesh : MeshInstance3D, _param : String, _color : Color) -> void:

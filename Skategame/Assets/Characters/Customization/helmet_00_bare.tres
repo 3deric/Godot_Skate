@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="CustomizationAsset" load_steps=2 format=3 uid="uid://k1ymk4pq7gj3"]
+
+[ext_resource type="Script" uid="uid://bortdiketmnc3" path="res://Scripts/Customization/customization_asset.gd" id="1_njsaw"]
+
+[resource]
+script = ExtResource("1_njsaw")
+name = "helmet_bare"
+display_name = "Bare"
+part = 1
+metadata/_custom_type_script = "uid://bortdiketmnc3"

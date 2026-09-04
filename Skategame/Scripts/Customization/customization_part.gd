@@ -7,5 +7,7 @@ enum Part {
 	FACEWEAR, 
 	TOP, 
 	BOTTOM, 
-	SHOES
+	SHOES,
+	BOARD,
+	BODY
 	}
