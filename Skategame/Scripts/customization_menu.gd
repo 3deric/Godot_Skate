@@ -70,6 +70,8 @@ func _setup_options() -> void:
 	_set_option_button(option_button_helmet_style, CustomizationPart.Part.HELMET)
 	_set_option_button(option_button_glasses_style, CustomizationPart.Part.FACEWEAR)
 	_set_option_button(option_button_hair, CustomizationPart.Part.HAIR)
+	_set_option_button(option_button_top_decal, CustomizationPart.Part.DECAL_TOP)
+	_set_option_button(option_button_deck, CustomizationPart.Part.DECAL_BOARD)
 	
 	color_picker_button_top_base.color = data.top_base_color
 	color_picker_button_top_accent.color = data.top_accent_color

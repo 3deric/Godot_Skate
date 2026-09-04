@@ -205,13 +205,11 @@ func _update_board_metal_color(color: Color) -> void:
 
 
 func _update_board_decal(index: int) -> void:
-	pass
-	#_update_decal(board_mesh, "decal", CustomizationManager.instance.board_decals[index])
+	_update_decal(board_mesh, "decal", CustomizationManager.instance.resources[CustomizationPart.Part.DECAL_BOARD][index].ressource)
 
 
 func _update_top_decal(index: int) -> void:
-	pass
-	#_update_decal(top_mesh, "decal", CustomizationManager.instance.top_decals[index])
+	_update_decal(top_mesh, "decal", CustomizationManager.instance.resources[CustomizationPart.Part.DECAL_TOP][index].ressource)
 	
 
 func _update_body_eyes_color(color: Color) -> void:

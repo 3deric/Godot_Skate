@@ -9,5 +9,7 @@ enum Part {
 	BOTTOM, 
 	SHOES,
 	BOARD,
-	BODY
+	BODY,
+	DECAL_TOP,
+	DECAL_BOARD
 	}

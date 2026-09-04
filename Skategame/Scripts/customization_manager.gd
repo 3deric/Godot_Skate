@@ -127,6 +127,5 @@ func _preload_customization_assets() -> void:
 				if not resources.has(resource.part):
 					resources[resource.part] = []
 				resources[resource.part].append(resource)
-				print(resource.display_name)
 		file_name = dir.get_next()
 	dir.list_dir_end()
