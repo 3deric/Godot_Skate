@@ -68,7 +68,7 @@ func _setup_options() -> void:
 	_set_option_button(option_button_bottom_style, CustomizationPart.Part.BOTTOM)
 	_set_option_button(option_button_shoes_style, CustomizationPart.Part.SHOES)
 	_set_option_button(option_button_helmet_style, CustomizationPart.Part.HELMET)
-	_set_option_button(option_button_glasses_style, CustomizationPart.Part.FACEWEAR)
+	_set_option_button(option_button_glasses_style, CustomizationPart.Part.GLASSES)
 	_set_option_button(option_button_hair, CustomizationPart.Part.HAIR)
 	_set_option_button(option_button_top_decal, CustomizationPart.Part.DECAL_TOP)
 	_set_option_button(option_button_deck, CustomizationPart.Part.DECAL_BOARD)
@@ -177,11 +177,11 @@ func _on_color_picker_button_metal_color_changed(color: Color) -> void:
 
 
 func _on_option_button_deck_item_selected(index: int) -> void:
-	CustomizationManager.instance.update_decal(CustomizationPart.Part.BOARD, index)
+	CustomizationManager.instance.update_decal(CustomizationPart.Part.BOARD, CustomizationPart.Part.DECAL_BOARD, index)
 
 
 func _on_option_button_top_decal_item_selected(index: int) -> void:
-	CustomizationManager.instance.update_decal(CustomizationPart.Part.TOP, index)
+	CustomizationManager.instance.update_decal(CustomizationPart.Part.TOP, CustomizationPart.Part.DECAL_TOP, index)
 
 
 func _on_h_slider_skin_color_value_changed(value: float) -> void:
@@ -206,7 +206,7 @@ func _on_option_button_top_style_item_selected(index: int) -> void:
 	CustomizationManager.instance.update_color(CustomizationPart.Part.TOP, 'base', color_picker_button_top_base.color)
 	CustomizationManager.instance.update_color(CustomizationPart.Part.TOP, 'accent', color_picker_button_top_accent.color)
 	CustomizationManager.instance.update_color(CustomizationPart.Part.TOP, 'detail', color_picker_button_top_detail.color)
-	CustomizationManager.instance.update_decal(CustomizationPart.Part.TOP, option_button_top_decal.selected)
+	CustomizationManager.instance.update_decal(CustomizationPart.Part.TOP, CustomizationPart.Part.DECAL_TOP,option_button_top_decal.selected)
 	CustomizationManager.instance.update_float(CustomizationPart.Part.BOTTOM, 'gender', float(check_button_gender.button_pressed))
 
 
@@ -228,7 +228,7 @@ func _on_option_button_helmet_style_item_selected(index: int) -> void:
 	CustomizationManager.instance.update_mesh(CustomizationPart.Part.HELMET, index)
 
 func _on_option_button_glasses_style_item_selected(index: int) -> void:
-	CustomizationManager.instance.update_mesh(CustomizationPart.Part.FACEWEAR, index)
+	CustomizationManager.instance.update_mesh(CustomizationPart.Part.GLASSES, index)
 	
 func _on_h_slider_size_value_changed(value: float) -> void:
 	CustomizationManager.instance.update_float(CustomizationPart.Part.BODY, 'size', value)

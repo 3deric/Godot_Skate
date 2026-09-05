@@ -5,6 +5,6 @@
 [resource]
 script = ExtResource("1_njsaw")
 name = "helmet_bare"
-display_name = "Bare"
+display_name = "No Helmet (really?)"
 part = 1
 metadata/_custom_type_script = "uid://bortdiketmnc3"

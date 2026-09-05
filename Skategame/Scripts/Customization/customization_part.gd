@@ -4,7 +4,7 @@ class_name CustomizationPart
 enum Part {
 	HAIR,
 	HELMET, 
-	FACEWEAR, 
+	GLASSES, 
 	TOP, 
 	BOTTOM, 
 	SHOES,

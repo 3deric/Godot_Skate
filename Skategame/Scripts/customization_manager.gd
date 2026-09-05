@@ -85,19 +85,19 @@ func update_mesh(part: CustomizationPart.Part, index: int) -> void:
 			character_data.shoes_mesh = index
 		CustomizationPart.Part.HELMET:
 			character_data.helmet_mesh = index
-		CustomizationPart.Part.FACEWEAR:
+		CustomizationPart.Part.GLASSES:
 			character_data.glasses_mesh
 	mesh_updated.emit(part, index)
 	#customization_updated.emit()
 	
 
-func update_decal(part: CustomizationPart.Part, index: int) -> void:
+func update_decal(part: CustomizationPart.Part, decal_part : CustomizationPart.Part, index: int) -> void:
 	match part:
 		CustomizationPart.Part.TOP:
 			character_data.top_decal = index
 		CustomizationPart.Part.BOARD:
 			character_data.board_decal = index
-	decal_updated.emit(part, index)
+	decal_updated.emit(part, decal_part, index)
 	#customization_updated.emit()
 
 
