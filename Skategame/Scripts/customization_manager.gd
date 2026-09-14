@@ -9,6 +9,7 @@ signal mesh_updated(part: CustomizationPart.Part, index: int)
 signal float_updated(part: CustomizationPart.Part, sub: String, value: float)
 signal customization_updated()
 
+const SAVE_PATH = "user://character_data.json"
 #var resources : Array[CustomizationAsset] = []
 var resources : Dictionary = {}
 
@@ -18,7 +19,31 @@ func _ready() -> void:
 	instance = self
 	_preload_customization_assets()
 	character_data = CharacterData.new()
-
+	#character_data = _load_chararacter_data()
+	_save_character_data(character_data)
+	
+func _save_character_data(char_data : CharacterData) -> void:
+	var file : FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
+	var save_dict = {}
+	save_dict["game_version"] = ProjectSettings.get_setting("application/config/version") 
+	save_dict["char_name"] = char_data.char_name
+	save_dict["customization_data"] = char_data.customization_data
+	file.store_string(JSON.stringify(save_dict))
+	file.close()
+	
+func _load_chararacter_data() -> CharacterData:
+	var data = CharacterData.new()
+	if not FileAccess.file_exists(SAVE_PATH):
+		return data
+	var file : FileAccess = FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var text : String = file.get_as_text()
+	file.close()
+	var parsed = JSON.parse_string(text)
+	if parsed["game_version"] != ProjectSettings.get_setting("application/config/version"):
+		return data
+	data.char_name = parsed["char_name"]
+	data.customization_data = parsed["customization_data"]
+	return data
 
 func reset_character() -> void:
 	character_data = CharacterData.new()

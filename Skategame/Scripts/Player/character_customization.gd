@@ -77,6 +77,8 @@ func _update_from_data() -> void:
 					_on_color_updated(part, customization, data[part][customization])
 				elif _type == TYPE_FLOAT:
 					_on_float_updated(part, customization, data[part][customization])
+				elif _type == TYPE_INT:
+					_on_float_updated(part, customization, data[part][customization])
 			elif typeof(customization) == TYPE_INT:
 				_on_decal_updated(part, customization, data[part][customization])
 
