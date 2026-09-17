@@ -67,7 +67,6 @@ func _on_customization_updated() ->void:
 
 func _update_from_data() -> void:
 	var data = CustomizationManager.instance.character_data.customization_data
-	print(data)
 	for part in data:
 		for customization in data[part]:
 			if typeof(customization) == TYPE_STRING:

@@ -73,25 +73,25 @@ func reset_character() -> void:
 func update_color(part: CustomizationPart.Part,sub: String, color: Color ) -> void:
 	character_data.customization_data[part][sub] = color
 	color_updated.emit(part, sub, color)
-	#customization_updated.emit()
+	customization_updated.emit()
 	
 
 func update_mesh(part: CustomizationPart.Part, index: int) -> void:
 	character_data.customization_data[part]["mesh"] = index
 	mesh_updated.emit(part, index)
-	#customization_updated.emit()
+	customization_updated.emit()
 	
 
 func update_decal(part: CustomizationPart.Part, decal_part : CustomizationPart.Part, index: int) -> void:
 	character_data.customization_data[part]["decal"] = index
 	decal_updated.emit(part, decal_part, index)
-	#customization_updated.emit()
+	customization_updated.emit()
 
 
 func update_float(part: CustomizationPart.Part, sub : String ,value: float) -> void:
 	character_data.customization_data[part][sub] = value
 	float_updated.emit(part, sub, value)
-	#customization_updated.emit()
+	customization_updated.emit()
 		
 func _preload_customization_assets() -> void:
 	var dir = DirAccess.open("res://Assets/Characters/Customization")
