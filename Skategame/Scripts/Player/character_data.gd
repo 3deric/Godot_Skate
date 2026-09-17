@@ -16,7 +16,7 @@ extends Resource
 									"base":  Color("5d7937"),
 									"accent": Color("5d7937"),
 									"detail": Color("adaca0"),
-									CustomizationPart.Part.DECAL_TOP : 0
+									"decal_top" : 0
 								},
 	CustomizationPart.Part.BOTTOM : {
 									"category": "clothes",
@@ -38,7 +38,7 @@ extends Resource
 									"base" :Color(0.758,0.721,0.471,1.0),
 									"accent": Color(0.354,0.95,0.45,1.0),
 									"detail": Color(0.8,0.8,0.8,1.0),
-									CustomizationPart.Part.DECAL_BOARD : 1
+									"decal_board" : 1
 									},
 	CustomizationPart.Part.HAIR : {
 									"category": "body",

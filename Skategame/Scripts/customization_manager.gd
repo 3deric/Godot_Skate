@@ -18,8 +18,8 @@ var character_data : CharacterData
 func _ready() -> void:
 	instance = self
 	_preload_customization_assets()
-	character_data = CharacterData.new()
-	#character_data = _load_chararacter_data()
+	#character_data = CharacterData.new()
+	character_data = _load_character_data()
 	_save_character_data(character_data)
 	
 func _save_character_data(char_data : CharacterData) -> void:
@@ -31,7 +31,7 @@ func _save_character_data(char_data : CharacterData) -> void:
 	file.store_string(JSON.stringify(save_dict))
 	file.close()
 	
-func _load_chararacter_data() -> CharacterData:
+func _load_character_data() -> CharacterData:
 	var data = CharacterData.new()
 	if not FileAccess.file_exists(SAVE_PATH):
 		return data
@@ -42,8 +42,28 @@ func _load_chararacter_data() -> CharacterData:
 	if parsed["game_version"] != ProjectSettings.get_setting("application/config/version"):
 		return data
 	data.char_name = parsed["char_name"]
-	data.customization_data = parsed["customization_data"]
+	for part in parsed["customization_data"]:
+		var part_dict = _load_subdata(parsed["customization_data"][part])
+		data.customization_data[int(part)] = part_dict
 	return data
+	
+func _load_subdata(data : Dictionary) -> Dictionary:
+	var result = {}
+	for key in data:
+		if key == "category":
+			result[key] = data[key]
+			continue
+		if key == "mesh" or key == "gender" or key.contains("decal"):
+			result[key] = int(data[key])
+			continue
+		if key == "base" or key == "accent" or key == "detail" or key == "eyes":
+			var col = str(data[key]).replace("(", "").replace(")", "").split(",")
+			result[key] = Color(float(col[0]), float(col[1]), float(col[2]),float(col[3]))
+			continue
+		if key == "size" or key == "color":
+			result[key] = float(data[key])
+			continue	
+	return result
 
 func reset_character() -> void:
 	character_data = CharacterData.new()

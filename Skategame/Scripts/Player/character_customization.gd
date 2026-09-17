@@ -67,20 +67,24 @@ func _on_customization_updated() ->void:
 
 func _update_from_data() -> void:
 	var data = CustomizationManager.instance.character_data.customization_data
+	print(data)
 	for part in data:
 		for customization in data[part]:
 			if typeof(customization) == TYPE_STRING:
 				var _type = typeof(data[part][customization])
 				if customization == "mesh":
 					_on_mesh_updated(part,data[part][customization])
+				elif customization == "decal_top":
+					_on_decal_updated(part, CustomizationPart.Part.DECAL_TOP, data[part][customization])
+				elif customization == "decal_board":
+					_on_decal_updated(part, CustomizationPart.Part.DECAL_BOARD, data[part][customization])
 				elif  _type == TYPE_COLOR:
 					_on_color_updated(part, customization, data[part][customization])
 				elif _type == TYPE_FLOAT:
 					_on_float_updated(part, customization, data[part][customization])
 				elif _type == TYPE_INT:
 					_on_float_updated(part, customization, data[part][customization])
-			elif typeof(customization) == TYPE_INT:
-				_on_decal_updated(part, customization, data[part][customization])
+	
 
 func _update_body_eyes_color(color: Color) -> void:
 	_update_color(character_meshes[CustomizationPart.Part.BODY], "eyes_color", color)
