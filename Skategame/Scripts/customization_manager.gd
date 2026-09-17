@@ -18,16 +18,15 @@ var character_data : CharacterData
 func _ready() -> void:
 	instance = self
 	_preload_customization_assets()
-	#character_data = CharacterData.new()
 	character_data = _load_character_data()
-	_save_character_data(character_data)
+	save_character_data()
 	
-func _save_character_data(char_data : CharacterData) -> void:
+func save_character_data() -> void:
 	var file : FileAccess = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	var save_dict = {}
 	save_dict["game_version"] = ProjectSettings.get_setting("application/config/version") 
-	save_dict["char_name"] = char_data.char_name
-	save_dict["customization_data"] = char_data.customization_data
+	save_dict["char_name"] = character_data.char_name
+	save_dict["customization_data"] = character_data.customization_data
 	file.store_string(JSON.stringify(save_dict))
 	file.close()
 	
@@ -50,10 +49,9 @@ func _load_character_data() -> CharacterData:
 func _load_subdata(data : Dictionary) -> Dictionary:
 	var result = {}
 	for key in data:
-		if key == "category":
-			result[key] = data[key]
-			continue
-		if key == "mesh" or key == "gender" or key.contains("decal"):
+		if key.is_valid_int():
+			var value = int(data[key])
+		if key == "mesh" or key == "gender" or key.contains("decal_"):
 			result[key] = int(data[key])
 			continue
 		if key == "base" or key == "accent" or key == "detail" or key == "eyes":
@@ -67,31 +65,34 @@ func _load_subdata(data : Dictionary) -> Dictionary:
 
 func reset_character() -> void:
 	character_data = CharacterData.new()
-	customization_updated.emit()
+	#customization_updated.emit()
 
 
 func update_color(part: CustomizationPart.Part,sub: String, color: Color ) -> void:
 	character_data.customization_data[part][sub] = color
 	color_updated.emit(part, sub, color)
-	customization_updated.emit()
+	#customization_updated.emit()
 	
 
 func update_mesh(part: CustomizationPart.Part, index: int) -> void:
 	character_data.customization_data[part]["mesh"] = index
 	mesh_updated.emit(part, index)
-	customization_updated.emit()
+	#customization_updated.emit()
 	
 
 func update_decal(part: CustomizationPart.Part, decal_part : CustomizationPart.Part, index: int) -> void:
-	character_data.customization_data[part]["decal"] = index
+	if part == CustomizationPart.Part.TOP:
+		character_data.customization_data[part]['decal_top'] = index
+	if part == CustomizationPart.Part.BOARD:
+		character_data.customization_data[part]['decal_board'] = index
 	decal_updated.emit(part, decal_part, index)
-	customization_updated.emit()
+	#customization_updated.emit()
 
 
 func update_float(part: CustomizationPart.Part, sub : String ,value: float) -> void:
 	character_data.customization_data[part][sub] = value
 	float_updated.emit(part, sub, value)
-	customization_updated.emit()
+	#customization_updated.emit()
 		
 func _preload_customization_assets() -> void:
 	var dir = DirAccess.open("res://Assets/Characters/Customization")
